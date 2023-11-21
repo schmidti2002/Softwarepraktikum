@@ -12,7 +12,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.schmidtbot }}
+          token: ${{ secrets.SCHMIDTBOT}}
           fetch-depth: 0
 
       # signed commits
@@ -20,8 +20,8 @@ jobs:
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v4
         with:
-          gpg_private_key: ${{ secrets.schmidtbot_GPG_PRIVATE }}
-          passphrase: ${{ secrets.schmidtbot_GPG_PASSPHRASE }}
+          gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
+          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
 
@@ -30,7 +30,7 @@ jobs:
         with:
           message: '[chore] rendered SVGs'
         env:
-          GITHUB_TOKEN: ${{ secrets.schmidtbot }}
+          GITHUB_TOKEN: ${{ secrets.SCHMIDTBOT }}
 
   puml-to-png:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.schmidtbot }}
+          token: ${{ secrets.SCHMIDTBOT }}
           fetch-depth: 0
 
 
@@ -71,8 +71,8 @@ jobs:
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v4
         with:
-          gpg_private_key: ${{ secrets.schmidt2002_GPG_PRIVATE }}
-          passphrase: ${{ secrets.schmidt2002_GPG_PASSPHRASE }}
+          gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
+          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
       # commit changed pom file
