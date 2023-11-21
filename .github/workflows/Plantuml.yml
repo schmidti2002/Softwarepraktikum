@@ -12,6 +12,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
+          token: ${{ secrets.SCHMIDTBOT}}
           fetch-depth: 0
           repository: schmidti2002/Softwarepraktikum
           ssh-strict: true
@@ -47,6 +48,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
+          token: ${{ secrets.SCHMIDTBOT}}
           fetch-depth: 0
           repository: schmidti2002/Softwarepraktikum
           ssh-strict: true
