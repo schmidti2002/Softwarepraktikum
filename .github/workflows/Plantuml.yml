@@ -14,6 +14,13 @@ jobs:
         with:
           token: ${{ secrets.SCHMIDTBOT}}
           fetch-depth: 0
+          repository: schmidti2002/Softwarepraktikum
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          lfs: false
+          submodules: false
+          set-safe-directory: true
 
       # signed commits
       - name: import GPG
@@ -43,7 +50,13 @@ jobs:
         with:
           token: ${{ secrets.SCHMIDTBOT }}
           fetch-depth: 0
-
+          repository: schmidti2002/Softwarepraktikum
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          lfs: false
+          submodules: false
+          set-safe-directory: true
 
       - name: install plantuml
         run: |
