@@ -23,14 +23,14 @@ jobs:
           set-safe-directory: true
 
       # signed commits
-      - name: import GPG
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v4
-        with:
-          gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
-          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+      #- name: import GPG
+      #  id: import_gpg
+      #  uses: crazy-max/ghaction-import-gpg@v4
+      #  with:
+      #    gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
+      #    passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
+      #    git_user_signingkey: true
+      #    git_commit_gpgsign: true
 
       - name: convert files
         uses: grassedge/generate-plantuml-action@master
@@ -79,15 +79,16 @@ jobs:
 
       - run: git pull
 
-      # signed commits
-      - name: import GPG
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v4
-        with:
-          gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
-          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+      ## signed commits
+      #- name: import GPG
+      #  id: import_gpg
+      #  uses: crazy-max/ghaction-import-gpg@v4
+      #  with:
+      #    gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
+      #    passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
+      #    git_user_signingkey: true
+      #    git_commit_gpgsign: true
+      
       # commit changed pom file
       - name: auto commit
         id: auto-commit-action
