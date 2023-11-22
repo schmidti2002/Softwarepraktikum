@@ -1,22 +1,75 @@
 name: puml-to-img
+
 on:
   push:
     paths: ['**.puml']
+
 jobs:
 
-  generate_plantuml:
+  common-steps:
     runs-on: ubuntu-latest
-    name: plantuml
+    if: "!contains(github.event.head_commit.message, '#')"
     steps:
-    - name: checkout
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: plantuml
-      id: plantuml
-      uses: grassedge/generate-plantuml-action@master
-      with:
-        path: example
-        message: "Render PlantUML files"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          repository: schmidti2002/Softwarepraktikum
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          lfs: false
+          submodules: false
+          set-safe-directory: true
+
+      - name: Import GPG
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
+          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+  puml-to-svg:
+    needs: common-steps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Convert files to SVG
+        uses: grassedge/generate-plantuml-action@master
+        with:
+          message: '[chore] rendered SVGs'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  puml-to-png:
+    needs: common-steps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt install graphviz
+          sudo apt install nodejs
+          npm install -g node-plantuml
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v11.5
+
+      - name: Convert files to PNG
+        run: |
+          for changed_file in ${{ steps.changed-files.outputs.all_modified_files }}; do
+            if [[ $changed_file == **.puml ]]; then
+              puml generate $changed_file -o ${changed_file//.puml/.png}
+            fi
+          done
+
+      - name: Commit PNG files
+        id: auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: '**.png'
+          commit_message: '[chore] rendered PNGs'
+          commit_user_name: 'schmidtbot'
+          commit_user_email: '150671176+schmidtbot@users.noreply.github.com'
