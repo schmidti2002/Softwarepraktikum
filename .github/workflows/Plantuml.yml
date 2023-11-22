@@ -37,7 +37,7 @@ jobs:
         with:
           message: '[chore] rendered SVGs'
         env:
-          GITHUB_TOKEN: ${{ secrets.SCHMIDTBOT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   puml-to-png:
     runs-on: ubuntu-latest
