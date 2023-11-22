@@ -4,41 +4,6 @@ on:
     paths: ['**.puml']
 jobs:
 
-  puml-to-svg:
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '#')"
-    steps:
-
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN}}
-          fetch-depth: 0
-          repository: schmidti2002/Softwarepraktikum
-          ssh-strict: true
-          persist-credentials: true
-          clean: true
-          lfs: false
-          submodules: false
-          set-safe-directory: true
-
-      # signed commits
-      #- name: import GPG
-      #  id: import_gpg
-      #  uses: crazy-max/ghaction-import-gpg@v4
-      #  with:
-      #    gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
-      #    passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
-      #    git_user_signingkey: true
-      #    git_commit_gpgsign: true
-
-      - name: convert files
-        uses: grassedge/generate-plantuml-action@master
-        with:
-          message: '[chore] rendered SVGs'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   puml-to-png:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '#')"
@@ -79,16 +44,16 @@ jobs:
 
       - run: git pull
 
-      ## signed commits
-      #- name: import GPG
-      #  id: import_gpg
-      #  uses: crazy-max/ghaction-import-gpg@v4
-      #  with:
-      #    gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
-      #    passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
-      #    git_user_signingkey: true
-      #    git_commit_gpgsign: true
-      
+      # signed commits
+      - name: import GPG
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
+          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+    
       # commit changed pom file
       - name: auto commit
         id: auto-commit-action
@@ -98,3 +63,38 @@ jobs:
           commit_message: '[chore] rendered PNGs'
           commit_user_name: 'schmidtbot'
           commit_user_email: ' 150671176+schmidtbot@users.noreply.github.com'
+
+  puml-to-svg:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '#')"
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN}}
+          fetch-depth: 0
+          repository: schmidti2002/Softwarepraktikum
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          lfs: false
+          submodules: false
+          set-safe-directory: true
+
+      # signed commits
+      - name: import GPG
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.SCHMIDTBOT_GPG_PRIVATE }}
+          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: convert files
+        uses: grassedge/generate-plantuml-action@master
+        with:
+          message: '[chore] rendered SVGs'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
