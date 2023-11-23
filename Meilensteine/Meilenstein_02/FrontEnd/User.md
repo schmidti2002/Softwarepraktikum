@@ -1,9 +1,9 @@
 # {User}
 ## Verantwortlichkeiten
-Stellt Funktionen der Loginfunktion zur Verfügung
+- stellt Funktionen der Loginfunktion zur Verfügung
 
 ## Kollaborationen
-User Service
+- User Service
 
 ---
 #### Notizen:
@@ -13,3 +13,4 @@ User Service
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian
 Responsibilities erfasst; 22.11.2023; Luke, Arvid, Anna, Kate, Robert, Nico, Thoralf
 Erstellung der Karten; 22.11.2023; Thoralf
+kleine Überarbeitung (Format und Rechtschreibung); 23.11.2023; Luke
