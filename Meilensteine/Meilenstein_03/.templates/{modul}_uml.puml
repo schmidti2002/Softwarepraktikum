@@ -1,6 +1,7 @@
 @startuml {modul}
 abstract        abstract
 abstract class  "abstract class"
+abstract class  "abstract class"
 annotation      annotation
 circle          circle
 ()              circle_short_form
