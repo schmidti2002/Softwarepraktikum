@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SCHMIDTBOT }}
           fetch-depth: 0
           repository: schmidti2002/Softwarepraktikum
           ssh-strict: true
@@ -41,7 +41,7 @@ jobs:
         with:
           message: '[chore] rendered SVGs'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SCHMIDTBOT }}
 
   puml-to-png:
     needs: common-steps
@@ -51,6 +51,7 @@ jobs:
         run: |
           sudo apt install graphviz
           sudo apt install nodejs
+          sudo apt install npm
           npm install -g node-plantuml
 
       - name: Get changed files
