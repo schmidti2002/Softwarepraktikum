@@ -47,10 +47,10 @@ jobs:
 
       - name: install plantuml
         run: |
-          sudo apt update
-          sudo apt install graphviz
-          sudo apt install nodejs
-          sudo apt install npm
+          sudo apt-get update
+          sudo apt-get install graphviz
+          sudo apt-get install nodejs
+          sudo apt-get install npm
           npm install -g node-plantuml
 
       - name: get changed files
