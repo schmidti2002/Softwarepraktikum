@@ -1,6 +1,6 @@
 # {User}
 ## Verantwortlichkeiten
-- stellt Funktionen der Loginfunktion zur Verfügung
+- stellt Funktionen der Eingenverwaltung zur Verfügung
 
 ## Kollaborationen
 - User Service

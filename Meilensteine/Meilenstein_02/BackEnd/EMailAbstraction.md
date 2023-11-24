@@ -3,7 +3,7 @@
 - abstrahiert SQL-Querries aus E-Mail-Adressentabellen
 
 ## Kollaborationen
-- E-Mail Server
+- E-Mail Server (URZ E-Mail Server)
 
 ---
 #### Notizen:

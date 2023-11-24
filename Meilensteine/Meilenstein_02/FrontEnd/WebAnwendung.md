@@ -5,7 +5,7 @@
 
 ## Kollaborationen
 - Login
-- Main
+- Startseite
 
 ---
 #### Notizen:

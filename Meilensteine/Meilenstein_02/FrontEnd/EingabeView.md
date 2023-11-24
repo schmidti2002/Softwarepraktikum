@@ -1,10 +1,10 @@
 # {Eingabe View}
 ## Verantwortlichkeiten
-- Visualisierung der Steuerungselemente
+- Visualisierung der Nutzereingaben
+in den Sortieralgorithmen und Datenstrukturen
 
 ## Kollaborationen
-- Sort Eingabe
-- Struct Eingabe
+- kleine
 
 ---
 #### Notizen:

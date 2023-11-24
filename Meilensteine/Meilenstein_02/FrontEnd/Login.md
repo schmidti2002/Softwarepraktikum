@@ -4,7 +4,7 @@
 
 ## Kollaborationen
 - User Service
-
+- User Registrierung
 ---
 #### Notizen:
 <!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->

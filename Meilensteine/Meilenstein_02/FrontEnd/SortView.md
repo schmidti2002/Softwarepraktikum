@@ -3,7 +3,7 @@
 - zeigt Sortieralgorithmen-Visualisierung
 
 ## Kollaborationen
-keine
+- Export
 
 ---
 #### Notizen:
