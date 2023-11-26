@@ -1,9 +1,11 @@
-# SortAlgoAbstraction
+# Main
 ## Verantwortlichkeiten
-- abstrahiert SQL-Querries auf Sortieralg.-Tabellen
+- zeigt verschiedene Ansichten an
 
 ## Kollaborationen
-- Datenbank
+- Tutorial
+- AuD
+- User
 
 ---
 

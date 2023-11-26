@@ -1,22 +1,14 @@
-# {Klassenname}
+# List Abstraction
 ## Verantwortlichkeiten
-<!-- Wissen, welches verwaltet und angeboten wird, Aktion die angeboten werden, öffentliche Leistung -->
-<!-- "Walkthrough" -> Szenarien zur Anwendung des Systems -->
-<!-- Nichts, was eine andere Klasse machen könnte -->
-<!-- Die Sachen die die Klasse macht -> keiner anderen Klasse geben -->
-<!-- zentrale Verantwortlichkeiten vs verteilt -->
-1.
-2.
+- abstrahiert SQL-Querries auf List-Tabellen
 
 ## Kollaborationen
-<!-- Kann die Klasse die Verantwortlichkeiten selbständig erfüllen? Was benötigt sie von welcher Klasse? -->
-<!-- Was weiß die Klasse? Welche anderen Klassen benötigen die Informationen? -->
-1.
-2.
+- Datenbank
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
-<!-- Hier eventuelle Abänderungen dokumentieren -->
+Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian
+Responsibilities erfasst; 22.11.2023; Luke, Arvid, Anna, Kate, Robert, Nico, Thoralf
+Erstellung der Karten; 22.11.2023; Thoralf
+kleine Überarbeitung (Format und Rechtschreibung); 23.11.2023; Luke
