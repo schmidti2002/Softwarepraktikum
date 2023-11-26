@@ -1,4 +1,4 @@
-# {Web}
+# Userbearbeitung
 ## Verantwortlichkeiten
 - Stellt Funktionen der Fremdbenutzer-verwaltung zur Verfügung
 
@@ -6,8 +6,6 @@
 - User Service
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

@@ -1,13 +1,12 @@
-# {Login}
+# Login
 ## Verantwortlichkeiten
 - stellt Loginfunktion zur Verfügung
 
 ## Kollaborationen
 - User Service
 - User Registrierung
+
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

@@ -1,4 +1,4 @@
-# {List Endpoints}
+# List Endpoints
 ## Verantwortlichkeiten
 - stellt List API-Endpunkte zur Verfügung
 
@@ -6,8 +6,6 @@
 - List Abstraction
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

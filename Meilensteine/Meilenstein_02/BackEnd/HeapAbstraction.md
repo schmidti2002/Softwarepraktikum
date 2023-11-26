@@ -1,4 +1,4 @@
-# {Heap Abstraction}
+# Heap Abstraction
 ## Verantwortlichkeiten
 - abstrahiert SQL-Querries auf Heap-Tabellen
 
@@ -6,8 +6,6 @@
 - Datenbank
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

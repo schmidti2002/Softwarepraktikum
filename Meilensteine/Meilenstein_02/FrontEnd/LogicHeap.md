@@ -1,4 +1,4 @@
-# {Logic Heap}
+# Logic Heap
 ## Verantwortlichkeiten
 - stellt Funktionen des Heaps zur Verfügung
 
@@ -6,8 +6,6 @@
 - Heap Service
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

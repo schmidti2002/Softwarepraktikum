@@ -1,4 +1,4 @@
-# {Sort Algo Service}
+# Sort Algo Service
 ## Verantwortlichkeiten
 - kommuniziert mit Backend bzgl. Sortieralgorithmen
 
@@ -6,8 +6,6 @@
 - Sort Algo Endpoints
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

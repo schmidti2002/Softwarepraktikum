@@ -1,4 +1,4 @@
-# {Logic Sort Algo}
+# Logic Sort Algo
 ## Verantwortlichkeiten
 - stellt Funktionen der Sortieralgorithmen zur Verfügung
 
@@ -6,8 +6,6 @@
 - Sort Algo Service
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

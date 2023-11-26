@@ -1,4 +1,4 @@
-# {AuD}
+# AuD
 ## Verantwortlichkeiten
 - instanziiert Logic-Klassen
 - verwaltet Kommunikation der Unteransichten
@@ -14,8 +14,6 @@
 - Startseite
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

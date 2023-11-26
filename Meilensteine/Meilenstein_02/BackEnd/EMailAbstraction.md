@@ -1,4 +1,4 @@
-# {EMailAbstraction}
+# EMailAbstraction
 ## Verantwortlichkeiten
 - abstrahiert SQL-Querries aus E-Mail-Adressentabellen
 
@@ -6,8 +6,6 @@
 - E-Mail Server (URZ E-Mail Server)
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

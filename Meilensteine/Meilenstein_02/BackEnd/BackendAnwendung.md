@@ -1,4 +1,4 @@
-# {BackEnd Anwendung}
+# BackEnd Anwendung
 ## Verantwortlichkeiten
 - instanziiert Endpoints
 
@@ -9,8 +9,6 @@
 - List Endpoints
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian

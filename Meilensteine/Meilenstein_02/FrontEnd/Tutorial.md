@@ -1,4 +1,4 @@
-# {Tutorial}
+# Tutorial
 ## Verantwortlichkeiten
 - Tutorial als Video anzeigen
 
@@ -6,8 +6,6 @@
 keine
 
 ---
-#### Notizen:
-<!-- Hier Notizen zum Denkprozess, Hintergrundgedanken, Klarstellungen hinzufügen  -->
 
 #### Changelog:
 Klassen & Klasseninteraktion entwickeln; 21.11.2023; Luke, Nico, Anna, Arvid, Kate, Thoralf, Florian
