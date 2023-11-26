@@ -31,5 +31,5 @@ Die durchschnittlich aufgewendete Zeit beträgt bei den Teammitgliedern ca. 9,5 
 
 ### Misslungenes
 <p>Anfangs verursachte die Überarbeitung der Snowcards aus dem letzten Meilenstein und die dazugehörige Präsentation eine Verzögerung dieses Meilensteins.</p>
-<p>Die Vollständigkeit des Teams war zu Beginn der Meilensteinebarbeitung (siehe "Herangehensweise an das Problem") ein großes Problem, da die bei den ersten Meetings anwesenden Teammitglieder die gesamte Verantwortung für die ersten Schritte der CRC-Karten tragen mussten und die näherrückende Deadline zu einem potenziellen Problem wurde.</p>
+<p>Die Vollständigkeit des Teams war zu Beginn der Meilensteinbearbeitung (siehe "Herangehensweise an das Problem") ein großes Problem, da die bei den ersten Meetings anwesenden Teammitglieder die gesamte Verantwortung für die ersten Schritte der CRC-Karten tragen mussten und die näherrückende Deadline zu einem potenziellen Problem wurde.</p>
 <p>Weiterhin stellte sich das Verfassen CRC-Karten als Problem dar, weil es große Uneinigekeiten und Missverständnisse zu dem Inhalt und den Erforderlichkeiten gab. Diese wurden jedoch in dem Präsenzmeeting ausdiskutiert und bereinigt.</p>
