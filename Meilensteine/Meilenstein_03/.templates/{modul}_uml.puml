@@ -11,11 +11,12 @@ entity          entity
 enum            enum
 interface       interface
 
-Class01 <|-- Class02
+Class01 <|-- Class02 : Test
 Class03 *-- Class04
 Class05 o-- Class06
 Class07 .. Class08
 Class09 -- Class10
+
 
 Class01 <|.. Class02
 Class03 --> Class04
@@ -34,12 +35,20 @@ Class103 o-- Class104 : aggregation
 Class105 --> "1" Class106
 
 class Dummy {
+  zahl : interger
   String data
   void methods()
+  jbgkjaerknvbjh
+  dfbjaejvnr
+
+  priv int teste() 
+  priv int zeste() 
+  priv int aeste() 
 }
 
 class Flight {
    flightNumber : Integer
    departureTime : Date
+   --Test--
 }
 @enduml
