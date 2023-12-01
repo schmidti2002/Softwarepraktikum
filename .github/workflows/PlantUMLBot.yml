@@ -12,7 +12,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.schmidtbot }}
+          token: ${{ secrets.SCHMIDTBOT }}
           fetch-depth: 0
 
       # signed commits
@@ -20,8 +20,8 @@ jobs:
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v4
         with:
-          gpg_private_key: ${{ secrets.schmidtbot_GPG_PRIVATE }}
-          passphrase: ${{ secrets.schmidtbot_GPG_PASSPHRASE }}
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
 
@@ -30,7 +30,7 @@ jobs:
         with:
           message: '[chore] rendered SVGs'
         env:
-          GITHUB_TOKEN: ${{ secrets.schmidtbot }}
+          GITHUB_TOKEN: ${{ secrets.SCHMIDTBOT }}
 
   puml-to-png:
     runs-on: ubuntu-latest
@@ -41,14 +41,16 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.schmidtbot }}
+          token: ${{ secrets.SCHMIDTBOT }}
           fetch-depth: 0
 
 
       - name: install plantuml
         run: |
-          sudo apt install graphviz
-          sudo apt install nodejs
+          sudo apt-get update
+          sudo apt-get install graphviz
+          sudo apt-get install nodejs
+          sudo apt-get install npm
           npm install -g node-plantuml
 
       - name: get changed files
@@ -71,8 +73,8 @@ jobs:
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v4
         with:
-          gpg_private_key: ${{ secrets.schmidt2002_GPG_PRIVATE }}
-          passphrase: ${{ secrets.schmidt2002_GPG_PASSPHRASE }}
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SCHMIDTBOT_GPG_PASSPHRASE  }}
           git_user_signingkey: true
           git_commit_gpgsign: true
       # commit changed pom file
@@ -82,5 +84,4 @@ jobs:
         with:
           file_pattern: '**.png'
           commit_message: '[chore] rendered PNGs'
-          commit_user_name: 'schmidtbot'
-          commit_user_email: ' 150671176+schmidtbot@users.noreply.github.com'
+          commit_user_name: '150671176+schmidtbot@users.noreply.github.com'
