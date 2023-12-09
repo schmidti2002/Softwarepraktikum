@@ -4,52 +4,54 @@ allowmixing
 actor User
 
 class WebApplication {
-  --Variables--
   String SessionToken
-  --Methods--
+
   void login()
   void show()
 }
 
 class StartPage {
-  --Methods--
+
   void showImprint()
   void openTutorial()
   void openUserEditor()
   void openAlgoAndDataStruct()
 }
 
+class UserRegistration {
+  String newName
+  String newPW
+  String newEmail
+
+  String registration(String newName, String newPW, String newEmail)
+show()
+}
+
 class Login {
-  --Variables--
   String UserName
   String Password
 
-  --Methods--
   boolean resetPassword(String email)
   String login(String name, String pw)
   void show()
 }
 
 class AdminEditor {
-  --Variables:--
   String name
   String email
   String pw
 
-  --Methods:--
   void resetPassword(email: String, name: String)
   void removeUser(pw: String)
   void show()
 }
 
 class UserEditor {
-  --Variables:--
     String Password
     String Username
     String Sessiontoken
     String email
 
-  --Methods:--
     boolean logoutUser(String Sessiontoken)
     boolean editUser()
     void show()
@@ -57,16 +59,14 @@ class UserEditor {
 }
 
 class Tutorial {
-  --Variables--
   String videoLink
 
-  --Methods--
   void showVideo()
 }
 
 
 class AlgoAndDataStruct {
-  --Methods:--
+
     void getNextStep()
     void fullRun()
     void stop()
@@ -78,27 +78,23 @@ class AlgoAndDataStruct {
 }
 
 class SortView {
-  -- Variables --
    int width
    int height
    image dataSet
 
-  -- Methods --
    void paintSort()
 }
 
 class StructView {
-  -- Variables --
     int width
     int  height
     image structData
 
-  -- Methods --
    void paintStruct()
 }
 
 class InputView {
-    -- Buttons --
+    Buttons:
       AddValue
       DeleteValue
       Sort
@@ -113,41 +109,33 @@ class InputView {
       Start
       FullRun
 
-   -- Methods --
    void EventListener()
 }
 
 class CodeView {
-  -- Variables --
   int: Codeline
   boolean: stopt
 
-  -- Methods --
    void paintCode()
 }
 
 class Export {
-  -- Methods --
   void exportpdf()
   void exportmp4()
 }
 
 class UserService {
-  -- Variables --
    String userName
    String password
    String email
 
-  -- Methods --
   String registration(String newName, String newPW, String newEmail)
   String login(String userName, String password)
 }
 
 class LogicSortAlgo {
-  -- Variables --
     Array algoArray
 
-  -- Methods --
   Array bubbleSort(Array arrayToSort)
   Array mergeSort(Array arrayToSort)
   intern()
@@ -159,10 +147,8 @@ class LogicSortAlgo {
 }
 
 class LogicHeap {
-  -- Variables --
   - Node start
 
-  -- Methods --
   Node createHeap(int)
   boolean add(T)
   T remove(int)
@@ -176,10 +162,8 @@ class LogicHeap {
 }
 
 class LogicList {
- -- Variables --
   Node  start
 
-  -- Methods --
   Node createList(int)
   boolean add(T)
   T remove(int)
@@ -193,20 +177,16 @@ class LogicList {
 
 
 class SortAlgoService {
-  -- Variables --
     Array algoArray
 
-  -- Methods --
   void ArrayToJSON()
   boolean loadFavorite(index: int)
   boolean deleteFavorite(index: int)
 }
 
 class HeapService {
-  -- Variables --
    Heap heap
 
-  -- Methods --
   void HeapToJSON()
   void loadFavorite(index: int)
   void intern()
@@ -215,10 +195,8 @@ class HeapService {
 }
 
 class ListService {
-  -- Variables --
    List list
 
-  -- Methods --
   void ListToJSON()
   void intern()
   LinkedList JSONToList()
@@ -227,17 +205,14 @@ class ListService {
 }
 
 class SetupFrontendService {
-  -- Variables: --
   String apiHostAdresse:
   String endpointadresses
 
-  -- Methods: --
   boolean checkSessionToken(String token)
   boolean createEndpoints()
 }
 
 class BackendApplication {
-  -- Variables: --
   String DB_Password
   String DB_Username
   String DB_Host
@@ -246,43 +221,40 @@ class BackendApplication {
   String MailServer_Host
   String[] Endpointlocation
 
-  -- Methods: --
   boolean checkSessionToken(String token)
   boolean createEndpoints()
 }
 
 class UserEndpoints {
-  -- Methods: --
+
   String login(String name, String password)
   String registration(String newName, String newPW, String newEMail)
 }
 
 class SortAlgoEndpoints {
-  -- Methods: --
+
   boolean saveSortAlgo()
   JSON loadSortAlgo(int)
   boolean deleteFavorite(int)
 }
 
 class HeapEndpoints {
-  -- methods: --
+
    boolean saveHeap()
    JSON loadHeap(int)
    boolean deleteFavorite(int)
 }
 
 class ListEndpoints {
-  -- Methods: --
+
   boolean saveList()
   JSON loadList(int)
   bool deleteFavorite(int)
 }
 
-abstract class UserDB {
-  -- Variables: --
+abstract class  UserDBAbstraction  <<static>>{
   String Sessiontoken:
 
-  -- Methods: --
   String getSessiontoken(String Password, String Username)
   boolean deleteSessiontoken(String Sessiontoken)
   String[] getUserinfos(String Sessiontoken)
@@ -292,22 +264,22 @@ abstract class UserDB {
   boolean editUser(String Sessiontoken, String Name, String Email, Boolean adminRights)
 }
 
-abstract class SortAlgoAbstraction {
-  -- Methods: --
+abstract class SortAlgoAbstraction  <<static>> {
+
    void SetValues()
    void getValues()
    void  deleteValues()
 }
 
-abstract class HeapAbstraction {
-  -- Methods: --
+abstract class HeapAbstraction  <<static>> {
+
    void SetValues()
    void  getValues()
    void deleteValues()
 }
 
-abstract class ListAbstraction {
-  -- Methods: --
+abstract class ListAbstraction  <<static>>{
+
    void SetValues()
    void getValues()
    void deleteValues()
