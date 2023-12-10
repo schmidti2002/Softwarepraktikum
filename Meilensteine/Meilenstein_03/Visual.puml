@@ -254,7 +254,7 @@ class ListEndpoints {
   +boolean deleteFavorite(int pos)
 }
 
-class UserDBAbstraction <<static>> {
+class UserDBAbstraction(static) {
   -String sessionToken
 
   +String getSessionToken(String password, String username)
