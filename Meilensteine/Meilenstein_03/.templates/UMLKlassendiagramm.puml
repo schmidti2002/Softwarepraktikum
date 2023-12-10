@@ -4,92 +4,92 @@ allowmixing
 actor User
 
 class WebApplication {
-  String sessionToken
+  -String sessionToken
 
-  void login()
-  void show()
+  +void login()
+  +void show()
 }
 
 class StartPage {
 
-  void showImprint()
-  void openTutorial()
-  void openUserEditor()
-  void openAlgoAndDataStruct()
+  +void showImprint()
+  +void openTutorial()
+  +void openUserEditor()
+  +void openAlgoAndDataStruct()
 }
 
 class UserRegistration {
-  String newName
-  String newPW
-  String newEmail
+  -String newName
+  -String newPW
+  -String newEmail
 
-  String registration(String newName, String newPW, String newEmail)
-  void show()
+  +String registration(String newName, String newPW, String newEmail)
+  +void show()
 }
 
 class Login {
-  String userName
-  String password
+  -String username
+  -String password
 
-  boolean resetPassword(String email)
-  String login(String name, String pw)
-  void show()
+  +boolean resetPassword(String email)
+  +String login(String name, String pw)
+  +void show()
 }
 
 class AdminEditor {
-  String name
-  String email
-  String pw
+  -String name
+  -String email
+  -String pw
 
-  void resetPassword(email: String, name: String)
-  void removeUser(pw: String)
-  void show()
+  +void resetPassword(String email, String name)
+  +void removeUser(String pw)
+  +void show()
 }
 
 class UserEditor {
-  String password
-  String username
-  String sessionToken
-  String email
+  -String password
+  -String username
+  -String sessionToken
+  -String email
 
-  boolean logoutUser(String Sessiontoken)
-  boolean editUser()
-  void show()
-  void resetPassword(String email, String userName)
+  +boolean logoutUser(String sessionToken)
+  +boolean editUser()
+  +void show()
+  +void resetPassword(String email, String username)
 }
 
 class Tutorial {
-  String videoLink
+  -String videoLink
 
-  void showVideo()
+  +void showVideo()
 }
 
 class AlgoAndDataStruct {
 
-  void getNextStep()
-  void fullRun()
-  void stop()
-  void start()
-  void reset()
-  boolean addFavorit(int)
-  void loadFavorit(int)
-  boolean deleteFavorit(int)
+  +void getNextStep()
+  +void fullRun()
+  +void stop()
+  +void start()
+  +void reset()
+  +boolean addFavorit()
+  +void loadFavorit(int pos)
+  +boolean deleteFavorit(int pos)
 }
 
 class SortView {
-  int width
-  int height
-  image dataSet
+  -int width
+  -int height
+  -image dataSet
 
-  void paintSort()
+  +void paintSort()
 }
 
 class StructView {
-  int width
-  int height
-  image structData
+  -int width
+  -int height
+  -image structData
 
-  + void paintStruct()
+  +void paintStruct()
 }
 
 class InputView {
@@ -108,183 +108,187 @@ class InputView {
    Start
    FullRun
 
-  void eventListener()
+  +void eventListener()
 }
 
 class CodeView {
-  int codeLine
-  boolean stopt
+  -int width
+  -int height
+  -int codeLine
+  -boolean stopped
 
-  void paintCode()
+  +void paintCode()
 }
 
 class Export {
-  void exportPDF()
-  void exportMP4()
+  +void exportPDF()
+  +void exportMP4()
 }
 
 class UserService {
-  String userName
-  String password
-  String email
+  -String username
+  -String password
+  -String email
 
-  String registration(String newName, String newPW, String newEmail)
-  String login(String userName, String password)
+  +String registration(String newName, String newPW, String newEmail)
+  +String login(String username, String password)
 }
 
 class LogicSortAlgo {
-  Array algoArray
+  -algoArray []
 
-  Array bubbleSort(Array arrayToSort)
-  Array mergeSort(Array arrayToSort)
-  intern()
-  Array merge(Array array1, Array array2)
-  Array swap(Array array, int index1, int index2)
-  boolean addFavorite()
-  void loadFavorite(int index)
-  boolean deleteFavorite(int index)
+  +[] bubbleSort(arrayToSort [])
+  +[] mergeSort(arrayToSort [])
+  -[] merge(array1 [], array2 [])
+  -[] swap(array [], int index1, int index2)
+  +boolean addFavorite()
+  +void loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
 }
 
-class LogicHeap {
-  Node start
+class LogicHeap <T> {
+  -Node start
 
-  Node createHeap(int)
-  boolean add(T)
-  T remove(int)
-  T get(int)
-  void delete()
-  Node invert()
-  void swap(Node, Node)
-  boolean addFavorite()
-  List loadFavorite(int index)
-  boolean deleteFavorite(int index)
+  +Node createHeap(T data)
+  +boolean add(T data)
+  +T remove(int pos)
+  +T get(int pos)
+  +void delete()
+  +Node invert()
+  -void swap(Node n1, Node n2)
+  +boolean addFavorite()
+  +Heap loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
 }
 
-class LogicList {
-  Node start
+class LogicList <T> {
+  -Node start
 
-  Node createList(int)
-  boolean add(T)
-  T remove(int)
-  T get(int)
-  void delete()
-  Node invert()
-  boolean addFavorite()
-  boolean loadFavorite(int index)
-  boolean deleteFavorite(int index)
+  +Node createList(T data)
+  +boolean add(T data)
+  +T remove(int pos)
+  +T get(int pos)
+  +void delete()
+  +Node invert()
+  -void swap(Node n1, Node n2)
+  +boolean addFavorite()
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
 }
 
 
-class SortAlgoService {
-  Array algoArray
+static class SortAlgoService {
+  -algoArray []
 
-  void arrayToJSON()
-  boolean loadFavorite(index: int)
-  boolean deleteFavorite(index: int)
+  +void arrayToJSON()
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+  -[] jsonToArray()
 }
 
-class HeapService {
-  Heap heap
+static class HeapService {
+  -Heap heap
 
-  void heapToJSON()
-  void loadFavorite(index: int)
-  void intern()
-  Heap jsonToHeap()
-  boolean deleteFavorite(int index)
+  +void heapToJSON()
+  +void loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+  -Heap jsonToHeap()
 }
 
-class ListService {
-  List list
+static class ListService {
+  -LinkedList list
 
-  void listToJSON()
-  void intern()
-  LinkedList jsonToList()
-  boolean loadFavorite(int index)
-  boolean deleteFavorite(int index)
+  +void listToJSON()
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+  -LinkedList jsonToList()
 }
 
 class SetupFrontendService {
-  String apiHostAdresse
-  String endPointAdresses
+  -String apiHostAdresse
+  -String endPointAdresses
 
-  boolean checkSessionToken(String token)
-  boolean createEndpoints()
+  +boolean checkSessionToken(String token)
+  +boolean createEndpoints()
 }
 
 class BackendApplication {
-  String DB_Password
-  String DB_Username
-  String DB_Host
-  String mailServer_Password
-  String mailServer_Username
-  String mailServer_Host
-  String[] endPointLocation
+  -String DB_Password
+  -String DB_Username
+  -String DB_Host
+  -String mailServer_Password
+  -String mailServer_Username
+  -String mailServer_Host
+  -String[] endPointLocations
 
-  boolean checkSessionToken(String token)
-  boolean createEndpoints()
+  +boolean checkSessionToken(String token)
+  +boolean createEndpoints()
 }
 
 
 class UserEndpoints {
 
-  String login(String name, String password)
-  String registration(String newName, String newPW, String newEMail)
+  +String login(String name, String password)
+  +String registration(String newName, String newPW, String newEMail)
 }
 
 class SortAlgoEndpoints {
 
-  boolean saveSortAlgo()
-  JSON loadSortAlgo(int)
-  boolean deleteFavorite(int)
+  +boolean saveSortAlgo()
+  +JSON loadSortAlgo(int pos)
+  +boolean deleteFavorite(int pos)
 }
 
 class HeapEndpoints {
 
-  boolean saveHeap()
-  JSON loadHeap(int)
-  boolean deleteFavorite(int)
+  +boolean saveHeap()
+  +JSON loadHeap(int pos)
+  +boolean deleteFavorite(int pos)
 }
 
 
 class ListEndpoints {
 
-  boolean saveList()
-  JSON loadList(int)
-  boolean deleteFavorite(int)
+  +boolean saveList()
+  +JSON loadList(int pos)
+  +boolean deleteFavorite(int pos)
 }
 
-class UserDBAbstraction <<static>> {
-  String Sessiontoken
+static class UserDBAbstraction {
+  -String sessionToken
 
-  String getSessionToken(String Password, String Username)
-  boolean deleteSessionToken(String Sessiontoken)
-  String[] I(String Sessiontoken)
-  String resetPassword(String Email)
-  boolean addUser(String Name, String Password, String Email)
-  boolean removeUser(String Sessiontoken, int UserID)
-  boolean editUser(String Sessiontoken, String Name, String Email, Boolean adminRights)
+  +String getSessionToken(String password, String username)
+  +boolean deleteSessionToken(String sessionToken)
+  +String[] getUserInfos(String sessionToken)
+  +String resetPassword(String email)
+  +boolean addUser(String name, String password, String email)
+  +boolean removeUser(String sessionToken, int userID)
+  +boolean editUser(String sessionToken, String name, String email, boolean adminRights)
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+
 }
 
-class SortAlgoAbstraction <<static>> {
+static class SortAlgoAbstraction {
 
-  void setValues()
-  void getValues()
-  void deleteValues()
+  +void setValues()
+  +void getValues()
+  +void deleteValues()
 }
 
 
-class HeapAbstraction <<static>> {
+static class HeapAbstraction {
 
-  void setValues()
-  void getValues()
-  void deleteValues()
+  +void setValues()
+  +void getValues()
+  +void deleteValues()
 }
 
-class ListAbstraction <<static>> {
+static class ListAbstraction {
 
-  void setValues()
-  void getValues()
-  void deleteValues()
+  +void setValues()
+  +void getValues()
+  +void deleteValues()
 }
 
 
@@ -324,10 +328,10 @@ LogicSortAlgo -- SortAlgoService
 LogicHeap -- HeapService
 LogicList -- ListService
 
-SetupFrontendService -- SortAlgoService
-SetupFrontendService -- HeapService
-SetupFrontendService -- ListService
-SetupFrontendService -- UserService
+SetupFrontendService ..> SortAlgoService
+SetupFrontendService ..> HeapService
+SetupFrontendService ..> ListService
+SetupFrontendService ..> UserService
 
 SortAlgoService -- SortAlgoEndpoints
 HeapService -- HeapEndpoints
@@ -338,7 +342,7 @@ BackendApplication *-- SortAlgoEndpoints
 BackendApplication *-- HeapEndpoints
 BackendApplication *-- ListEndpoints
 BackendApplication *-- UserEndpoints
-BackendApplication *-- SetupDBServer
+BackendApplication *-- SetupBackendServer
 
 HeapEndpoints -- SortAlgoAbstraction
 HeapEndpoints -- HeapAbstraction
@@ -352,8 +356,8 @@ UserDBAbstraction -- DataBank
 
 Email -- EmailServer
 
-SetupDBServer --> EmailServer
-SetupDBServer ----> BackendApplication
+SetupBackendServer ..> EmailServer
+SetupBackendServer ..> BackendApplication
 
-SetupDBServer --> DataBank
+SetupBackendServer ..> DataBank
 @enduml
