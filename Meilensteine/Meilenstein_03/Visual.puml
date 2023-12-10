@@ -146,7 +146,7 @@ class LogicSortAlgo {
   +boolean deleteFavorite(int pos)
 }
 
-class LogicHeap_T {
+class LogicHeap <T> {
   -Node start
 
   +Node createHeap(T data)
@@ -161,7 +161,7 @@ class LogicHeap_T {
   +boolean deleteFavorite(int pos)
 }
 
-class LogicList_T {
+class LogicList <T> {
   -Node start
 
   +Node createList(T data)
@@ -321,12 +321,12 @@ StructView *-- Export
 
 
 AlgoAndDataStruct *-right- LogicSortAlgo
-AlgoAndDataStruct *-- LogicHeap_T
-AlgoAndDataStruct *-right- LogicList_T
+AlgoAndDataStruct *-- LogicHeap
+AlgoAndDataStruct *-right- LogicList
 
 LogicSortAlgo -- SortAlgoService_static
-LogicHeap_T -- HeapService_static
-LogicList_T -- ListService_static
+LogicHeap -- HeapService_static
+LogicList -- ListService_static
 
 SetupFrontendService <.. SortAlgoService_static
 SetupFrontendService <.. HeapService_static
