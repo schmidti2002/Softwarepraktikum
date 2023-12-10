@@ -177,7 +177,7 @@ class LogicList <T> {
 }
 
 
-static class SortAlgoService {
+class SortAlgoService {
   -algoArray []
 
   +void arrayToJSON()
@@ -186,7 +186,7 @@ static class SortAlgoService {
   -[] jsonToArray()
 }
 
-static class HeapService {
+class HeapService {
   -Heap heap
 
   +void heapToJSON()
@@ -195,7 +195,7 @@ static class HeapService {
   -Heap jsonToHeap()
 }
 
-static class ListService {
+class ListService {
   -LinkedList list
 
   +void listToJSON()
@@ -254,7 +254,7 @@ class ListEndpoints {
   +boolean deleteFavorite(int pos)
 }
 
-static class UserDBAbstraction {
+class UserDBAbstraction {
   -String sessionToken
 
   +String getSessionToken(String password, String username)
@@ -269,7 +269,7 @@ static class UserDBAbstraction {
 
 }
 
-static class SortAlgoAbstraction {
+class SortAlgoAbstraction {
 
   +void setValues()
   +void getValues()
@@ -277,14 +277,14 @@ static class SortAlgoAbstraction {
 }
 
 
-static class HeapAbstraction {
+class HeapAbstraction {
 
   +void setValues()
   +void getValues()
   +void deleteValues()
 }
 
-static class ListAbstraction {
+class ListAbstraction[static] {
 
   +void setValues()
   +void getValues()
