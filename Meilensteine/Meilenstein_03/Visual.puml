@@ -284,7 +284,7 @@ class HeapAbstraction {
   +void deleteValues()
 }
 
-class static ListAbstraction {
+class static_ListAbstraction {
 
   +void setValues()
   +void getValues()
