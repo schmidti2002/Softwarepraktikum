@@ -4,7 +4,7 @@ allowmixing
 actor User
 
 class WebApplication {
-  String SessionToken
+  String sessionToken
 
   void login()
   void show()
@@ -28,8 +28,8 @@ class UserRegistration {
 }
 
 class Login {
-  String UserName
-  String Password
+  String userName
+  String password
 
   boolean resetPassword(String email)
   String login(String name, String pw)
@@ -47,9 +47,9 @@ class AdminEditor {
 }
 
 class UserEditor {
-  String Password
-  String Username
-  String Sessiontoken
+  String password
+  String username
+  String sessionToken
   String email
 
   boolean logoutUser(String Sessiontoken)
@@ -108,12 +108,12 @@ class InputView {
    Start
    FullRun
 
-  void EventListener()
+  void eventListener()
 }
 
 class CodeView {
-  int: Codeline
-  boolean: stopt
+  int codeLine
+  boolean stopt
 
   void paintCode()
 }
@@ -196,7 +196,7 @@ class HeapService {
 class ListService {
   List list
 
-  void ListToJSON()
+  void listToJSON()
   void intern()
   LinkedList jsonToList()
   boolean loadFavorite(int index)
@@ -205,7 +205,7 @@ class ListService {
 
 class SetupFrontendService {
   String apiHostAdresse
-  String endpointadresses
+  String endPointAdresses
 
   boolean checkSessionToken(String token)
   boolean createEndpoints()
@@ -215,10 +215,10 @@ class BackendApplication {
   String DB_Password
   String DB_Username
   String DB_Host
-  String MailServer_Password
-  String MailServer_Username
-  String MailServer_Host
-  String[] Endpointlocation
+  String mailServer_Password
+  String mailServer_Username
+  String mailServer_Host
+  String[] endPointLocation
 
   boolean checkSessionToken(String token)
   boolean createEndpoints()
