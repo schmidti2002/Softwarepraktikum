@@ -55,7 +55,7 @@ class UserEditor {
   boolean logoutUser(String Sessiontoken)
   boolean editUser()
   void show()
-  void resetPassword(String email, String Username)
+  void resetPassword(String email, String userName)
 }
 
 class Tutorial {
@@ -253,7 +253,7 @@ class ListEndpoints {
   boolean deleteFavorite(int)
 }
 
-abstract class UserDBAbstraction <<static>> {
+class UserDBAbstraction <<static>> {
   String Sessiontoken
 
   String getSessionToken(String Password, String Username)
@@ -265,7 +265,7 @@ abstract class UserDBAbstraction <<static>> {
   boolean editUser(String Sessiontoken, String Name, String Email, Boolean adminRights)
 }
 
-abstract class SortAlgoAbstraction <<static>> {
+class SortAlgoAbstraction <<static>> {
 
   void setValues()
   void getValues()
@@ -273,14 +273,14 @@ abstract class SortAlgoAbstraction <<static>> {
 }
 
 
-abstract class HeapAbstraction <<static>> {
+class HeapAbstraction <<static>> {
 
   void setValues()
   void getValues()
   void deleteValues()
 }
 
-abstract class ListAbstraction <<static>> {
+class ListAbstraction <<static>> {
 
   void setValues()
   void getValues()
