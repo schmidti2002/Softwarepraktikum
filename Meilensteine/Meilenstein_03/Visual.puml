@@ -125,7 +125,7 @@ class Export {
   +void exportMP4()
 }
 
-class UserService {
+class UserService_static {
   -String username
   -String password
   -String email
@@ -177,7 +177,7 @@ class LogicList <T> {
 }
 
 
-class SortAlgoService {
+class SortAlgoService_static {
   -algoArray []
 
   +void arrayToJSON()
@@ -186,7 +186,7 @@ class SortAlgoService {
   -[] jsonToArray()
 }
 
-class HeapService {
+class HeapService_static {
   -Heap heap
 
   +void heapToJSON()
@@ -195,7 +195,7 @@ class HeapService {
   -Heap jsonToHeap()
 }
 
-class ListService {static} {
+class ListService_static {
   -LinkedList list
 
   +void listToJSON()
@@ -254,7 +254,7 @@ class ListEndpoints {
   +boolean deleteFavorite(int pos)
 }
 
-class UserDBAbstraction {
+class UserDBAbstraction_static {
   -String sessionToken
 
   +String getSessionToken(String password, String username)
@@ -269,7 +269,7 @@ class UserDBAbstraction {
 
 }
 
-class SortAlgoAbstraction {
+class SortAlgoAbstraction_static {
 
   +void setValues()
   +void getValues()
@@ -277,14 +277,14 @@ class SortAlgoAbstraction {
 }
 
 
-class HeapAbstraction {
+class HeapAbstraction_static {
 
   +void setValues()
   +void getValues()
   +void deleteValues()
 }
 
-class ListAbstraction {
+class ListAbstraction_static {
 
   +void setValues()
   +void getValues()
@@ -304,11 +304,11 @@ StartPage *-right- AdminEditor
 StartPage *-right- UserEditor
 
 UserRegistration --* Login
-Login -- UserService
-AdminEditor -- UserService
-UserEditor -- UserService
-UserRegistration -- UserService
-SetupFrontendService -- UserService
+Login -- UserService_static
+AdminEditor -- UserService_static
+UserEditor -- UserService_static
+UserRegistration -- UserService_static
+SetupFrontendService -- UserService_static
 
 AlgoAndDataStruct *-down-  CodeView
 AlgoAndDataStruct *-down-  SortView
@@ -324,34 +324,34 @@ AlgoAndDataStruct *-right- LogicSortAlgo
 AlgoAndDataStruct *-- LogicHeap
 AlgoAndDataStruct *-right- LogicList
 
-LogicSortAlgo -- SortAlgoService
-LogicHeap -- HeapService
-LogicList -- ListService
+LogicSortAlgo -- SortAlgoService_static
+LogicHeap -- HeapService_static
+LogicList -- ListService_static
 
-SetupFrontendService <.. SortAlgoService
-SetupFrontendService <.. HeapService
-SetupFrontendService <.. ListService
-SetupFrontendService <.. UserService
+SetupFrontendService <.. SortAlgoService_static
+SetupFrontendService <.. HeapService_static
+SetupFrontendService <.. ListService_static
+SetupFrontendService <.. UserService_static
 
-SortAlgoService -- SortAlgoEndpoints
-HeapService -- HeapEndpoints
-ListService -- ListEndpoints
-UserService -- UserEndpoints
+SortAlgoService_static -- SortAlgoEndpoints
+HeapService_static -- HeapEndpoints
+ListService_static -- ListEndpoints
+UserService_static -- UserEndpoints
 
 BackendApplication *-- SortAlgoEndpoints
 BackendApplication *-- HeapEndpoints
 BackendApplication *-- ListEndpoints
 BackendApplication *-- UserEndpoints
 
-HeapEndpoints -- SortAlgoAbstraction
-HeapEndpoints -- HeapAbstraction
-ListEndpoints -- ListAbstraction
-SortAlgoEndpoints -- UserDBAbstraction
+HeapEndpoints -- SortAlgoAbstraction_static
+HeapEndpoints -- HeapAbstraction_static
+ListEndpoints -- ListAbstraction_static
+SortAlgoEndpoints -- UserDBAbstraction_static
 
-SortAlgoAbstraction -- DataBank
-HeapAbstraction -- DataBank
-ListAbstraction -- DataBank
-UserDBAbstraction -- DataBank
+SortAlgoAbstraction_static -- DataBank
+HeapAbstraction_static -- DataBank
+ListAbstraction_static -- DataBank
+UserDBAbstraction_static -- DataBank
 
 Email -- EmailServer
 
