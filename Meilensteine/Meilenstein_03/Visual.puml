@@ -178,30 +178,30 @@ class LogicList <T> {
 
 
 class SortAlgoService <static> {
-  -algoArray []
+  -int[] algoArray
 
-  +void arrayToJSON()
+  +JSON arrayToJSON(int[] algoArray)
   +boolean loadFavorite(int pos)
   +boolean deleteFavorite(int pos)
-  -[] jsonToArray()
+  -[] jsonToArray(JSON data)
 }
 
 class HeapService <static> {
   -Heap heap
 
-  +void heapToJSON()
+  +JSON heapToJSON(Heap heap)
   +void loadFavorite(int pos)
   +boolean deleteFavorite(int pos)
-  -Heap jsonToHeap()
+  -Heap jsonToHeap(JSON data)
 }
 
 class ListService <static> {
   -LinkedList list
 
-  +void listToJSON()
+  +JSON listToJSON(LinkedList list)
   +boolean loadFavorite(int pos)
   +boolean deleteFavorite(int pos)
-  -LinkedList jsonToList()
+  -LinkedList jsonToList(JSON data)
 }
 
 class SetupFrontendService {
@@ -226,20 +226,20 @@ class BackendApplication {
 }
 
 
-class UserEndpoints {
+class UserEndpoint {
 
   +String login(String name, String password)
   +String registration(String newName, String newPW, String newEMail)
 }
 
-class SortAlgoEndpoints {
+class SortAlgoEndpoint {
 
   +boolean saveSortAlgo()
   +JSON loadSortAlgo(int pos)
   +boolean deleteFavorite(int pos)
 }
 
-class HeapEndpoints {
+class HeapEndpoint {
 
   +boolean saveHeap()
   +JSON loadHeap(int pos)
@@ -247,7 +247,7 @@ class HeapEndpoints {
 }
 
 
-class ListEndpoints {
+class ListEndpoint {
 
   +boolean saveList()
   +JSON loadList(int pos)
