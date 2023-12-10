@@ -8,7 +8,7 @@ von der Gruppe 2 (mit ASL)
 <p>Das letzte Meeting fand dann am Sonntag (10.12.23) online statt. Dieses diente dazu, letzte Fehler des UML-Diagramms zu bereinigen und dieses auf die Abgabe vorzubereiten.</p>
 
 ## Arbeitszeiterfassung
-Die durchschnittlich aufgewendete Zeit beträgt bei den Teammitgliedern ca. ?,? Stunden Arbeitszeit. In dem Zip-Ordner sind weitere Details zu dieser Thematik in der Datei "arbeitszeiterfassung.pdf" zu finden.
+Die durchschnittlich aufgewendete Zeit beträgt bei den Teammitgliedern ca. 5,5 Stunden Arbeitszeit. In dem Zip-Ordner sind weitere Details zu dieser Thematik in der Datei "arbeitszeiterfassung.pdf" zu finden.
 
 ## Kritische Bilanz
 ### Gelungenes
