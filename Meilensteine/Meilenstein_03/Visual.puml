@@ -328,10 +328,10 @@ LogicSortAlgo -- SortAlgoService
 LogicHeap -- HeapService
 LogicList -- ListService
 
-SetupFrontendService ..> SortAlgoService
-SetupFrontendService ..> HeapService
-SetupFrontendService ..> ListService
-SetupFrontendService ..> UserService
+SetupFrontendService <.. SortAlgoService
+SetupFrontendService <.. HeapService
+SetupFrontendService <.. ListService
+SetupFrontendService <.. UserService
 
 SortAlgoService -- SortAlgoEndpoints
 HeapService -- HeapEndpoints
@@ -356,8 +356,8 @@ UserDBAbstraction -- DataBank
 
 Email -- EmailServer
 
-SetupBackendServer ..> EmailServer
-SetupBackendServer ..> BackendApplication
+SetupBackendServer <.. EmailServer
+SetupBackendServer <.. BackendApplication
 
-SetupBackendServer ..> DataBank
+SetupBackendServer <.. DataBank
 @enduml
