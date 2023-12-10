@@ -342,7 +342,6 @@ BackendApplication *-- SortAlgoEndpoints
 BackendApplication *-- HeapEndpoints
 BackendApplication *-- ListEndpoints
 BackendApplication *-- UserEndpoints
-BackendApplication *-- SetupBackendServer
 
 HeapEndpoints -- SortAlgoAbstraction
 HeapEndpoints -- HeapAbstraction
