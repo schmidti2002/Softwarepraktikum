@@ -195,7 +195,7 @@ class HeapService {
   -Heap jsonToHeap()
 }
 
-class ListService {
+class ListService {static} {
   -LinkedList list
 
   +void listToJSON()
