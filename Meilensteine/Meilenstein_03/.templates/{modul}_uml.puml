@@ -41,5 +41,23 @@ class Dummy {
 class Flight {
    flightNumber : Integer
    departureTime : Date
+
 }
+
+class template {
+  --variables:--
+  priv dataType variableName
+  priv dataType variableName
+
+  dataType variableName
+  dataType variableName
+
+  --methods:--
+  priv returnType/void functionName()
+  priv returnType/void functionName()
+
+  returnType/void functionName()
+  returnType/void functionName()
+}
+
 @enduml

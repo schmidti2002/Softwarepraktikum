@@ -24,7 +24,7 @@ class UserRegistration {
   String newEmail
 
   String registration(String newName, String newPW, String newEmail)
-show()
+  void show()
 }
 
 class Login {
@@ -47,15 +47,15 @@ class AdminEditor {
 }
 
 class UserEditor {
-    String Password
-    String Username
-    String Sessiontoken
-    String email
+  String Password
+  String Username
+  String Sessiontoken
+  String email
 
-    boolean logoutUser(String Sessiontoken)
-    boolean editUser()
-    void show()
-    void resetPassword(String email, String Username)
+  boolean logoutUser(String Sessiontoken)
+  boolean editUser()
+  void show()
+  void resetPassword(String email, String Username)
 }
 
 class Tutorial {
@@ -64,90 +64,89 @@ class Tutorial {
   void showVideo()
 }
 
-
 class AlgoAndDataStruct {
 
-    void getNextStep()
-    void fullRun()
-    void stop()
-    void start()
-    void reset()
-    boolean addFavorit(int)
-    void loadFavorit(int)
-    boolean deleteFavorit(int)
+  void getNextStep()
+  void fullRun()
+  void stop()
+  void start()
+  void reset()
+  boolean addFavorit(int)
+  void loadFavorit(int)
+  boolean deleteFavorit(int)
 }
 
 class SortView {
-   int width
-   int height
-   image dataSet
+  int width
+  int height
+  image dataSet
 
-   void paintSort()
+  void paintSort()
 }
 
 class StructView {
-    int width
-    int  height
-    image structData
+  int width
+  int height
+  image structData
 
-   void paintStruct()
+  + void paintStruct()
 }
 
 class InputView {
-    Buttons:
-      AddValue
-      DeleteValue
-      Sort
-      AddNode
-      DeleteNode
-      Flip
-      Reset
-      AddFavorit
-      LoadFavorit
-      DeleteFavorit
-      Stop
-      Start
-      FullRun
+  Buttons:
+   AddValue
+   DeleteValue
+   Sort
+   AddNode
+   DeleteNode
+   Flip
+   Reset
+   AddFavorit
+   LoadFavorit
+   DeleteFavorit
+   Stop
+   Start
+   FullRun
 
-   void EventListener()
+  void EventListener()
 }
 
 class CodeView {
   int: Codeline
   boolean: stopt
 
-   void paintCode()
+  void paintCode()
 }
 
 class Export {
-  void exportpdf()
-  void exportmp4()
+  void exportPDF()
+  void exportMP4()
 }
 
 class UserService {
-   String userName
-   String password
-   String email
+  String userName
+  String password
+  String email
 
   String registration(String newName, String newPW, String newEmail)
   String login(String userName, String password)
 }
 
 class LogicSortAlgo {
-    Array algoArray
+  Array algoArray
 
   Array bubbleSort(Array arrayToSort)
   Array mergeSort(Array arrayToSort)
   intern()
-  Array merge(Array array1,  Array array2)
-  Array swap(Array array, int index1, int index2 )
+  Array merge(Array array1, Array array2)
+  Array swap(Array array, int index1, int index2)
   boolean addFavorite()
   void loadFavorite(int index)
   boolean deleteFavorite(int index)
 }
 
 class LogicHeap {
-  - Node start
+  Node start
 
   Node createHeap(int)
   boolean add(T)
@@ -162,7 +161,7 @@ class LogicHeap {
 }
 
 class LogicList {
-  Node  start
+  Node start
 
   Node createList(int)
   boolean add(T)
@@ -177,35 +176,35 @@ class LogicList {
 
 
 class SortAlgoService {
-    Array algoArray
+  Array algoArray
 
-  void ArrayToJSON()
+  void arrayToJSON()
   boolean loadFavorite(index: int)
   boolean deleteFavorite(index: int)
 }
 
 class HeapService {
-   Heap heap
+  Heap heap
 
-  void HeapToJSON()
+  void heapToJSON()
   void loadFavorite(index: int)
   void intern()
-  Heap JSONToHeap()
+  Heap jsonToHeap()
   boolean deleteFavorite(int index)
 }
 
 class ListService {
-   List list
+  List list
 
   void ListToJSON()
   void intern()
-  LinkedList JSONToList()
+  LinkedList jsonToList()
   boolean loadFavorite(int index)
   boolean deleteFavorite(int index)
 }
 
 class SetupFrontendService {
-  String apiHostAdresse:
+  String apiHostAdresse
   String endpointadresses
 
   boolean checkSessionToken(String token)
@@ -225,6 +224,7 @@ class BackendApplication {
   boolean createEndpoints()
 }
 
+
 class UserEndpoints {
 
   String login(String name, String password)
@@ -240,50 +240,53 @@ class SortAlgoEndpoints {
 
 class HeapEndpoints {
 
-   boolean saveHeap()
-   JSON loadHeap(int)
-   boolean deleteFavorite(int)
+  boolean saveHeap()
+  JSON loadHeap(int)
+  boolean deleteFavorite(int)
 }
+
 
 class ListEndpoints {
 
   boolean saveList()
   JSON loadList(int)
-  bool deleteFavorite(int)
+  boolean deleteFavorite(int)
 }
 
-abstract class  UserDBAbstraction  <<static>>{
-  String Sessiontoken:
+abstract class UserDBAbstraction <<static>> {
+  String Sessiontoken
 
-  String getSessiontoken(String Password, String Username)
-  boolean deleteSessiontoken(String Sessiontoken)
-  String[] getUserinfos(String Sessiontoken)
+  String getSessionToken(String Password, String Username)
+  boolean deleteSessionToken(String Sessiontoken)
+  String[] I(String Sessiontoken)
   String resetPassword(String Email)
   boolean addUser(String Name, String Password, String Email)
   boolean removeUser(String Sessiontoken, int UserID)
   boolean editUser(String Sessiontoken, String Name, String Email, Boolean adminRights)
 }
 
-abstract class SortAlgoAbstraction  <<static>> {
+abstract class SortAlgoAbstraction <<static>> {
 
-   void SetValues()
-   void getValues()
-   void  deleteValues()
+  void setValues()
+  void getValues()
+  void deleteValues()
 }
 
-abstract class HeapAbstraction  <<static>> {
 
-   void SetValues()
-   void  getValues()
-   void deleteValues()
+abstract class HeapAbstraction <<static>> {
+
+  void setValues()
+  void getValues()
+  void deleteValues()
 }
 
-abstract class ListAbstraction  <<static>>{
+abstract class ListAbstraction <<static>> {
 
-   void SetValues()
-   void getValues()
-   void deleteValues()
+  void setValues()
+  void getValues()
+  void deleteValues()
 }
+
 
 
 User -- WebApplication
@@ -331,11 +334,11 @@ HeapService -- HeapEndpoints
 ListService -- ListEndpoints
 UserService -- UserEndpoints
 
-BackendApplication -- SortAlgoEndpoints
-BackendApplication -- HeapEndpoints
-BackendApplication -- ListEndpoints
-BackendApplication -- UserEndpoints
-BackendApplication -- SetupDBServer
+BackendApplication *-- SortAlgoEndpoints
+BackendApplication *-- HeapEndpoints
+BackendApplication *-- ListEndpoints
+BackendApplication *-- UserEndpoints
+BackendApplication *-- SetupDBServer
 
 HeapEndpoints -- SortAlgoAbstraction
 HeapEndpoints -- HeapAbstraction
