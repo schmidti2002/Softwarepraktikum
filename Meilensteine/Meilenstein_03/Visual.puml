@@ -338,15 +338,15 @@ HeapService -- HeapEndpoints
 ListService -- ListEndpoints
 UserService -- UserEndpoints
 
-BackendApplication *-- SortAlgoEndpoints
-BackendApplication *-- HeapEndpoints
-BackendApplication *-- ListEndpoints
-BackendApplication *-- UserEndpoints
+BackendApplication *-- SortAlgoEndpoint
+BackendApplication *-- HeapEndpoint
+BackendApplication *-- ListEndpoint
+BackendApplication *-- UserEndpoint
 
-HeapEndpoints -- SortAlgoAbstraction
-HeapEndpoints -- HeapAbstraction
-ListEndpoints -- ListAbstraction
-SortAlgoEndpoints -- UserDBAbstraction
+HeapEndpoint -- SortAlgoAbstraction
+HeapEndpoint -- HeapAbstraction
+ListEndpoint -- ListAbstraction
+SortAlgoEndpoint -- UserDBAbstraction
 
 SortAlgoAbstraction -- DataBank
 HeapAbstraction -- DataBank
