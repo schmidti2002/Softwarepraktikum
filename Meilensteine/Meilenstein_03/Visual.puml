@@ -333,10 +333,10 @@ SetupFrontendService <.. HeapService
 SetupFrontendService <.. ListService
 SetupFrontendService <.. UserService
 
-SortAlgoService -- SortAlgoEndpoints
-HeapService -- HeapEndpoints
-ListService -- ListEndpoints
-UserService -- UserEndpoints
+SortAlgoService -- SortAlgoEndpoint
+HeapService -- HeapEndpoint
+ListService -- ListEndpoint
+UserService -- UserEndpoint
 
 BackendApplication *-- SortAlgoEndpoint
 BackendApplication *-- HeapEndpoint
