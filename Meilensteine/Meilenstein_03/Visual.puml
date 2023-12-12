@@ -342,10 +342,10 @@ BackendApplication *-- HeapEndpoint
 BackendApplication *-- ListEndpoint
 BackendApplication *-- UserEndpoint
 
-HeapEndpoint -- SortAlgoAbstraction
+SortAlgoEndpoint -- SortAlgoAbstraction
 HeapEndpoint -- HeapAbstraction
 ListEndpoint -- ListAbstraction
-SortAlgoEndpoint -- UserDBAbstraction
+UserEndpoint -- UserDBAbstraction
 
 SortAlgoAbstraction -- DataBank
 HeapAbstraction -- DataBank
