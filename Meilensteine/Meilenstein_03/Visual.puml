@@ -308,7 +308,6 @@ Login -- UserService
 AdminEditor -- UserService
 UserEditor -- UserService
 UserRegistration -- UserService
-SetupFrontendService -- UserService
 
 AlgoAndDataStruct *-down-  CodeView
 AlgoAndDataStruct *-down-  SortView
