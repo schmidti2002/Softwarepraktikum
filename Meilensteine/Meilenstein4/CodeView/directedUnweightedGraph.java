@@ -60,18 +60,18 @@ public class directedUnweightedGraph {
 	}
 
 	// Methode ist Button zugeschrieben und muss angezeigt werden
-	public LinkedList<Node> getNode(String data) { // vielleicht getEdgesOfNode
+	public int searchNodeID(String data) { // vielleicht getEdgesOfNode
 		if (adjList == null) {
 			System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: graph is empty");
-			return null;
+			return -1;
 		}
 		for (int i = 0; i < adjList.size(); i++) {
 			if (adjList.get(i).get(0).getData().equals(data)) {
-				return adjList.get(i);
+				return i;
 			}
 		}
 		System.err.println("Exeption in thread \"main\" java.lang.IOExeption: node not in graph");
-		return null;
+		return -1;
 	}
 
 	// Methode ist Button zugeschrieben und muss angezeigt werden
@@ -152,7 +152,7 @@ public class directedUnweightedGraph {
 		adjList.clear();
 	}
 
-	// Derzeit nur für Debuggen
+	// Derzeit nur fÃ¼r Debuggen
 	public void print() {
 		if (adjList == null) {
 			System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: graph is empty");
