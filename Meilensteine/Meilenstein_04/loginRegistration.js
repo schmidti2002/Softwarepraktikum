@@ -7,3 +7,7 @@ var codeElement1 = document.getElementById("login");
                 var codeElement2 = document.getElementById("registration");
                 codeElement2.classList.toggle("d-none");
             }
+
+            function openStartpage(){
+                window.location.replace('Startpage.html');
+            }
