@@ -1,0 +1,361 @@
+@startuml
+allowmixing
+
+actor User
+
+class WebApplication {
+  -String sessionToken
+
+  +void login()
+  +void show()
+}
+
+class StartPage {
+
+  +void showImprint()
+  +void openTutorial()
+  +void openUserEditor()
+  +void openAlgoAndDataStruct()
+}
+
+class UserRegistration {
+  -String newName
+  -String newPW
+  -String newEmail
+
+  +String registration(String newName, String newPW, String newEmail)
+  +void show()
+}
+
+class Login {
+  -String username
+  -String password
+
+  +boolean resetPassword(String email)
+  +String login(String name, String pw)
+  +void show()
+}
+
+class AdminEditor {
+  -String name
+  -String email
+  -String pw
+
+  +void resetPassword(String email, String name)
+  +void removeUser(String pw)
+  +void show()
+}
+
+class UserEditor {
+  -String password
+  -String username
+  -String sessionToken
+  -String email
+
+  +boolean logoutUser(String sessionToken)
+  +boolean editUser()
+  +void show()
+  +void resetPassword(String email, String username)
+}
+
+class Tutorial {
+  -String videoLink
+
+  +void showVideo()
+}
+
+class AlgoAndDataStruct {
+
+  +void getNextStep()
+  +void fullRun()
+  +void stop()
+  +void start()
+  +void reset()
+  +boolean addFavorit()
+  +void loadFavorit(int pos)
+  +boolean deleteFavorit(int pos)
+}
+
+class SortView {
+  -int width
+  -int height
+  -image dataSet
+
+  +void paintSort()
+}
+
+class StructView {
+  -int width
+  -int height
+  -image structData
+
+  +void paintStruct()
+}
+
+class InputView {
+  Buttons:
+   AddValue
+   DeleteValue
+   Sort
+   AddNode
+   DeleteNode
+   Flip
+   Reset
+   AddFavorit
+   LoadFavorit
+   DeleteFavorit
+   Stop
+   Start
+   FullRun
+
+  +void eventListener()
+}
+
+class CodeView {
+  -int width
+  -int height
+  -int codeLine
+  -boolean stopped
+
+  +void paintCode()
+}
+
+class Export {
+  +void exportPDF()
+  +void exportMP4()
+}
+
+class UserService <static> {
+  -String username
+  -String password
+  -String email
+
+  +String registration(String newName, String newPW, String newEmail)
+  +String login(String username, String password)
+}
+
+class LogicSortAlgo {
+  -algoArray []
+
+  +[] bubbleSort(arrayToSort [])
+  +[] mergeSort(arrayToSort [])
+  -[] merge(array1 [], array2 [])
+  -[] swap(array [], int index1, int index2)
+  +boolean addFavorite()
+  +void loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+}
+
+class LogicHeap <T> {
+  -Node start
+
+  +Node createHeap(T data)
+  +boolean add(T data)
+  +T remove(int pos)
+  +T get(int pos)
+  +void delete()
+  +Node invert()
+  -void swap(Node n1, Node n2)
+  +boolean addFavorite()
+  +Heap loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+}
+
+class LogicList <T> {
+  -Node start
+
+  +Node createList(T data)
+  +boolean add(T data)
+  +T remove(int pos)
+  +T get(int pos)
+  +void delete()
+  +Node invert()
+  -void swap(Node n1, Node n2)
+  +boolean addFavorite()
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+}
+
+
+class SortAlgoService <static> {
+  -int[] algoArray
+
+  +JSON arrayToJSON(int[] algoArray)
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+  -[] jsonToArray(JSON data)
+}
+
+class HeapService <static> {
+  -Heap heap
+
+  +JSON heapToJSON(Heap heap)
+  +void loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+  -Heap jsonToHeap(JSON data)
+}
+
+class ListService <static> {
+  -LinkedList list
+
+  +JSON listToJSON(LinkedList list)
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+  -LinkedList jsonToList(JSON data)
+}
+
+class SetupFrontendService {
+  -String apiHostAdresse
+  -String endPointAdresses
+
+  +boolean checkSessionToken(String token)
+  +boolean createEndpoints()
+}
+
+class BackendApplication {
+  -String DB_Password
+  -String DB_Username
+  -String DB_Host
+  -String mailServer_Password
+  -String mailServer_Username
+  -String mailServer_Host
+  -String[] endPointLocations
+
+  +boolean checkSessionToken(String token)
+  +boolean createEndpoints()
+}
+
+
+class UserEndpoint {
+
+  +String login(String name, String password)
+  +String registration(String newName, String newPW, String newEMail)
+}
+
+class SortAlgoEndpoint {
+
+  +boolean saveSortAlgo()
+  +JSON loadSortAlgo(int pos)
+  +boolean deleteFavorite(int pos)
+}
+
+class HeapEndpoint {
+
+  +boolean saveHeap()
+  +JSON loadHeap(int pos)
+  +boolean deleteFavorite(int pos)
+}
+
+
+class ListEndpoint {
+
+  +boolean saveList()
+  +JSON loadList(int pos)
+  +boolean deleteFavorite(int pos)
+}
+
+class UserDBAbstraction <static> {
+  -String sessionToken
+
+  +String getSessionToken(String password, String username)
+  +boolean deleteSessionToken(String sessionToken)
+  +String[] getUserInfos(String sessionToken)
+  +String resetPassword(String email)
+  +boolean addUser(String name, String password, String email)
+  +boolean removeUser(String sessionToken, int userID)
+  +boolean editUser(String sessionToken, String name, String email, boolean adminRights)
+  +boolean loadFavorite(int pos)
+  +boolean deleteFavorite(int pos)
+
+}
+
+class SortAlgoAbstraction <static> {
+
+  +void setValues()
+  +void getValues()
+  +void deleteValues()
+}
+
+
+class HeapAbstraction <static> {
+
+  +void setValues()
+  +void getValues()
+  +void deleteValues()
+}
+
+class ListAbstraction <static> {
+
+  +void setValues()
+  +void getValues()
+  +void deleteValues()
+}
+
+
+
+User -- WebApplication
+
+WebApplication *-right- Login
+WebApplication *-- StartPage
+
+StartPage *-- AlgoAndDataStruct
+StartPage *-left- Tutorial
+StartPage *-right- AdminEditor
+StartPage *-right- UserEditor
+
+UserRegistration --* Login
+Login -- UserService
+AdminEditor -- UserService
+UserEditor -- UserService
+UserRegistration -- UserService
+
+AlgoAndDataStruct *-down-  CodeView
+AlgoAndDataStruct *-down-  SortView
+AlgoAndDataStruct *-down-  InputView
+AlgoAndDataStruct *-left-  StructView
+
+
+SortView *-- Export
+StructView *-- Export
+
+
+AlgoAndDataStruct *-right- LogicSortAlgo
+AlgoAndDataStruct *-- LogicHeap
+AlgoAndDataStruct *-right- LogicList
+
+LogicSortAlgo -- SortAlgoService
+LogicHeap -- HeapService
+LogicList -- ListService
+
+SetupFrontendService <.. SortAlgoService
+SetupFrontendService <.. HeapService
+SetupFrontendService <.. ListService
+SetupFrontendService <.. UserService
+
+SortAlgoService -- SortAlgoEndpoint
+HeapService -- HeapEndpoint
+ListService -- ListEndpoint
+UserService -- UserEndpoint
+
+BackendApplication *-- SortAlgoEndpoint
+BackendApplication *-- HeapEndpoint
+BackendApplication *-- ListEndpoint
+BackendApplication *-- UserEndpoint
+
+SortAlgoEndpoint -- SortAlgoAbstraction
+HeapEndpoint -- HeapAbstraction
+ListEndpoint -- ListAbstraction
+UserEndpoint -- UserDBAbstraction
+
+SortAlgoAbstraction -- DataBank
+HeapAbstraction -- DataBank
+ListAbstraction -- DataBank
+UserDBAbstraction -- DataBank
+
+Email -- EmailServer
+
+SetupBackendServer <.. EmailServer
+SetupBackendServer <.. BackendApplication
+
+SetupBackendServer <.. DataBank
+@enduml
