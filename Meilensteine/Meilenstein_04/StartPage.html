@@ -17,15 +17,11 @@
             height: 100vh;
         }
     
-        #left, #right {
+        #mainContainer, #userEditor {
             height: 100%;
         }
     
-        /* #left {
-            background-color: rgb(255, 255, 255);
-        } */
-    
-        #right {
+        #userEditor {
             background-color: rgb(200, 200, 200);
         }
 
@@ -81,49 +77,21 @@
 
                 <!-- Logout -->
                 <li class="nav-item flex-fill">
-                    <a class="nav-link" href="WebApplication.html">Logout</a>
+                    <a class="nav-link" href="Login.html">Logout</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <!-- (Zukünftiger) Content -->
-    Hallo   
 
     <div id="container">
-        <div id="left">
-            Links
-        
-        </div>
-
-        <div id="right">
-            
-            
-        </div>
+        <div id="mainContainer"></div>
+        <div id="userEditor"></div>
     </div>  
           
-    <script>
-    split1()
-    function split1() {
-        var container = document.getElementById('container');
-        var left = document.getElementById('left');
-        var right = document.getElementById('right');    
-        container.style.flexDirection = 'row';
-        // Benutzerprofil ist ausgeblendet
-        if (left.style.width == '100%'){
-            left.style.width = '75%';
-            right.style.width = '25%';  
-            fetch("UserEditor.html")
-                .then(response => response.text())
-                .then(data => {right.innerHTML = data});
-            console.log('Benutzerprofil sollte geöffnet werden');
-        }else{   // Benutzerprofil ist eingeblendet
-            left.style.width = '100%';
-            right.style.width = '0%';
-            right.innerHTML = ""
-        }
-    }
-    </script>
+
+    <script src="UserEditor.js"></script>
 
     <!-- Bootstrap JavaScript (optional) über CDN einbinden -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
