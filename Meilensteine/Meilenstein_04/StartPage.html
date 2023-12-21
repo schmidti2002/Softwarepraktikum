@@ -5,125 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algosaurus</title>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-    
-        #container {
-            display: flex;
-            height: 100vh;
-        }
-    
-        #left, #right {
-            height: 100%;
-        }
-    
-        /* #left {
-            background-color: rgb(255, 255, 255);
-        } */
-    
-        #right {
-            background-color: rgb(200, 200, 200);
-        }
-
-        </style>
 
     <!-- Bootstrap CSS über CDN einbinden -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse align-items-center justify-content-center" id="navbarNav">
-            <ul class="navbar-nav w-75">
-                
-                <!-- Startseite -->
-                <li class="nav-item flex-fill">
-                    <a class="nav-link" href="#">Startseite</a>
-                </li>
-
-                <!-- Datenstrukturen -->
-                <li class="nav-item dropdown flex-fill">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Datenstrukturen
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Single Linked List</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Gerichteter ungewichteter Graph</a>
-                    </div>
-                </li>
-
-                <!-- Algorithmen -->
-                <li class="nav-item dropdown flex-fill">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Algorithmen
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Bubble Sort</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Merge Sort</a>
-                    </div>
-                </li>
-
-                <!-- Admin -->
-                <li class="nav-item flex-fill">
-                    <a class="nav-link" href="#">Admin</a>
-                </li>
-
-                <!-- Benutzerprofil -->
-                <li class="nav-item flex-fill">
-                    <a class="nav-link btn" onclick="split1()">Benutzerprofil</a>
-                </li>
-
-                <!-- Logout -->
-                <li class="nav-item flex-fill">
-                    <a class="nav-link" href="WebApplication.html">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- (Zukünftiger) Content -->
-    Hallo   
-
-    <div id="container">
-        <div id="left">
-            Links
         
-        </div>
 
-        <div id="right">
-            
-            
-        </div>
-    </div>  
-          
-    <script>
-    split1()
-    function split1() {
-        var container = document.getElementById('container');
-        var left = document.getElementById('left');
-        var right = document.getElementById('right');    
-        container.style.flexDirection = 'row';
-        // Benutzerprofil ist ausgeblendet
-        if (left.style.width == '100%'){
-            left.style.width = '75%';
-            right.style.width = '25%';  
-            fetch("UserEditor.html")
-                .then(response => response.text())
-                .then(data => {right.innerHTML = data});
-            console.log('Benutzerprofil sollte geöffnet werden');
-        }else{   // Benutzerprofil ist eingeblendet
-            left.style.width = '100%';
-            right.style.width = '0%';
-            right.innerHTML = ""
-        }
-    }
-    </script>
+    <script src="ContentOrganizer.js"></script>
 
     <!-- Bootstrap JavaScript (optional) über CDN einbinden -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
