@@ -2,7 +2,13 @@ const content = document.getElementById("mainContainer")
 
 loadStartpage()
 function loadStartpage(){
-    fetch("Tutorial_Container.html")
+    fetch("Startpage.html")
+            .then(response => response.text())
+            .then(data => {content.innerHTML = data});
+}
+
+function loadBubbleSort(){
+    fetch("BubbleSort.html")
             .then(response => response.text())
             .then(data => {content.innerHTML = data});
 }
