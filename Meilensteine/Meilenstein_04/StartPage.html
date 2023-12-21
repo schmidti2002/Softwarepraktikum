@@ -21,12 +21,12 @@
             height: 100%;
         }
     
-        #left {
+        /* #left {
             background-color: rgb(255, 255, 255);
-        }
+        } */
     
         #right {
-            background-color: lightgreen;
+            background-color: rgb(200, 200, 200);
         }
 
         </style>
@@ -113,14 +113,14 @@
         if (left.style.width == '100%'){
             left.style.width = '75%';
             right.style.width = '25%';  
-            const user = document.getElementById("right")
             fetch("UserEditor.html")
                 .then(response => response.text())
-                .then(data => {user.innerHTML = data});
+                .then(data => {right.innerHTML = data});
             console.log('Benutzerprofil sollte geöffnet werden');
         }else{   // Benutzerprofil ist eingeblendet
             left.style.width = '100%';
             right.style.width = '0%';
+            right.innerHTML = ""
         }
     }
     </script>
