@@ -1,0 +1,23 @@
+version: "3.1"
+services:
+  db:
+    image: "postgres:16.1"
+    mem_limit: 256mb
+    environment:
+      - POSTGRES_DB: swp
+      - POSTGRES_USER: swpusr
+      - POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "3131:5432"
+    restart: unless-stopped
+
+volumes:
+  db:
+    driver: local
+
+
+secrets:
+   db_password:
+     file: db_password.txt
