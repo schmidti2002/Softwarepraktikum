@@ -1,4 +1,5 @@
 var arr = [];
+var locked;
 
 function showArray(){
     document.getElementById('Array').value = arr;
@@ -32,9 +33,14 @@ function generiereZufallszahlen() {
     zeigeAusgabe()
 }
 
+function next(){
+    locked = false;
+}
+
 async function bubbleSort() {
     let temp;
     const n = arr.length;
+
 
     for (let i = 0; i < n - 1; i++) {
         for (let k = 0; k < n - 1 - i; k++) {
@@ -43,7 +49,12 @@ async function bubbleSort() {
                 arr[k] = arr[k + 1];
                 arr[k + 1] = temp;
                 zeigeAusgabe()
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                console.log(locked)
+                while(locked == true){
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+                locked = true;
+                
             }
         }
     }
@@ -60,7 +71,8 @@ function Werte_bearbeiten(){
     document.getElementById('Werte_bearbeiten').style.display = "block";
 }
 
-function hide(){
+function load(){
+    locked = true
     document.getElementById('Neue_Werte').style.display = "none";
     document.getElementById('Werte_bearbeiten').style.display = "none";
 }
