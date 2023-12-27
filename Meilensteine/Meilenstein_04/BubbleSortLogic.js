@@ -1,5 +1,14 @@
 var arr = [];
 
+function showArray(){
+    document.getElementById('Array').value = arr;
+}
+
+function parseArray(){
+    arr = document.getElementById('Array').value.split(',');
+    zeigeAusgabe();
+}
+
 // JavaScript-Funktion, um die Eingabe zu lesen und anzuzeigen
 function zeigeAusgabe() {
     // Die Eingabe ausgeben
@@ -39,4 +48,19 @@ async function bubbleSort() {
         }
     }
     zeigeAusgabe()
+}
+
+function Neue_Werte(){
+    document.getElementById('Werte_bearbeiten').style.display = "none";
+    document.getElementById('Neue_Werte').style.display = "block";
+}
+
+function Werte_bearbeiten(){
+    document.getElementById('Neue_Werte').style.display = "none";
+    document.getElementById('Werte_bearbeiten').style.display = "block";
+}
+
+function hide(){
+    document.getElementById('Neue_Werte').style.display = "none";
+    document.getElementById('Werte_bearbeiten').style.display = "none";
 }

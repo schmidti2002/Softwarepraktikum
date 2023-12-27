@@ -1,10 +1,20 @@
-BubbleSort
-<br>
+<div onload = hide()>
+    
+    BubbleSort
+    <br>    
+    <button type="button" onclick="Neue_Werte()">Neue Werte</button>
+    <button type="button" onclick="Werte_bearbeiten(); showArray()">Werte bearbeiten</button>
+    <button type="button" onclick="bubbleSort(); hide()">Sortieren</button>
 
-Anzahl der neuen zufälligen Werte:
-<input type="text" id="userInput">
-<button type="button" onclick="generiereZufallszahlen()">Eingabe anzeigen</button>
-<button type="button" onclick="bubbleSort()">Sort</button>
-
-<!-- Ausgabe-Bereich -->
-<div id="ausgabe">leer</div>
+    <!-- Ausgabe-Bereich -->
+    <div id="Neue_Werte" style="display: none;">
+        Anzahl der neuen zufälligen Werte:
+        <input type="text" id="userInput">
+        <button type="button" onclick="generiereZufallszahlen(); hide()">Go</button>        
+    </div>
+    <div id="Werte_bearbeiten" style="display: none;">
+        Array bearbeiten: <input type="text" id="Array">
+        <button type="button" onclick="parseArray();hide()">Go</button>
+    </div>
+    <div id="ausgabe">Das Array ist leer</div>
+</div>
