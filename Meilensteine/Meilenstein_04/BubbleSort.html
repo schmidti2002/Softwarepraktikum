@@ -1,10 +1,9 @@
-<div onload = load()>
-    
+<div id="bubble" onload = "zeigeAusgabe()">
     BubbleSort
     <br>    
     <button type="button1" onclick="Neue_Werte()">Neue Werte</button>
     <button type="button2" onclick="Werte_bearbeiten(); showArray()">Werte bearbeiten</button>
-    <button type="button3" onclick="bubbleSort(); hide()">Sortieren</button>
+    <button type="button3" onclick="Algo_abspielen()">Sortieren</button>
 
     <!-- Ausgabe-Bereich -->
     <div id="Neue_Werte" style="display: none;">
@@ -13,9 +12,16 @@
         <button type="button" onclick="generiereZufallszahlen(); hide()">Go</button>        
     </div>
     <div id="Werte_bearbeiten" style="display: none;">
-        Array bearbeiten: <input type="text" id="Array">
-        <button type="button" onclick="parseArray();hide()">Go</button>
+        Array bearbeiten: 
+        <input type="text" id="Array">
+        <button type="button" onclick="parseArray(); hide()">Go</button>
     </div>
-    <div id="ausgabe">Das Array ist leer</div>
-    <button type="button4" onclick="next()">Next</button>
+    <div id="Algo_abspielen" style="display: none;">
+        Abspielen:
+        <button type="button" onclick="bubbleSort()">Play</button>
+        <button type="button" onclick="bubbleSort()">Pause</button>
+        <button type="button" onclick="bubbleSort()">Nächster Schritt</button>
+    </div>
+    <div id="ausgabe">
+    </div>
 </div>
