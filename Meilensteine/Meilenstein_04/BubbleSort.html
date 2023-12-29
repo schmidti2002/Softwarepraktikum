@@ -1,4 +1,6 @@
-<div id="bubble" onload = "zeigeAusgabe()">
+<div id="bubble">
+   
+    
     BubbleSort
     <br>    
     <button type="button1" onclick="Neue_Werte()">Neue Werte</button>
@@ -18,10 +20,16 @@
     </div>
     <div id="Algo_abspielen" style="display: none;">
         Abspielen:
-        <button type="button" onclick="bubbleSort()">Play</button>
-        <button type="button" onclick="bubbleSort()">Pause</button>
-        <button type="button" onclick="bubbleSort()">Nächster Schritt</button>
+        <button type="button" onclick="play()">Play</button>
+        <button type="button" onclick="stop()">Stop</button>
+        <button type="button" onclick="next()">Nächster Schritt</button>
+        <button type="button" onclick="reset()">Reset</button>
     </div>
     <div id="ausgabe">
     </div>
+    <script>
+        zeigeAusgabe()
+    </script>
+    
 </div>
+

@@ -21,7 +21,9 @@ function loadBubbleSort(){
         .then(data => {
             // HTML der zweiten Datei in das Container-Element mit der ID "view" einfügen
             view.innerHTML = data;
-        })       
+            zeigeAusgabe() 
+        })     
+     
 }
 
 showUserEditor()
@@ -44,4 +46,3 @@ function showUserEditor() {
         userEditor.innerHTML = ""
     }
 }
-

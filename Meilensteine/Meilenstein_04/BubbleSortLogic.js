@@ -33,21 +33,33 @@ function generiere(anzahl){
 }
 
 function Neue_Werte(){
-    document.getElementById('Werte_bearbeiten').style.display = "none";
-    document.getElementById('Neue_Werte').style.display = "block";
-    document.getElementById('Algo_abspielen').style.display = "none";
+    if(document.getElementById('Neue_Werte').style.display == "block"){
+        hide()
+    }else{
+        document.getElementById('Neue_Werte').style.display = "block";
+        document.getElementById('Werte_bearbeiten').style.display = "none";
+        document.getElementById('Algo_abspielen').style.display = "none";
+    }
 }
 
 function Werte_bearbeiten(){
-    document.getElementById('Neue_Werte').style.display = "none";
-    document.getElementById('Werte_bearbeiten').style.display = "block";
-    document.getElementById('Algo_abspielen').style.display = "none";
+    if (document.getElementById('Werte_bearbeiten').style.display == "block"){
+        hide()
+    }else{
+        document.getElementById('Neue_Werte').style.display = "none";
+        document.getElementById('Werte_bearbeiten').style.display = "block";
+        document.getElementById('Algo_abspielen').style.display = "none";
+    }
 }
 
 function Algo_abspielen(){
-    document.getElementById('Neue_Werte').style.display = "none";
-    document.getElementById('Werte_bearbeiten').style.display = "none";
-    document.getElementById('Algo_abspielen').style.display = "block";
+    if(document.getElementById('Algo_abspielen').style.display == "block"){
+        hide()
+    }else{
+        document.getElementById('Neue_Werte').style.display = "none";
+        document.getElementById('Werte_bearbeiten').style.display = "none";
+        document.getElementById('Algo_abspielen').style.display = "block";
+    }
 }
 
 function hide(){
@@ -145,10 +157,15 @@ function step(){
 
 function nextBreakpoint(){
     do {
+        if(state.line == lines.length){
+            end_Algo()
+            return
+        }
         step();
     } while (!breakpoints.includes(state.line) && state.line !== lines.length);
+    zeigeAusgabe()
 }
-
+/*
 async function bubbleSort(){
     while(state.line !== lines.length){
         nextBreakpoint();
@@ -157,7 +174,48 @@ async function bubbleSort(){
     }
     zeigeAusgabe()
 }
+*/
 
-//state.vars.arr = [33,15,3,11,50,26,46,10];
-state.vars.arr = [];
+
+state.vars.arr = [33,15,3,11,50,26,46,10];
+state.vars.old_arr = [33,15,3,11,50,26,46,10];
+state.vars.algo_is_running = false;
+//state.vars.arr = [];
 breakpoints = [8];
+
+var intervalId;
+function play(){
+    start_Algo()
+    intervalId = setInterval(function(){nextBreakpoint()},100)
+}
+
+function stop(){
+    clearInterval(intervalId)
+    zeigeAusgabe()
+}
+
+function next(){
+    start_Algo()
+    stop()
+    nextBreakpoint()
+}
+
+function reset(){
+    end_Algo()
+    state.vars.arr = [...state.vars.old_arr];
+    zeigeAusgabe()
+}
+
+function start_Algo(){
+    if (!state.vars.algo_is_running){
+        state.line = 0;
+        state.vars.old_arr = [...state.vars.arr];
+        state.vars.algo_is_running = true
+    }
+}
+
+function end_Algo(){
+    stop()
+    state.vars.algo_is_running = false
+    zeigeAusgabe()
+}
