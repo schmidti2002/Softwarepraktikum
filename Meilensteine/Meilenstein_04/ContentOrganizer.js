@@ -8,20 +8,18 @@ function loadStartpage(){
 }
 
 function loadBubbleSort(){
-    fetch("AuD.html")
+    fetch("BubbleSort.html")
         .then(response => response.text())
         .then(data => {
-            // HTML der ersten Datei in das Container-Element mit der ID "content" einfügen
             content.innerHTML = data;
+            zeigeAusgabe()
+        })          
+}
 
-            // Fetch für die zweite HTML-Datei nach erfolgreicher Laden der ersten Datei
-            return fetch("BubbleSort.html");
-        })
-        .then(response => response.text())
-        .then(data => {
-            // HTML der zweiten Datei in das Container-Element mit der ID "view" einfügen
-            view.innerHTML = data;
-        })       
+function loadStartpage(){
+    fetch("Startpage.html")
+            .then(response => response.text())
+            .then(data => {content.innerHTML = data});
 }
 
 showUserEditor()
@@ -44,4 +42,3 @@ function showUserEditor() {
         userEditor.innerHTML = ""
     }
 }
-
