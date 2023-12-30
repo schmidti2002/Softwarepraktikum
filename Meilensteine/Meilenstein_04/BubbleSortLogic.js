@@ -200,7 +200,7 @@ function next(){
     nextBreakpoint()
 }
 
-function reset(){
+function reset_Algo(){
     end_Algo()
     state.vars.arr = [...state.vars.old_arr];
     zeigeAusgabe()
@@ -217,5 +217,12 @@ function start_Algo(){
 function end_Algo(){
     stop()
     state.vars.algo_is_running = false
+    zeigeAusgabe()
+}
+
+function full_reset(){
+    reset_Algo()
+    state.vars.arr = [33,15,3,11,50,26,46,10];
+    state.vars.old_arr = [33,15,3,11,50,26,46,10];
     zeigeAusgabe()
 }
