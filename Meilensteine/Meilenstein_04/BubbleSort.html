@@ -1,37 +1,33 @@
-<div id="bubble">  
-    <br>
-    <br>   
-    BubbleSort:
-    <button type="button2" onclick="full_reset()">Zurücksetzen</button>
-    <button type="button3" onclick="">Zu Favoriten hinzufügen</button>
-    <br>
-    <br> 
-    <!-- Ausgabe-Bereich -->
-    <div id="ausgabe">
-    </div>   
-    <br> 
-    <button type="button1" onclick="Neue_Werte()">Neue Werte</button>
-    <button type="button2" onclick="Werte_bearbeiten(); showArray()">Werte bearbeiten</button>
-    <button type="button3" onclick="Algo_abspielen()">Sortieren</button>
-    <br>    
-    <br>
-    <div id="Neue_Werte" style="display: none;">
-        Anzahl der neuen zufälligen Werte:
-        <input type="text" id="userInput">
-        <button type="button" onclick="generiereZufallszahlen(); hide()">Go</button>        
-    </div>
-    <div id="Werte_bearbeiten" style="display: none;">
-        Array bearbeiten: 
-        <input type="text" id="Array">
-        <button type="button" onclick="parseArray(); hide()">Go</button>
-    </div>
-    <div id="Algo_abspielen" style="display: none;">
-        Abspielen:
-        <button type="button" onclick="play()">Play</button>
-        <button type="button" onclick="stop()">Stop</button>
-        <button type="button" onclick="next()">Nächster Schritt</button>
-        <button type="button" onclick="reset_Algo()">Reset</button>
-    </div>
-       
+<br>
+<br>   
+BubbleSort:
+<button type="button" onclick="full_reset()">Zurücksetzen</button>
+<button type="button" onclick="">Zu Favoriten hinzufügen</button>
+<br>
+<br> 
+<!-- Ausgabe-Bereich -->
+<div id="ausgabe">
+</div>   
+<br> 
+<button type="button" onclick="Neue_Werte()">Neue Werte</button>
+<button type="button" onclick="Werte_bearbeiten(); showArray()">Werte bearbeiten</button>
+<button type="button" onclick="Algo_abspielen()">Sortieren</button>
+<br>    
+<br>
+<div id="Neue_Werte" style="display: none;">
+    Anzahl der neuen zufälligen Werte:
+    <input type="text" id="userInput">
+    <button type="button" onclick="generiereZufallszahlen(); hide()">Go</button>        
 </div>
-
+<div id="Werte_bearbeiten" style="display: none;">
+    Array bearbeiten: 
+    <input type="text" id="Array">
+    <button type="button" onclick="parseArray(); hide()">Go</button>
+</div>
+<div id="Algo_abspielen" style="display: none;">
+    Abspielen:
+    <button type="button" onclick="play()">Play</button>
+    <button type="button" onclick="stop()">Stop</button>
+    <button type="button" onclick="next()">Nächster Schritt</button>
+    <button type="button" onclick="reset_Algo()">Reset</button>
+</div>
