@@ -107,7 +107,7 @@ public class SingleLinkedList {
 		this.front = null;
 	}
 
-	// Methode ist schon von Bedeutung und könnte man mal anzeigen
+	// Methode ist schon von Bedeutung und kï¿½nnte man mal anzeigen
 	public int getSize() {
 		int size = 0;
 		Node currentNode = front;
@@ -118,7 +118,7 @@ public class SingleLinkedList {
 		return size;
 	}
 
-	// Derzeit nur für Debuggen
+	// Derzeit nur fï¿½r Debuggen
 	public void print() {
 		int position = 0;
 		Node currentNode = front;

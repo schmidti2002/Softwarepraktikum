@@ -10,7 +10,12 @@ function loadStartpage(){
 function loadSingleLinkedList(){
     fetch("SingleLinkedList.html")
             .then(response => response.text())
-            .then(data => {content.innerHTML = data});
+            .then(data => {content.innerHTML = data
+                addDataAtPosition_raw(0, "A")
+                addDataAtPosition_raw(1, "B")
+                addDataAtPosition_raw(2, "C")
+                print()
+            });
 }
 
 function loadDirectedUnweightedGraph(){
