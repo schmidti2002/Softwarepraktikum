@@ -4,69 +4,69 @@ function showArray(){
 
 function parseArray(){
     state.vars.arr = document.getElementById('Array').value.split(',');
-    zeigeAusgabe();
+    showOutput();
 }
 
 // JavaScript-Funktion, um die Eingabe zu lesen und anzuzeigen
-function zeigeAusgabe() {
-    // Die Eingabe ausgeben
-    var ausgabeBereich = document.getElementById('ausgabe');
-    ausgabeBereich.innerHTML = 'Das Array lautet: ' +  state.vars.arr.join(', ');
+function showOutput() {
+    // die Eingabe ausgeben
+    var output = document.getElementById('ausgabe');
+    output.innerHTML = 'Das Array lautet: ' +  state.vars.arr.join(', ');
     renderBars();
     return;
 }
 
 // JavaScript-Funktion, um n Zufallszahlen zu generieren und anzuzeigen
-function generiereZufallszahlen() {
+function generateRandomNumbers() {
     // Die Anzahl der Zufallszahlen vom Benutzer eingeben lassen
-    var anzahl = parseInt(document.getElementById('userInput').value);
-    generiere(anzahl)    
+    var count = parseInt(document.getElementById('userInput').value);
+    generate(count)    
 }
 
-function generiere(anzahl){    
+function generate(count){    
     // Zufallszahlen initialisieren und anzeigen
     state.vars.arr = []
-    for (var i = 0; i < anzahl; i++) {
-        var zufallszahl = Math.floor(Math.random() * 50) + 1; // Zufallszahl zwischen 1 und 50
-        state.vars.arr.push(zufallszahl);
+    for (var i = 0; i < count; i++) {
+        var randomNumber = Math.floor(Math.random() * 50) + 1; // Zufallszahlen zwischen 1 und 50
+        state.vars.arr.push(randomNumber);
     }
-    zeigeAusgabe()
+    showOutput()
 }
 
-function Neue_Werte(){
-    if(document.getElementById('Neue_Werte').style.display == "block"){
+function newValues(){
+    if(document.getElementById('newValues').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Neue_Werte').style.display = "block";
-        document.getElementById('Werte_bearbeiten').style.display = "none";
-        document.getElementById('Algo_abspielen').style.display = "none";
-    }
-}
-
-function Werte_bearbeiten(){
-    if (document.getElementById('Werte_bearbeiten').style.display == "block"){
-        hide()
-    }else{
-        document.getElementById('Neue_Werte').style.display = "none";
-        document.getElementById('Werte_bearbeiten').style.display = "block";
-        document.getElementById('Algo_abspielen').style.display = "none";
+        document.getElementById('newValues').style.display = "block";
+        document.getElementById('editValues').style.display = "none";
+        document.geSorttElementById('openSort').style.display = "none";
     }
 }
 
-function Algo_abspielen(){
-    if(document.getElementById('Algo_abspielen').style.display == "block"){
+function editValues(){
+    if (document.getElementById('editValues').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Neue_Werte').style.display = "none";
-        document.getElementById('Werte_bearbeiten').style.display = "none";
-        document.getElementById('Algo_abspielen').style.display = "block";
+        document.getElementById('newValues').style.display = "none";
+        document.getElementById('editValues').style.display = "block";
+        document.getElementById('openSort').style.display = "none";
+    }
+}
+
+function openSort(){
+    if(document.getElementById('openSort').style.display == "block"){
+        hide()
+    }else{
+        document.getElementById('newValues').style.display = "none";
+        document.getElementById('editValues').style.display = "none";
+        document.getElementById('openSort').style.display = "block";
     }
 }
 
 function hide(){
-    document.getElementById('Neue_Werte').style.display = "none";
-    document.getElementById('Werte_bearbeiten').style.display = "none";
-    document.getElementById('Algo_abspielen').style.display = "none";
+    document.getElementById('newValues').style.display = "none";
+    document.getElementById('editValues').style.display = "none";
+    document.getElementById('openSort').style.display = "none";
 }
 
 var state = {
@@ -85,7 +85,7 @@ var state = {
                 temp = arr[k];
                 arr[k] = arr[k + 1];
                 arr[k + 1] = temp;
-                zeigeAusgabe()
+                showOutput()
                 console.log(locked)
                 while(locked == true){
                     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -95,7 +95,7 @@ var state = {
             }
         }
     }
-    zeigeAusgabe()
+    showOutput()
 }*/
 
 lines = [
@@ -164,7 +164,7 @@ function nextBreakpoint(){
         }
         step();
     } while (!breakpoints.includes(state.line) && state.line !== lines.length);
-    zeigeAusgabe()
+    showOutput()
 }
 
 state.vars.arr = [33,15,3,11,50,26,46,10];
@@ -181,7 +181,7 @@ function play(){
 
 function stop(){
     clearInterval(intervalId)
-    zeigeAusgabe()
+    showOutput()
 }
 
 function next(){
@@ -193,7 +193,7 @@ function next(){
 function reset_Algo(){
     end_Algo()
     state.vars.arr = [...state.vars.old_arr];
-    zeigeAusgabe()
+    showOutput()
 }
 
 function start_Algo(){
@@ -207,14 +207,14 @@ function start_Algo(){
 function end_Algo(){
     stop()
     state.vars.algo_is_running = false
-    zeigeAusgabe()
+    showOutput()
 }
 
-function full_reset(){
+function fullReset(){
     reset_Algo()
     state.vars.arr = [33,15,3,11,50,26,46,10];
     state.vars.old_arr = [33,15,3,11,50,26,46,10];
-    zeigeAusgabe()
+    showOutput()
 }
 
 // Render bars based on array values

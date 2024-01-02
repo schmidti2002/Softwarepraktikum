@@ -20,7 +20,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-right: 2px; /* distance between bars */
+            margin-right: 2px; /* Dinstanz zwischen Balken */
             position: relative;
         }
 
@@ -40,7 +40,7 @@
     <br>
     <br>
     BubbleSort:
-    <button type="button2" onclick="full_reset()">Zurücksetzen</button>
+    <button type="button2" onclick="fullReset()">Zurücksetzen</button>
     <button type="button3" onclick="">Zu Favoriten hinzufügen</button>
     <br>
     <br> 
@@ -48,22 +48,22 @@
     <div id="ausgabe">
     </div>
     <br> 
-    <button type="button1" onclick="Neue_Werte()">Neue Werte</button>
-    <button type="button2" onclick="Werte_bearbeiten(); showArray()">Werte bearbeiten</button>
-    <button type="button3" onclick="Algo_abspielen()">Sortieren</button>
+    <button type="button1" onclick="newValues()">Neue Werte</button>
+    <button type="button2" onclick="editValues(); showArray()">Werte bearbeiten</button>
+    <button type="button3" onclick="openSort()">Sortieren</button>
     <br>    
     <br>
-    <div id="Neue_Werte" style="display: none;">
+    <div id="newValues" style="display: none;">
         Anzahl der neuen zufälligen Werte:
         <input type="text" id="userInput">
-        <button type="button" onclick="generiereZufallszahlen(); hide()">Go</button>        
+        <button type="button" onclick="generateRandomNumbers(); hide()">Go</button>        
     </div>
-    <div id="Werte_bearbeiten" style="display: none;">
+    <div id="editValues" style="display: none;">
         Array bearbeiten: 
         <input type="text" id="Array">
         <button type="button" onclick="parseArray(); hide()">Go</button>
     </div>
-    <div id="Algo_abspielen" style="display: none;">
+    <div id="openSort" style="display: none;">
         Abspielen:
         <button type="button" onclick="play()">Play</button>
         <button type="button" onclick="stop()">Stop</button>

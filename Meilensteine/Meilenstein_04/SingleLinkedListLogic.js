@@ -1,90 +1,90 @@
 front = null
 
-function Daten_an_Position_hinzufügen(){
-    if(document.getElementById('Daten_an_Position_hinzufügen').style.display == "block"){
+function addDataToPosition(){
+    if(document.getElementById('addDataToPosition').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Daten_an_Position_hinzufügen').style.display = "block";
-        document.getElementById('Daten_von_Position_zurückgeben').style.display = "none";
-        document.getElementById('Position_von_Daten_zurückgeben').style.display = "none";
-        document.getElementById('Daten_an_Position_löschen').style.display = "none";
-        document.getElementById('Liste_invertieren').style.display = "none";
-        document.getElementById('Liste_löschen').style.display = "none";
+        document.getElementById('addDataToPosition').style.display = "block";
+        document.getElementById('getDataFromPosition').style.display = "none";
+        document.getElementById('getPositionFromData').style.display = "none";
+        document.getElementById('deleteDataFromPosition').style.display = "none";
+        document.getElementById('invertList').style.display = "none";
+        document.getElementById('deleteList').style.display = "none";
     }
 }
 
-function Daten_von_Position_zurückgeben(){
-    if(document.getElementById('Daten_von_Position_zurückgeben').style.display == "block"){
+function getDataFromPosition(){
+    if(document.getElementById('getDataFromPosition').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Daten_an_Position_hinzufügen').style.display = "none";
-        document.getElementById('Daten_von_Position_zurückgeben').style.display = "block";
-        document.getElementById('Position_von_Daten_zurückgeben').style.display = "none";
-        document.getElementById('Daten_an_Position_löschen').style.display = "none";
-        document.getElementById('Liste_invertieren').style.display = "none";
-        document.getElementById('Liste_löschen').style.display = "none";
+        document.getElementById('addDataToPosition').style.display = "none";
+        document.getElementById('getDataFromPosition').style.display = "block";
+        document.getElementById('getPositionFromData').style.display = "none";
+        document.getElementById('deleteDataFromPosition').style.display = "none";
+        document.getElementById('invertList').style.display = "none";
+        document.getElementById('deleteList').style.display = "none";
     }
 }
 
-function Position_von_Daten_zurückgeben(){
-    if(document.getElementById('Position_von_Daten_zurückgeben').style.display == "block"){
+function getPositionFromData(){
+    if(document.getElementById('getPositionFromData').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Daten_an_Position_hinzufügen').style.display = "none";
-        document.getElementById('Daten_von_Position_zurückgeben').style.display = "none";
-        document.getElementById('Position_von_Daten_zurückgeben').style.display = "block";
-        document.getElementById('Daten_an_Position_löschen').style.display = "none";
-        document.getElementById('Liste_invertieren').style.display = "none";
-        document.getElementById('Liste_löschen').style.display = "none";
+        document.getElementById('addDataToPosition').style.display = "none";
+        document.getElementById('getDataFromPosition').style.display = "none";
+        document.getElementById('getPositionFromData').style.display = "block";
+        document.getElementById('deleteDataFromPosition').style.display = "none";
+        document.getElementById('invertList').style.display = "none";
+        document.getElementById('deleteList').style.display = "none";
     }
 }
 
-function Daten_an_Position_löschen(){
-    if(document.getElementById('Daten_an_Position_löschen').style.display == "block"){
+function deleteDataFromPosition(){
+    if(document.getElementById('deleteDataFromPosition').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Daten_an_Position_hinzufügen').style.display = "none";
-        document.getElementById('Daten_von_Position_zurückgeben').style.display = "none";
-        document.getElementById('Position_von_Daten_zurückgeben').style.display = "none";
-        document.getElementById('Daten_an_Position_löschen').style.display = "block";
-        document.getElementById('Liste_invertieren').style.display = "none";
-        document.getElementById('Liste_löschen').style.display = "none";
+        document.getElementById('addDataToPosition').style.display = "none";
+        document.getElementById('getDataFromPosition').style.display = "none";
+        document.getElementById('getPositionFromData').style.display = "none";
+        document.getElementById('deleteDataFromPosition').style.display = "block";
+        document.getElementById('invertList').style.display = "none";
+        document.getElementById('deleteList').style.display = "none";
     }
 }
 
-function Liste_invertieren(){
-    if(document.getElementById('Liste_invertieren').style.display == "block"){
+function invertList(){
+    if(document.getElementById('invertList').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Daten_an_Position_hinzufügen').style.display = "none";
-        document.getElementById('Daten_von_Position_zurückgeben').style.display = "none";
-        document.getElementById('Position_von_Daten_zurückgeben').style.display = "none";
-        document.getElementById('Daten_an_Position_löschen').style.display = "none";
-        document.getElementById('Liste_invertieren').style.display = "block";
-        document.getElementById('Liste_löschen').style.display = "none";
+        document.getElementById('addDataToPosition').style.display = "none";
+        document.getElementById('getDataFromPosition').style.display = "none";
+        document.getElementById('getPositionFromData').style.display = "none";
+        document.getElementById('deleteDataFromPosition').style.display = "none";
+        document.getElementById('invertList').style.display = "block";
+        document.getElementById('deleteList').style.display = "none";
     }
 }
 
-function Liste_löschen(){
-    if(document.getElementById('Liste_löschen').style.display == "block"){
+function deleteList(){
+    if(document.getElementById('deleteList').style.display == "block"){
         hide()
     }else{
-        document.getElementById('Daten_an_Position_hinzufügen').style.display = "none";
-        document.getElementById('Daten_von_Position_zurückgeben').style.display = "none";
-        document.getElementById('Position_von_Daten_zurückgeben').style.display = "none";
-        document.getElementById('Daten_an_Position_löschen').style.display = "none";
-        document.getElementById('Liste_invertieren').style.display = "none";
-        document.getElementById('Liste_löschen').style.display = "block";
+        document.getElementById('addDataToPosition').style.display = "none";
+        document.getElementById('getDataFromPosition').style.display = "none";
+        document.getElementById('getPositionFromData').style.display = "none";
+        document.getElementById('deleteDataFromPosition').style.display = "none";
+        document.getElementById('invertList').style.display = "none";
+        document.getElementById('deleteList').style.display = "block";
     }
 }
 
 function hide(){
-    document.getElementById('Daten_an_Position_hinzufügen').style.display = "none";
-    document.getElementById('Daten_von_Position_zurückgeben').style.display = "none";
-    document.getElementById('Position_von_Daten_zurückgeben').style.display = "none";
-    document.getElementById('Daten_an_Position_löschen').style.display = "none";
-    document.getElementById('Liste_invertieren').style.display = "none";
-    document.getElementById('Liste_löschen').style.display = "none";
+    document.getElementById('addDataToPosition').style.display = "none";
+    document.getElementById('getDataFromPosition').style.display = "none";
+    document.getElementById('getPositionFromData').style.display = "none";
+    document.getElementById('deleteDataFromPosition').style.display = "none";
+    document.getElementById('invertList').style.display = "none";
+    document.getElementById('deleteList').style.display = "none";
 }
 
 class Node {
