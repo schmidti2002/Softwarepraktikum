@@ -7,6 +7,23 @@ function loadStartpage(){
             .then(data => {content.innerHTML = data});
 }
 
+function loadSingleLinkedList(){
+    fetch("SingleLinkedList.html")
+            .then(response => response.text())
+            .then(data => {content.innerHTML = data
+                addDataAtPosition_raw(0, "A")
+                addDataAtPosition_raw(1, "B")
+                addDataAtPosition_raw(2, "C")
+                print()
+            });
+}
+
+function loadDirectedUnweightedGraph(){
+    fetch("DirectedUnweightedGraph.html")
+            .then(response => response.text())
+            .then(data => {content.innerHTML = data});
+}
+
 function loadBubbleSort(){
     fetch("BubbleSort.html")
         .then(response => response.text())
@@ -16,11 +33,12 @@ function loadBubbleSort(){
         })          
 }
 
-function loadStartpage(){
-    fetch("Startpage.html")
+function loadMergeSort(){
+    fetch("MergeSort.html")
             .then(response => response.text())
             .then(data => {content.innerHTML = data});
 }
+
 
 showUserEditor()
 function showUserEditor() {
