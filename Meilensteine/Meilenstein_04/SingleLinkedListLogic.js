@@ -125,6 +125,7 @@ function addDataAtPosition_raw(position, data) {
         newNode.setNext(front);
         front = newNode;
         print()
+        visualizeList();
         return true;
     }
 
@@ -136,6 +137,7 @@ function addDataAtPosition_raw(position, data) {
     newNode.setNext(currentNode.getNext());
     currentNode.setNext(newNode);
     print()
+    visualizeList();
     return true;
 }  
 
@@ -170,4 +172,46 @@ function addDataAtPosition() {
     var position = parseInt(document.getElementById('position').value);
     var data = document.getElementById('data').value;
     addDataAtPosition_raw(position, data);
+}
+
+function visualizeList() {
+    const graphContainer = document.getElementById('graph');
+    graphContainer.innerHTML = '';
+
+    let currentNode = front;
+    let position = 0;
+
+    while (currentNode !== null) {
+        const nodeElement = document.createElement('div');
+        nodeElement.classList.add('node');
+        nodeElement.innerText = currentNode.getData();
+
+        // Setze die Position des Knotens basierend auf der Position
+        nodeElement.style.left = `${(position * 90) + 50}px`; // Abstand zwischen den Knoten: 60px, Start bei 50px
+        nodeElement.style.top = '50px'; // Abstand vom oberen Rand: 50px
+
+        graphContainer.appendChild(nodeElement);
+
+        // Verbindungspfeile zwischen den Knoten auf der Höhe der Knoten
+        if (position > 0) {
+            const arrowElement = document.createElement('div');
+            arrowElement.classList.add('arrow');
+            arrowElement.style.left = `${(position * 90) + 0}px`; // Position der Mitte zwischen den Knoten
+            arrowElement.style.top = '70px'; // Setze die Höhe des Pfeils auf 70px (oder nach Bedarf)
+            graphContainer.appendChild(arrowElement);
+
+            // Erstelle das Dreieck (Pfeilspitze)
+            const arrowTipElement = document.createElement('div');
+            arrowTipElement.classList.add('arrow_tip');
+            arrowElement.appendChild(arrowTipElement);
+
+            graphContainer.appendChild(arrowElement);
+        }
+
+        currentNode = currentNode.getNext();
+        position++;
+    }
+
+    // Zeige den Graphen an
+    graphContainer.style.display = 'flex';
 }
