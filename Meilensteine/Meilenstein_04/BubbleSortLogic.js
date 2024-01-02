@@ -12,6 +12,7 @@ function zeigeAusgabe() {
     // Die Eingabe ausgeben
     var ausgabeBereich = document.getElementById('ausgabe');
     ausgabeBereich.innerHTML = 'Das Array lautet: ' +  state.vars.arr.join(', ');
+    renderBars();
     return;
 }
 
@@ -165,17 +166,6 @@ function nextBreakpoint(){
     } while (!breakpoints.includes(state.line) && state.line !== lines.length);
     zeigeAusgabe()
 }
-/*
-async function bubbleSort(){
-    while(state.line !== lines.length){
-        nextBreakpoint();
-        zeigeAusgabe()
-        await new Promise(resolve => setTimeout(resolve, 500));
-    }
-    zeigeAusgabe()
-}
-*/
-
 
 state.vars.arr = [33,15,3,11,50,26,46,10];
 state.vars.old_arr = [33,15,3,11,50,26,46,10];
@@ -225,4 +215,19 @@ function full_reset(){
     state.vars.arr = [33,15,3,11,50,26,46,10];
     state.vars.old_arr = [33,15,3,11,50,26,46,10];
     zeigeAusgabe()
+}
+
+// Render bars based on array values
+function renderBars() {
+    const chart = document.getElementById('chart');
+    chart.innerHTML = '';
+
+    for (let i = 0; i < state.vars.arr.length; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.width = '20px'; // Adjust width as needed
+        bar.style.height = `${state.vars.arr[i] * 10 + 10}px`; // Scale the height
+        bar.innerHTML = `<span>${state.vars.arr[i]}</span>`;
+        chart.appendChild(bar);
+    }
 }
