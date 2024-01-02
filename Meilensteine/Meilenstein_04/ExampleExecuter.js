@@ -1,3 +1,22 @@
+/* Minimal usage example for BubbleSort:
+lines = [
+    { f: function (s) { s.vars.temp = undefined; return s; } },
+    { f: function (s) { s.vars.n = s.vars.arr.length; return s; } },
+    ...exe_for("i", () => 0, s => s.vars.i < s.vars.n - 1, 1,
+        exe_for("k", () => 0, s => s.vars.k < s.vars.n - 1 - s.vars.i, 1, 
+            exe_ifElse(s => s.vars.arr[s.vars.k] > s.vars.arr[s.vars.k + 1], [
+                { f: function (s) { s.vars.temp = s.vars.arr[s.vars.k]; return s; } },
+                { f: function (s) { s.vars.arr[s.vars.k] = s.vars.arr[s.vars.k + 1]; return s; } },
+                { f: function (s) { s.vars.arr[s.vars.k + 1] = s.vars.temp; return s; } },
+            ])
+        )
+    )
+];
+
+exec = new ExampleExecuter(lines);
+exec.state.vars.arr = [1,4,2,3];
+exec.play(false, () => console.log(JSON.stringify(exec.state.vars.arr)));
+*/
 
 function exe_block(lines) {
     return [
@@ -24,7 +43,7 @@ function exe_block(lines) {
 }
 
 function exe_for(counter, start, condition, step, lines) {
-    exe_block([
+    return exe_block([
         {
             f: function (s) {
                 s.vars[counter] = start(s);
@@ -68,7 +87,7 @@ function exe_while(condition, lines) {
 }
 
 function exe_ifElse(condition, lines, elsLines = []) {
-    exe_block([
+    return exe_block([
         {
             f: function (s) {
                 if (!condition(s)) {
@@ -90,6 +109,7 @@ function exe_ifElse(condition, lines, elsLines = []) {
 
 class ExampleExecuter {
     lines;
+    breakpoints = [];
     state = {
         varsStack: [],
         vars: {
@@ -100,20 +120,23 @@ class ExampleExecuter {
 
     constructor(lines){
         this.lines = lines;
-    }
+    };
 
     step() {
-        var old_l = state.line;
-        var f = lines[state.line].f;
-        if (f) {
-            state = f(state);
+        if(this.state.line === this.lines.length){
+            return
         }
-        if (old_l === state.line) {
-            state.line += 1;
-        } else if (typeof state.line === "string") {
-            for (let i = 0; i < lines.length; i++) {
-                if (lines[i].l === state.line) {
-                    state.line = i;
+        const old_l = this.state.line;
+        const f = this.lines[this.state.line].f;
+        if (f) {
+            this.state = f(this.state);
+        }
+        if (old_l === this.state.line) {
+            this.state.line += 1;
+        } else if (typeof this.state.line === "string") {
+            for (let i = 0; i < this.lines.length; i++) {
+                if (this.lines[i].l === this.state.line) {
+                    this.state.line = i;
                     break;
                 }
             }
@@ -121,28 +144,28 @@ class ExampleExecuter {
     };
 
     nextBreakpoint() {
+        var stepsCounter = 0;
         do {
-            if (state.line == lines.length) {
-                end_Algo()
-                return
+            if (this.state.line == this.lines.length) {
+                return;
             }
-            step();
-        } while (!breakpoints.includes(state.line) && state.line !== lines.length);
-        zeigeAusgabe()
-    }
+            this.step();
+        } while (!this.breakpoints.includes(this.state.line) && stepsCounter++ < 1000);
+    };
 
     play(onlyBreakpoints = true, afterStepFunc = function () { }) {
-        intervalId = setInterval(function () {
+        const self = this;
+        this.intervalId = setInterval(function () {
             if (onlyBreakpoints) {
-                nextBreakpoint()
+                self.nextBreakpoint()
             } else {
-                step()
+                self.step()
             }
             afterStepFunc()
         }, 100)
-    }
+    };
 
     stop() {
-        clearInterval(intervalId)
-    }
+        clearInterval(this.intervalId)
+    };
 }
