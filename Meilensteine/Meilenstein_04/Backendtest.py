@@ -54,5 +54,35 @@ def test():
     response = requests.get(BASE + "user/login/")
     if response.status_code() >= 500:
         return False
-       
+    
+    # Logout
+    response = requests.get(BASE + "user/logout/")
+    if response.status_code() >= 500:
+        return False
+    
+    # register
+    response = requests.get(BASE + "user/register/")
+    if response.status_code() >= 500:
+        return False
+    
+    # UserData
+    response = requests.get(BASE + "user/UserData/")
+    if response.status_code() >= 500:
+        return False
+    
+    # Sotieralgorithmen
+    response = requests.get(BASE + "algo/")
+    if response.status_code() >= 500:
+        return False
+    
+    # Liste
+    response = requests.get(BASE + "datastruct/list/")
+    if response.status_code() >= 500:
+        return False
+    
+    # Heap
+    response = requests.get(BASE + "datastruct/heap/")
+    if response.status_code() >= 500:
+        return False
+    
     return True
