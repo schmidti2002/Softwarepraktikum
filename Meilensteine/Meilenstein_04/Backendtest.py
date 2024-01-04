@@ -12,24 +12,24 @@ Datenbank="Visaulisierung"
 
 database = mysql.connector.connect(host=host_url,user=user_name,passwd=password,db=Datenbank,auth_plugin='mysql_native_password')
 
-def testResponse(Response):
-    if not Response.json()("username") == "Herbert":
+def test_response(response):
+    if response.json()("username") != "Herbert":
         return False
     
-    if not Response.json()("Email") == "Admin@test.de":
+    if response.json()("Email") != "Admin@test.de":
         return False
     
-    if not Response.json()("right"):
+    if not response.json()("right"):
         return False
     
-    if not (Response("chronik")(1) == 1 and Response("chronik")(2) == 2 and Response("chronik")(3) == 3):
+    if not (response("chronik")(1) == 1 and response("chronik")(2) == 2 and response("chronik")(3) == 3):
         return False
     
-    if not (Response("Favorits")(1) == 1 and Response("Favorits")(2) == 2 and Response("Favorits")(3) == 3):
+    if not (response("Favorits")(1) == 1 and response("Favorits")(2) == 2 and response("Favorits")(3) == 3):
         return False
     return True
 
-def testToken():
+def test_token():
     # Erfolgreichenes Einloggen
     response = requests.get(BASE + "user/login/",data={"username": "Admin","password":"12345678"})
     muster = r'^[a-zA-Z0-9]{40}$'
@@ -38,51 +38,51 @@ def testToken():
     
     # Datenabfrage testen
     response = requests.get(BASE + "user/UserData/",data={"Token": response.text()})
-    if not testResponse(response.json()):	
+    if not test_response(response.json()):	
         return False
 
     # Erfolgreichenes Auslagen
     response = requests.get(BASE + "user/logout/",data={"Token":response.text()})
-    if response.text() == False or response.text() == None:
+    if not response.text():
         return False
 
     # Nutzer Anlegen
     response = requests.get(BASE + "user/register/",data={"username": "Herbert","password":"12345678","Email":"test@uni.de"})
     
-def test():
+def test_apiendpunkte():
     # Login
     response = requests.get(BASE + "user/login/")
-    if response.status_code() >= 500:
+    if response.status_code >= 500:
         return False
     
     # Logout
     response = requests.get(BASE + "user/logout/")
-    if response.status_code() >= 500:
+    if response.status_code >= 500:
         return False
     
     # register
     response = requests.get(BASE + "user/register/")
-    if response.status_code() >= 500:
+    if response.status_code >= 500:
         return False
     
     # UserData
     response = requests.get(BASE + "user/UserData/")
-    if response.status_code() >= 500:
+    if response.status_code >= 500:
         return False
     
     # Sotieralgorithmen
     response = requests.get(BASE + "algo/")
-    if response.status_code() >= 500:
+    if response.status_code >= 500:
         return False
     
     # Liste
     response = requests.get(BASE + "datastruct/list/")
-    if response.status_code() >= 500:
+    if response.status_code >= 500:
         return False
     
     # Heap
     response = requests.get(BASE + "datastruct/heap/")
-    if response.status_code() >= 500:
+    if response.status_code >= 500:
         return False
     
     return True
