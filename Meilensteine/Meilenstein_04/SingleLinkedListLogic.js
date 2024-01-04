@@ -1,6 +1,6 @@
 front = null
 
-function addDataToPosition(){
+function addDataAtPositionDisplayer(){
     if(document.getElementById('addDataToPosition').style.display == "block"){
         hide()
     }else{
@@ -13,7 +13,7 @@ function addDataToPosition(){
     }
 }
 
-function getDataFromPosition(){
+function getDataFromPositionDisplayer(){
     if(document.getElementById('getDataFromPosition').style.display == "block"){
         hide()
     }else{
@@ -26,7 +26,7 @@ function getDataFromPosition(){
     }
 }
 
-function getPositionFromData(){
+function getPositionFromDataDisplayer(){
     if(document.getElementById('getPositionFromData').style.display == "block"){
         hide()
     }else{
@@ -39,7 +39,7 @@ function getPositionFromData(){
     }
 }
 
-function deleteDataFromPosition(){
+function deleteDataFromPositionDisplayer(){
     if(document.getElementById('deleteDataFromPosition').style.display == "block"){
         hide()
     }else{
@@ -52,7 +52,7 @@ function deleteDataFromPosition(){
     }
 }
 
-function invertList(){
+function invertListDisplayer(){
     if(document.getElementById('invertList').style.display == "block"){
         hide()
     }else{
@@ -65,7 +65,7 @@ function invertList(){
     }
 }
 
-function deleteList(){
+function deleteListDisplayer(){
     if(document.getElementById('deleteList').style.display == "block"){
         hide()
     }else{
@@ -214,4 +214,141 @@ function visualizeList() {
 
     // Zeige den Graphen an
     graphContainer.style.display = 'flex';
+}
+
+// neuer Kram
+function getDataFromPosition() {
+    const positionInput = document.getElementById('getDataInput');
+    const position = parseInt(positionInput.value);
+    
+    const listSize = getSize(front);
+
+    if (position >= 0 && position < listSize) {
+        // eingegebene Position ist gültig
+        const data = getDataFromPosition_raw(position);
+        const resultDiv = document.getElementById('getDataResult');
+
+        if (data !== null) {
+            resultDiv.innerHTML = `An der Stelle ${position} befindet sich der Wert "${data}".`;
+        } else {
+            resultDiv.innerHTML = "Es wurden keine Daten für diese Position gefunden!";
+        }
+    } else {
+        // eingegebene Position ist ungültig
+        const resultDiv = document.getElementById('getDataResult');
+        resultDiv.innerHTML = `Die Position ${position} existiert nicht! Ungültige Position!`;
+        console.error("Exception: position is out of list");
+    }
+}
+
+function getDataFromPosition_raw(position) {
+    if (position < 0 || position >= getSize(front)) {
+        console.error("Exception: position is out of list");
+        return null;
+    }
+
+    let currentNode = front;
+    for (let currentIndex = 0; currentIndex < position; currentIndex++) {
+        currentNode = currentNode.getNext();
+    }
+
+    return currentNode.getData();
+}
+
+function getPositionFromData() {
+    const data = document.getElementById('getPositionInput').value;
+    const position = getPositionFromData_raw(data);
+    const resultDiv = document.getElementById('getPositionResult');
+
+    if (position !== -1) {
+        resultDiv.innerHTML = `Der Wert "${data}" befindet sich an der Stelle ${position}.`;
+    } else {
+        resultDiv.innerHTML = `Der Wert "${data}" konnte in der Liste nicht gefunden werden!`;
+    }
+}
+
+function getPositionFromData_raw(data) {
+    let currentNode = front;
+    let position = 0;
+
+    while (currentNode !== null) {
+        if (currentNode.getData() === data) {
+            return position;
+        }
+
+        currentNode = currentNode.getNext();
+        position++;
+    }
+
+    console.error("Exception: data not found in list");
+    return -1;
+}
+
+function deleteDataFromPosition() {
+    const positionInput = document.getElementById('deleteDataInput');
+    const position = parseInt(positionInput.value);
+
+    const resultDiv = document.getElementById('deleteDataResult');
+    const success = deleteDataFromPosition_raw(position);
+
+    if (success) {
+        resultDiv.innerHTML = `Der Wert an der Position ${position} wurde erfolgreich gelöscht.`;
+    } else {
+        resultDiv.innerHTML = `Der Wert an der Position ${position} konnte nicht gelöscht werden! Ungültige Position!`;
+    }
+}
+
+function deleteDataFromPosition_raw(position) {
+    if (position < 0 || position >= getSize(front)) {
+        console.error("Exception: position is out of list");
+        return false;
+    }
+
+    if (position === 0) {
+        front = front.getNext();
+        print();
+        visualizeList();
+        return true;
+    }
+
+    let currentNode = front;
+    for (let currentIndex = 1; currentIndex < position; currentIndex++) {
+        currentNode = currentNode.getNext();
+    }
+
+    currentNode.setNext(currentNode.getNext().getNext());
+    print();
+    visualizeList();
+    return true;
+}
+
+function invertList_raw() {
+    let prev = null;
+    let current = front;
+    let nextNode;
+
+    while (current !== null) {
+        nextNode = current.getNext();
+        current.setNext(prev);
+        prev = current;
+        current = nextNode;
+    }
+
+    front = prev;
+    print();
+    visualizeList();
+}
+
+function invertList() {
+    invertList_raw();
+}
+
+function deleteList_raw() {
+    front = null;
+    print();
+    visualizeList();
+}
+
+function deleteList() {
+    deleteList_raw();
 }
