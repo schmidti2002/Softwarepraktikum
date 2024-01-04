@@ -58,11 +58,19 @@ function exe_for(counter, start, condition, step, lines) {
                 if (!condition(s)) {
                     s.line += lines.length + 2;
                 }
-                exe_start_block(s);
                 return s;
             }
         },
-        ...lines,
+        {
+            f: function (s) {
+                exe_start_block(s);
+                if (lines[0]) {
+                    return lines[0].f(s);
+                }
+                return s;
+            }
+        },
+        ...lines.slice(1),
         {
             f: function (s) {
                 exe_end_block(s);
