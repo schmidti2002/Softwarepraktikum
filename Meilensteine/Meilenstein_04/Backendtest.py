@@ -29,7 +29,7 @@ def test_response(response):
         return False
     return True
 
-def test_token():
+def test_user():
     # Erfolgreichenes Einloggen
     response = requests.get(BASE + "user/login/",data={"username": "Admin","password":"12345678"})
     muster = r'^[a-zA-Z0-9]{40}$'
@@ -41,14 +41,19 @@ def test_token():
     if not test_response(response.json()):	
         return False
 
-    # Erfolgreichenes Auslagen
+    # Erfolgreichenes Ausloggen
     response = requests.get(BASE + "user/logout/",data={"Token":response.text()})
     if not response.text():
         return False
 
     # Nutzer Anlegen
     response = requests.get(BASE + "user/register/",data={"username": "Herbert","password":"12345678","Email":"test@uni.de"})
-    
+    if not response.text():
+        return False
+    else:
+        #SQL Abfrage 
+        pass
+
 def test_apiendpunkte():
     # Login
     response = requests.get(BASE + "user/login/")
@@ -76,16 +81,92 @@ def test_apiendpunkte():
         return False
     
     # Liste
-    response = requests.get(BASE + "datastruct/list/")
+    response = requests.get(BASE + "datastruct/list/setValues/")
+    if response.status_code >= 500:
+        return False
+    response = requests.get(BASE + "datastruct/list/getValues/")
+    if response.status_code >= 500:
+        return False
+    response = requests.get(BASE + "datastruct/list/deleteValues/")
     if response.status_code >= 500:
         return False
     
     # Heap
-    response = requests.get(BASE + "datastruct/heap/")
+    response = requests.get(BASE + "datastruct/heap/setValues/")
     if response.status_code >= 500:
         return False
-    
+    response = requests.get(BASE + "datastruct/heap/getValues/")
+    if response.status_code >= 500:
+        return False
+    response = requests.get(BASE + "datastruct/heap/deleteValues/")
+    if response.status_code >= 500:
+        return False
     return True
 
 def test_database():
-    pass
+    db_table=database.cursor()
+
+    db_table.execute("show tables")
+    current_tables={}
+    for x in db_table:
+        if type(x[0]) is not str:
+            current_tables.update({x[0].decode('utf-8'):1})
+        else:
+            current_tables.update({x[0]:1})
+
+    # Prüfen ob alle Tabellen vorhanden sind
+    if not current_tables.get("User"):
+        return False
+
+    if not current_tables.get("Session"):
+        return False
+
+    return True
+    
+def test_listabstact():
+    # Liste erstellen
+    response = requests.get(BASE + "datastruct/list/setValues/",data={"Value": "12"})
+    if response.status_code >= 500:
+        return False
+    else:
+        #SQL Abfrage 
+        pass
+
+    # Liste abfragen
+    response = requests.get(BASE + "datastruct/list/getValues/")
+    if response.json():
+        return False
+       
+    # Liste löschen
+    response = requests.get(BASE + "datastruct/list/deleteValues/",data={"Value": "12"})
+    if response.status_code >= 500:
+        return False
+    else:
+        #SQL Abfrage 
+        pass
+    
+    return True    
+
+def test_heapabstact():
+    # Liste erstellen
+    response = requests.get(BASE + "datastruct/heap/setValues/",data={"Value": "12"})
+    if response.status_code >= 500:
+        return False
+    else:
+        #SQL Abfrage 
+        pass
+
+    # Liste abfragen
+    response = requests.get(BASE + "datastruct/heap/getValues/")
+    if response.json():
+        return False
+       
+    # Liste löschen
+    response = requests.get(BASE + "datastruct/heap/deleteValues/",data={"Value": "12"})
+    if response.status_code >= 500:
+        return False
+    else:
+        #SQL Abfrage 
+        pass
+    
+    return True
