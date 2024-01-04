@@ -86,3 +86,6 @@ def test_apiendpunkte():
         return False
     
     return True
+
+def test_database():
+    pass
