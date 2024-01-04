@@ -80,6 +80,9 @@ function showOutput() {
     // die Eingabe ausgeben
     var output = document.getElementById('ausgabe');
     output.innerHTML = 'Das Array lautet: ' + exec.state.vars.arr.join(', ');
+    if(exec.algo_is_running){
+        output.innerHTML += ', Algo läuft in Line:' + exec.state.line
+    }
     renderBars();
     return;
 }

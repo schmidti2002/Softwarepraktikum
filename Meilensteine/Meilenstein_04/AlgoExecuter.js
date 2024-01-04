@@ -147,7 +147,7 @@ class Executer {
     intervalId;
     outputFunction = function () { };
     algo_is_running;
-    timeout = 100
+    timeout = 500
 
     constructor(lines){
         this.lines = lines;
@@ -201,6 +201,7 @@ class Executer {
         this.outputFunction()
     }
 
+    // Button Play
     play() {
         this.start()
         if (typeof intervalId === 'undefined') {
@@ -212,17 +213,21 @@ class Executer {
         }
     };
 
+    // Button Pause
     pause() {
         clearInterval(this.intervalId)
         this.outputFunction()
     };
-
+    
+    // Button Nächster Schritt
     next(){
+        this.start()
         this.pause()
         this.nextBreakpoint()
         this.outputFunction()
     }
 
+    // Button Reset
     reset(){
         this.stop()
         this.state.vars.arr = [...this.state.vars.old_arr]

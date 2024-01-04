@@ -31,7 +31,7 @@ function loadBubbleSort(){
             content.innerHTML = data;
             exec = new Executer(lines);
             exec.outputFunction = () => showOutput();
-            exec.state.vars.arr = [50,35,40,15,30,45,5,20,25,10,];
+            exec.state.vars.arr = [50,35,40,15,30,45,5,20,25,10];
             exec.breakpoints = [8];
             exec.outputFunction();
         })          
