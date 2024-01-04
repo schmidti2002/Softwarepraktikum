@@ -26,13 +26,8 @@ def database_create(database):
             current_tables.update({x[0]:1})
 
     if not current_tables.get("User"):
-        create_event="CREATE TABLE `User` ( `user_id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR NOT NULL , `rights` BOOLEAN NULL DEFAULT NULL , PRIMARY KEY (`user_id`, `name`, `email`)) ENGINE = InnoDB;"
+        create_event="CREATE TABLE `Ticketsystem`.`user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(80) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `rights` BOOLEAN NULL DEFAULT NULL , `session_token` VARCHAR(64) NOT NULL , PRIMARY KEY (`user_id`, `username`, `email`)) ENGINE = InnoDB;" 
         util_db_cursor.execute(create_event)
-        database.commit()
-
-    if not current_tables.get("Session"):
-        create_user="CREATE TABLE `Session` ( `session_id` INT NOT NULL AUTO_INCREMENT , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `user_id` INT(100) NOT NULL , PRIMARY KEY (`session_id`, `time`, `user_id`)) ENGINE = InnoDB;"
-        util_db_cursor.execute(create_user)
         database.commit()
 
     util_db_cursor.close()
