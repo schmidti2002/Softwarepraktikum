@@ -115,10 +115,16 @@ def test_database():
             current_tables.update({x[0]:1})
 
     # Prüfen ob alle Tabellen vorhanden sind
-    if not current_tables.get("User"):
+    if not current_tables.get("user"):
         return False
 
-    if not current_tables.get("Session"):
+    if not current_tables.get("StructMaster"):
+        return False
+
+    if not current_tables.get("ListNodes"):
+        return False
+
+    if not current_tables.get("HeapNodes"):
         return False
 
     return True
