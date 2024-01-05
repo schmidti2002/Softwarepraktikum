@@ -26,7 +26,7 @@ def database_create(database):
             current_tables.update({x[0]:1})
 
     if not current_tables.get("user"):
-        execute_sql="CREATE TABLE `user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `rights` BOOLEAN NULL DEFAULT NULL , `session_token` VARCHAR(64) NOT NULL , PRIMARY KEY (`user_id`)) ENGINE = InnoDB;" 
+        execute_sql="CREATE TABLE `user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL , `session_token` INT NOT NULL , `right` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`user_id`), UNIQUE (`username`)) ENGINE = InnoDB;" 
         util_db_cursor.execute(execute_sql)
         database.commit()
 
