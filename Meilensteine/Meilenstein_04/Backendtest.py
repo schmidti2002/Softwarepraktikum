@@ -33,7 +33,7 @@ def test_user():
     # Erfolgreichenes Einloggen
     response = requests.get(BASE + "user/login/",data={"username": "Admin","password":"12345678"})
     muster = r'^[a-zA-Z0-9]{40}$'
-    if not re.match(muster, response.text()):
+    if not re.match(muster, response.text()): 
         return False 
     
     # Datenabfrage testen
