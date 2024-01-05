@@ -47,7 +47,7 @@ def test_user():
         return False
 
     # Nutzer Anlegen
-    response = requests.get(BASE + "user/register/",data={"username": "Herbert","password":"12345678","Email":"test@uni.de"})
+    response = requests.get(BASE + "user/register/",headers={"sessiontoken":"dvbjwehjibvqhjevhjqeb"}, data={"username": "Herbert","password":"12345678","Email":"test@uni.de"})
     if not response.text():
         return False
     else:
