@@ -34,7 +34,7 @@ class login(Resource):
         # Wenn ein Ergebnis zurückgegeben wird, ist der Login erfolgreich
         else:
             # 40 stelligen Token generieren
-            token = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(40))
+            token = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
             # SQL-Abfrage
             cursor.execute("UPDATE User SET session_token = %s WHERE username = %s", (token, username))
             # Token zurückgeben
