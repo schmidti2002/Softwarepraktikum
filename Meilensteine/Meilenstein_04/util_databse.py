@@ -25,9 +25,24 @@ def database_create(database):
         else:
             current_tables.update({x[0]:1})
 
-    if not current_tables.get("User"):
-        create_event="CREATE TABLE `Ticketsystem`.`user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `rights` BOOLEAN NULL DEFAULT NULL , `session_token` VARCHAR(64) NOT NULL , PRIMARY KEY (`user_id`)),  UNIQUE (`username`) ENGINE = InnoDB;" 
-        util_db_cursor.execute(create_event)
+    if not current_tables.get("user"):
+        execute_sql="CREATE TABLE `user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `rights` BOOLEAN NULL DEFAULT NULL , `session_token` VARCHAR(64) NOT NULL , PRIMARY KEY (`user_id`)),  UNIQUE (`username`) ENGINE = InnoDB;" 
+        util_db_cursor.execute(execute_sql)
+        database.commit()
+
+    if not current_tables.get("StructMaster"):
+        execute_sql="CREATE TABLE `StructMaster` ( `struct_id` INT NOT NULL AUTO_INCREMENT , `struct_type` INT NOT NULL , `root_node` INT NOT NULL , `user_id` INT NOT NULL , PRIMARY KEY (`struct_id`)) ENGINE = InnoDB;"
+        util_db_cursor.execute(execute_sql)
+        database.commit()
+
+    if not current_tables.get("HeapNodes"):
+        execute_sql="CREATE TABLE `HeapNodes` ( `node_id` INT NOT NULL AUTO_INCREMENT , `value` INT NULL DEFAULT NULL , `child_left_id` INT NULL DEFAULT NULL , `child_right_id` INT NULL DEFAULT NULL ) ENGINE = InnoDB;"
+        util_db_cursor.execute(execute_sql)
+        database.commit()
+
+    if not current_tables.get("ListNodes"):
+        execute_sql="CREATE TABLE `ListNodes` ( `node_id` INT NOT NULL AUTO_INCREMENT , `value` INT NULL DEFAULT NULL , `next_node` INT NULL DEFAULT NULL , PRIMARY KEY (`node_id`)) ENGINE = InnoDB;"
+        util_db_cursor.execute(execute_sql)
         database.commit()
 
     util_db_cursor.close()
