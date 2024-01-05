@@ -7,6 +7,9 @@ info:
     name: AGPL V3.0
     url: https://www.gnu.org/licenses/agpl-3.0.en.html#license-text
   version: '0.0.1'
+servers:
+  - url: swp.dczlabs.xyz:3130
+  - url: localhost:3130
 paths:
   /user:
     get:
@@ -175,102 +178,39 @@ paths:
           description: favorite not found
 
  
-  /graph/favorite:
+  /graph/data:
     get:
       tags:
-        - favorite
         - graph
       responses:
         '200':
-          description: list of IDs of entries marked as favorite
-          content:
-            application/json: 
-              schema: 
-                type: array
-                items:
-                  type: string
-                  format: uuid
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-    post:
-      tags:
-        - favorite
-        - graph
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: 
-                id:
-                  type: string
-                  format: uuid
-      responses:
-        '200':
-          description: new favorite created
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
-          description: referenced entry not found
-  /graph/favorite/{graphId}:
-    delete:
-      tags:
-        - favorite
-        - graph
-      parameters:
-        - name: graphId
-          required: true
-          in: path
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: favorite removed
-        '404':
-          description: favorite not found
+          description: all graph data ids of the user
 
+
+  /list/algo:
+    get:
+      tags:
+        - list
+      responses:
+        '200':
+          description: all list algorithms
   /list/favorite:
     get:
       tags:
-        - favorite
         - list
       responses:
         '200':
-          description: list of IDs of entries marked as favorite
-          content:
-            application/json: 
-              schema: 
-                type: array
-                items:
-                  type: string
-                  format: uuid
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-    post:
+          description: all list favorites of the user
+  /list/data:
+    get:
       tags:
-        - favorite
         - list
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: 
-                id:
-                  type: string
-                  format: uuid
       responses:
         '200':
-          description: new favorite created
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '404':
-          description: referenced entry not found
-  /list/favorite/{listId}:
-    delete:
+          description: all list data ids of the user
+  /list/data/{listId}:
+    get:
       tags:
-        - favorite
         - list
       parameters:
         - name: listId
@@ -281,11 +221,110 @@ paths:
             format: uuid
       responses:
         '200':
-          description: favorite removed
+          description: list returned
         '404':
-          description: favorite not found
+          description: list not found
+
+  /history/{type}:
+    get:
+      tags:
+        - history
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            type: string
+            enum:
+              - all
+              - graph
+              - list
+              - sort
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HistoryEntry"
+          description: history returned
+    post:
+      tags:
+        - history
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            type: string
+            enum:
+              - graph
+              - list
+              - sort
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HistoryEntry"
+      responses:
+        '200':
+          description: history entry created
+    
 
 
+  /code-state/:
+    post:
+      tags:
+        - code-state
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodeState'
+      responses:
+        '200':
+          description: State created
+
+  /code-state/{stateId}:
+    get:
+      tags:
+        - code-state
+      parameters:
+        - name: stateId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CodeState"
+          description: code-state returned
+    delete:
+      tags:
+        - code-state
+      parameters:
+        - name: stateId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: State deleted
+        '404':
+          description: State not found
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+          
+    
 
 
 components:
@@ -332,6 +371,148 @@ components:
         email:
           type: string
           example: admin@example.org
+    Favorite:
+      type: object
+      required:
+        - id
+        - name
+        - data
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        data:
+          type: string
+          format: uuid
+          description: reference to data entry.
+        state:
+          type: string
+          format: uuid
+          description: |-
+            reference to CodeState entry.
+            Leave away to only mark data entry as favorite.
+
+    List:
+      type: object
+      required:
+        - id
+        - values
+      properties:
+        id:
+          type: string
+          format: uuid
+        values:
+          type: array
+          items:
+            type: string
+    Sort:
+      type: object
+      required:
+        - id
+        - values
+      properties:
+        id:
+          type: string
+          format: uuid
+        values:
+          type: array
+          items:
+            type: integer
+    Graph:
+      type: object
+      required:
+        - id
+        - nodes
+        - edges
+      properties:
+        id:
+          type: string
+          format: uuid
+        nodes:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - value
+            properties:
+              id:
+                type: string
+                format: uuid
+              value:
+                type: string
+        edges:
+          type: array
+          items:
+            type: object
+            required:
+              - from
+              - to
+            properties:
+              from:
+                type: string
+                format: uuid
+              to:
+                type: string
+                format: uuid
+    HistoryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        time:
+          type: string
+          format: timestamp
+        data:
+          type: string
+          format: uuid
+        algo:
+          type: string
+          format: uuid
+    CodeState:
+      type: object
+      required:
+        - id
+        - variables
+        - snippet
+        - line
+      properties:
+        id:
+          type: string
+          format: uuid
+        variables:
+          type: string
+          format: json
+        snippet:  
+          type: string
+          format: uuid
+        line:
+          type: integer
+  parameters:
+    offsetParam:
+      name: offset
+      in: query
+      description: number of items to skip
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+    limitParam:
+      name: limit
+      in: query
+      description: max. number of items to return
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 20
   responses:
     UnauthorizedError:
       description: API key is missing or invalid
