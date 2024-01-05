@@ -2,11 +2,11 @@ openapi: 3.0.3
 info:
   title: Softwarepraktikum
   description: |-
-    API spec for the server developed for the software technology internship at TU Chemnitz. 
-  license: 
+    API spec for the server developed for the software technology internship at TU Chemnitz.
+  license:
     name: AGPL V3.0
     url: https://www.gnu.org/licenses/agpl-3.0.en.html#license-text
-  version: '0.0.1'
+  version: "0.0.1"
 servers:
   - url: swp.dczlabs.xyz:3130
   - url: localhost:3130
@@ -15,15 +15,15 @@ paths:
     get:
       tags:
         - user
-      responses: 
-        '200':
+      responses:
+        "200":
           description: user found and returned
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
     post:
       tags:
         - user
@@ -31,15 +31,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-      responses: 
-        '200':
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
           description: user successfully created
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '409':
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "409":
           $ref: "#/components/responses/ConflictError"
     put:
       tags:
@@ -48,15 +48,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserPartial'
-      responses: 
-        '200':
+              $ref: "#/components/schemas/UserPartial"
+      responses:
+        "200":
           description: user got updated
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '404':
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
           description: user not found
   /user/{userId}:
     parameters:
@@ -70,67 +70,66 @@ paths:
     delete:
       tags:
         - user
-      responses: 
-        '200':
+      responses:
+        "200":
           description: user got deleted
-        '404':
+        "404":
           description: user not found
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
     get:
       tags:
         - user
-      responses: 
-        '200':
+      responses:
+        "200":
           description: user found and returned
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '404':
+                $ref: "#/components/schemas/User"
+        "404":
           description: user not found
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
   /users:
     get:
       tags:
         - user
-      responses: 
-        '200':
+      responses:
+        "200":
           description: all users returned
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
+                  $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
   /user/login:
     get:
       tags:
         - user
       security:
         - basicAuth: []
-      responses: 
-        '200':
+      responses:
+        "200":
           description: login successfull. apiKey-cookie set.
-        '401':
+        "401":
           description: login not successfull
-
 
   /list/algo:
     get:
       tags:
         - list
       responses:
-        '200':
+        "200":
           description: latest versions of all list algorithms
           content:
             application/json:
@@ -144,7 +143,7 @@ paths:
         - favorite
         - list
       responses:
-        '200':
+        "200":
           description: all list favorites of the user
           content:
             application/json:
@@ -162,9 +161,9 @@ paths:
             schema:
               $ref: "#/components/schemas/Favorite"
       responses:
-        '200':
+        "200":
           description: new favorite created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
   /list/favorite/{favoriteId}:
     delete:
@@ -172,25 +171,25 @@ paths:
         - favorite
         - list
       parameters:
-        - name: sortId
+        - name: favoriteId
           required: true
           in: path
           schema:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: favorite removed
-        '404':
+        "404":
           description: favorite not found
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
   /list/data:
     get:
       tags:
         - list
       responses:
-        '200':
+        "200":
           description: all list data ids & names owned by the user
           content:
             application/json:
@@ -205,9 +204,9 @@ paths:
             schema:
               $ref: "#/components/schemas/List"
       responses:
-        '200':
+        "200":
           description: data entry created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
   /list/data/{listId}:
     get:
@@ -221,22 +220,21 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: list returned
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/List"
-        '404':
+        "404":
           description: list not found
-
 
   /sort/algo:
     get:
       tags:
         - sort
       responses:
-        '200':
+        "200":
           description: latest versions of all sort algorithms
           content:
             application/json:
@@ -250,7 +248,7 @@ paths:
         - favorite
         - sort
       responses:
-        '200':
+        "200":
           description: all sort favorites of the user
           content:
             application/json:
@@ -268,9 +266,9 @@ paths:
             schema:
               $ref: "#/components/schemas/Favorite"
       responses:
-        '200':
+        "200":
           description: new favorite created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
   /sort/favorite/{favoriteId}:
     delete:
@@ -278,25 +276,25 @@ paths:
         - favorite
         - sort
       parameters:
-        - name: sortId
+        - name: favoriteId
           required: true
           in: path
           schema:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: favorite removed
-        '404':
+        "404":
           description: favorite not found
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
   /sort/data:
     get:
       tags:
         - sort
       responses:
-        '200':
+        "200":
           description: all sort data ids & names owned by the user
           content:
             application/json:
@@ -311,9 +309,9 @@ paths:
             schema:
               $ref: "#/components/schemas/Sort"
       responses:
-        '200':
+        "200":
           description: data entry created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
   /sort/data/{sortId}:
     get:
@@ -327,23 +325,21 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: sort returned
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Sort"
-        '404':
+        "404":
           description: sort not found
-
-
 
   /graph/algo:
     get:
       tags:
         - graph
       responses:
-        '200':
+        "200":
           description: latest versions of all graph algorithms
           content:
             application/json:
@@ -357,7 +353,7 @@ paths:
         - favorite
         - graph
       responses:
-        '200':
+        "200":
           description: all graph favorites of the user
           content:
             application/json:
@@ -375,9 +371,9 @@ paths:
             schema:
               $ref: "#/components/schemas/Favorite"
       responses:
-        '200':
+        "200":
           description: new favorite created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
   /graph/favorite/{favoriteId}:
     delete:
@@ -385,25 +381,25 @@ paths:
         - favorite
         - graph
       parameters:
-        - name: graphId
+        - name: favoriteId
           required: true
           in: path
           schema:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: favorite removed
-        '404':
+        "404":
           description: favorite not found
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
   /graph/data:
     get:
       tags:
         - graph
       responses:
-        '200':
+        "200":
           description: all graph data ids & names owned by the user
           content:
             application/json:
@@ -418,9 +414,9 @@ paths:
             schema:
               $ref: "#/components/schemas/Graph"
       responses:
-        '200':
+        "200":
           description: data entry created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
   /graph/data/{graphId}:
     get:
@@ -434,15 +430,14 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: graph returned
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Graph"
-        '404':
+        "404":
           description: graph not found
-
 
   /history/{type}:
     get:
@@ -462,7 +457,7 @@ paths:
         - $ref: "#/components/parameters/offsetParam"
         - $ref: "#/components/parameters/limitParam"
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
@@ -489,11 +484,10 @@ paths:
             schema:
               $ref: "#/components/schemas/HistoryEntry"
       responses:
-        '200':
+        "200":
           description: history entry created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
-
 
   /code-state/:
     post:
@@ -503,11 +497,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CodeState'
+              $ref: "#/components/schemas/CodeState"
       responses:
-        '200':
+        "200":
           description: State created
-        '409':
+        "409":
           $ref: "#/components/responses/ConflictError"
   /code-state/{stateId}:
     get:
@@ -521,7 +515,7 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
@@ -538,15 +532,14 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: State deleted
-        '404':
+        "404":
           description: State not found
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
 
-
-  /snippet/{snippetId}: 
+  /snippet/{snippetId}:
     get:
       tags:
         - snippet
@@ -558,24 +551,22 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Snippet"
           description: snippet returned
-        '404':
+        "404":
           description: snippet not found
-
 
   /brew-coffee:
     get:
       tags:
         - other
       responses:
-        '418':
+        "418":
           description: I'm a teapot
-
 
 components:
   securitySchemes:
@@ -748,7 +739,7 @@ components:
         variables:
           type: object
           additionalProperties: true
-        snippet:  
+        snippet:
           type: string
           format: uuid
         line:
