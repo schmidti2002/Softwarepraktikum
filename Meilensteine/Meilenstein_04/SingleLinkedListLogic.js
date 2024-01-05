@@ -1,5 +1,6 @@
 front = null
 
+// Container 'addDataToPosition' öffnen/schließen
 function addDataToPosition(){
     if(document.getElementById('addDataToPosition').style.display == "block"){
         hide()
@@ -13,6 +14,7 @@ function addDataToPosition(){
     }
 }
 
+// Container 'getDataFromPosition' öffnen/schließen
 function getDataFromPosition(){
     if(document.getElementById('getDataFromPosition').style.display == "block"){
         hide()
@@ -26,6 +28,7 @@ function getDataFromPosition(){
     }
 }
 
+// Container 'getPositionFromData' öffnen/schließen
 function getPositionFromData(){
     if(document.getElementById('getPositionFromData').style.display == "block"){
         hide()
@@ -39,6 +42,7 @@ function getPositionFromData(){
     }
 }
 
+// Container 'deleteDataFromPosition' öffnen/schließen
 function deleteDataFromPosition(){
     if(document.getElementById('deleteDataFromPosition').style.display == "block"){
         hide()
@@ -52,6 +56,7 @@ function deleteDataFromPosition(){
     }
 }
 
+// Container 'invertList' öffnen/schließen
 function invertList(){
     if(document.getElementById('invertList').style.display == "block"){
         hide()
@@ -65,6 +70,7 @@ function invertList(){
     }
 }
 
+// Container 'deleteList' öffnen/schließen
 function deleteList(){
     if(document.getElementById('deleteList').style.display == "block"){
         hide()
@@ -78,6 +84,7 @@ function deleteList(){
     }
 }
 
+// Alle Container schließen
 function hide(){
     document.getElementById('addDataToPosition').style.display = "none";
     document.getElementById('getDataFromPosition').style.display = "none";
@@ -87,6 +94,7 @@ function hide(){
     document.getElementById('deleteList').style.display = "none";
 }
 
+// Node-Klasse 
 class Node {
     // Möglicherweise sollte die Möglichkeit bestehen,
     // sich diese Klasse irgendwo anzeigen zu lassen
