@@ -135,7 +135,7 @@ function exe_ifElse(condition, lines, elsLines = []) {
     ];
 }
 
-class ExampleExecuter {
+class Executer {
     lines;
     breakpoints = [];
     state = {
@@ -145,13 +145,18 @@ class ExampleExecuter {
         line: 0
     };
     intervalId;
+    outputFunction = function () { };
+    algo_is_running;
+    timeout = 500
 
     constructor(lines){
         this.lines = lines;
     };
 
     step() {
+        //Abfrage vielleicht nicht nötig
         if(this.state.line === this.lines.length){
+            this.stop()
             return
         }
         const old_l = this.state.line;
@@ -175,25 +180,57 @@ class ExampleExecuter {
         var stepsCounter = 0;
         do {
             if (this.state.line == this.lines.length) {
+                this.stop()
                 return;
             }
             this.step();
         } while (!this.breakpoints.includes(this.state.line) && stepsCounter++ < 1000);
     };
 
-    play(onlyBreakpoints = true, afterStepFunc = function () { }) {
-        const self = this;
-        this.intervalId = setInterval(function () {
-            if (onlyBreakpoints) {
-                self.nextBreakpoint()
-            } else {
-                self.step()
-            }
-            afterStepFunc()
-        }, 100)
+    start(){
+        if(!this.algo_is_running){
+            this.state.line = 0
+            this.state.vars.old_arr = [...this.state.vars.arr]
+            this.algo_is_running = true
+        }
+    }
+
+    stop(){
+        this.pause()
+        this.algo_is_running = false
+        this.outputFunction()
+    }
+
+    // Button Play
+    play() {
+        this.start()
+        if (typeof intervalId === 'undefined') {
+            const self = this;
+            this.intervalId = setInterval(function () {
+                self.nextBreakpoint()      
+                self.outputFunction()
+            }, this.timeout)
+        }
     };
 
-    stop() {
+    // Button Pause
+    pause() {
         clearInterval(this.intervalId)
+        this.outputFunction()
     };
+    
+    // Button Nächster Schritt
+    next(){
+        this.start()
+        this.pause()
+        this.nextBreakpoint()
+        this.outputFunction()
+    }
+
+    // Button Reset
+    reset(){
+        this.stop()
+        this.state.vars.arr = [...this.state.vars.old_arr]
+        this.outputFunction()
+    }
 }
