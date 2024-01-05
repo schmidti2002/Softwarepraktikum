@@ -31,6 +31,7 @@ function testRegisterAndLogin(){
 
 //testet alle BubbleSort Funktionen
 function BubbleSortTest(){
+    console.log("BubbleSortTest beginnt")
 
     //generateRandomNumbers() und generate() werden zsm geprüft
     console.log("generateRandomNumbers() & generate() Test beginnt")
@@ -73,227 +74,54 @@ function BubbleSortTest(){
     }
     console.log("parseArray() Test wurde beendet")
     console.log("")
+    console.log("BubbleSortTest beendet")
 }
 
-function AlgoExecuterTest(){
+function ContentOrganizerTest(){
+    console.log("ContentOrganizerTest beginnt")
 
+    console.log("BubbleSort Tests")
+    loadBubbleSort()
+    //Beispielarrays
+    var array = [[1,2,3,4,5], [5,4,3,2,1], [1,1,1,1,1,1,1,1,1], [50,35,40,17,30,45,5,20,25,10], [12,9,0,5,13,27,42,3,2,1]]
+    var solutionPlay = [[1,2,3,4,5], [1,2,3,4,5], [1,1,1,1,1,1,1,1,1], [5,10,17,20,25,30,35,40,45,50],[0,1,2,3,5,9,12,13,27,42]]
+    var solutionNext = [[[1,2,3,4,5], [4,5,3,2,1], [1,1,1,1,1,1,1,1,1], [35,50,40,17,30,45,5,20,25,10], [9,12,0,5,13,27,42,3,2,1]],
+    [[1,2,3,4,5], [4,3,5,2,1], [1,1,1,1,1,1,1,1,1], [35,40,50,17,30,45,5,20,25,10], [9,0,12,5,13,27,42,3,2,1]],
+    [[1,2,3,4,5], [4,3,2,5,1], [1,1,1,1,1,1,1,1,1], [35,40,17,50,30,45,5,20,25,10], [9,0,5,12,13,27,42,3,2,1]],
+    [[1,2,3,4,5], [4,3,2,1,5], [1,1,1,1,1,1,1,1,1], [35,40,17,30,50,45,5,20,25,10], [9,0,5,12,13,27,3,42,2,1]],
+    [[1,2,3,4,5], [3,4,2,1,5], [1,1,1,1,1,1,1,1,1], [35,40,17,30,45,50,5,20,25,10], [9,0,5,12,13,27,3,2,42,1]],
+    [[1,2,3,4,5], [3,2,4,1,5], [1,1,1,1,1,1,1,1,1], [35,40,17,30,45,5,50,20,25,10], [9,0,5,12,13,27,3,2,1,42]],
+    [[1,2,3,4,5], [3,2,1,4,5], [1,1,1,1,1,1,1,1,1], [35,40,17,30,45,5,20,50,25,10], [0,9,5,12,13,27,3,2,1,42]],
+    [[1,2,3,4,5], [2,3,1,4,5], [1,1,1,1,1,1,1,1,1], [35,40,17,30,45,5,20,25,50,10], [0,5,9,12,13,27,3,2,1,42]],
+    [[1,2,3,4,5], [2,1,3,4,5], [1,1,1,1,1,1,1,1,1], [35,40,17,30,45,5,20,25,10,50], [0,5,9,12,13,3,27,2,1,42]],
+    [[1,2,3,4,5], [1,2,3,4,5], [1,1,1,1,1,1,1,1,1], [35,17,40,30,45,5,20,25,10,50], [0,5,9,12,13,3,2,27,1,42]]]
 
-}
-/*
-function exe_start_block(state){
-    state.varsStack.push(Object.keys(state.vars).filter(n => state.vars[n] !== undefined));
-}
-
-function exe_end_block(state){
-    existingVars = state.varsStack.pop();
-    Object.keys(state.vars).forEach((n) => {
-            if (!existingVars.includes(n)) {
-                state.vars[n] = undefined;
-            }
-        });
-}
-
-function exe_block(lines) {
-    return [
-        {
-            f: function (s) {
-                exe_start_block(s);
-                return s;
-            }
-        },
-        ...lines,
-        {
-            f: function (s) {
-                exe_end_block(s);
-                return s;
-            }
-        }
-
-    ];
-}
-
-function exe_for(counter, start, condition, step, lines) {
-    return [
-        {
-            f: function (s) {
-                s.vars[counter] = start(s);
-                if (!condition(s)) {
-                    s.line += lines.length + 2;
-                }
-                return s;
-            }
-        },
-        {
-            f: function (s) {
-                exe_start_block(s);
-                if (lines[0]) {
-                    return lines[0].f(s);
-                }
-                return s;
-            }
-        },
-        ...lines.slice(1),
-        {
-            f: function (s) {
-                exe_end_block(s);
-                s.vars[counter] += typeof step === "number" ? step : step(s);
-                if (condition(s)) {
-                    s.line -= lines.length;
-                    return s;
-                }
-                s.vars[counter] = undefined;
-                return s;
-            }
-        },
-    ];
-}
-
-function exe_while(condition, lines) {
-    [
-        {
-            f: function (s) {
-                exe_start_block(s);
-                if (!condition(s)) {
-                    s.line += lines.length + 2;
-                }
-                return s;
-            }
-        },
-        ...lines,
-        {
-            f: function (s) {
-                s.line -= lines.length + 1;
-                exe_end_block(s);
-                return s;
-            }
-        },
-    ];
-}
-
-function exe_ifElse(condition, lines, elsLines = []) {
-    return [
-        {
-            f: function (s) {
-                exe_start_block(s);
-                if (!condition(s)) {
-                    s.line += lines.length + 2;
-                }
-                return s;
-            }
-        },
-        ...lines,
-        {
-            f: function (s) {
-                exe_end_block(s);
-                s.line += elsLines.length + 1;
-                if(elsLines.length){
-                    exe_start_block(s);
-                }
-                return s;
-            }
-        },
-        ...elsLines,
-        ...(elsLines.length ? [{f: function(s) {exe_end_block(s);}}] : [])
-    ];
-}
-
-class Executer {
-    lines;
-    breakpoints = [];
-    state = {
-        varsStack: [],
-        vars: {
-        },
-        line: 0
-    };
-    intervalId;
-    outputFunction = function () { };
-    algo_is_running;
-    timeout = 500
-
-    constructor(lines){
-        this.lines = lines;
-    };
-
-    step() {
-        //Abfrage vielleicht nicht nötig
-        if(this.state.line === this.lines.length){
-            this.stop()
-            return
-        }
-        const old_l = this.state.line;
-        const f = this.lines[this.state.line].f;
-        if (f) {
-            this.state = f(this.state);
-        }
-        if (old_l === this.state.line) {
-            this.state.line += 1;
-        } else if (typeof this.state.line === "string") {
-            for (let i = 0; i < this.lines.length; i++) {
-                if (this.lines[i].l === this.state.line) {
-                    this.state.line = i;
-                    break;
-                }
-            }
-        }
-    };
-
-    nextBreakpoint() {
-        var stepsCounter = 0;
-        do {
-            if (this.state.line == this.lines.length) {
-                this.stop()
-                return;
-            }
-            this.step();
-        } while (!this.breakpoints.includes(this.state.line) && stepsCounter++ < 1000);
-    };
-
-    start(){
-        if(!this.algo_is_running){
-            this.state.line = 0
-            this.state.vars.old_arr = [...this.state.vars.arr]
-            this.algo_is_running = true
+    console.log("exec.play() Test startet")
+    //prüft ob erwartetes und reales Ergebnis bei exec.play gleich sind
+    for(var i = 0; i < array.length; i++){
+        document.getElementById('Array').value = array[i]
+        parseArray()
+        exec.play()
+        if(document.getElementById('Array').value != solutionPlay[i]){
+            console.log("Fehler bei exec.play()! Beispiel: " + array[i] + "; Ergebnis: " + document.getElementById('Array').value + "; richtige Lösung: " + solutionPlay[i])
         }
     }
-
-    stop(){
-        this.pause()
-        this.algo_is_running = false
-        this.outputFunction()
-    }
-
-    // Button Play
-    play() {
-        this.start()
-        if (typeof intervalId === 'undefined') {
-            const self = this;
-            this.intervalId = setInterval(function () {
-                self.nextBreakpoint()      
-                self.outputFunction()
-            }, this.timeout)
-        }
-    };
-
-    // Button Pause
-    pause() {
-        clearInterval(this.intervalId)
-        this.outputFunction()
-    };
+    console.log("exec.play() Test beendet")
     
-    // Button Nächster Schritt
-    next(){
-        this.start()
-        this.pause()
-        this.nextBreakpoint()
-        this.outputFunction()
+    console.log("exec.next() Test startet")
+    //prüft ob erwartetes und reales Ergebnis bei exec.next gleich sind
+    for(var i = 0; i < array.length; i++){
+        document.getElementById('Array').value = array[i]
+        parseArray()
+        for(var j = 0; j < solutionNext.length; j++){
+            exec.next()
+            if(document.getElementById('Array').value != solutionNext[j][i]){
+                console.log("Fehler bei exec.next()! Beispiel: " + array[i] + "; Schritt " + j + "; Ergebnis: " + document.getElementById('Array').value + "; richtige Lösung: " + solutionNext[j][i])
+            }
+        }
     }
+    console.log("exec.next() Test beendet")
+    console.log("BubbleSort Tests beendet")
 
-    // Button Reset
-    reset(){
-        this.stop()
-        this.state.vars.arr = [...this.state.vars.old_arr]
-        this.outputFunction()
-    }
+    
 }
-*/
