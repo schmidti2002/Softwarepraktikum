@@ -1,4 +1,5 @@
-/* Minimal usage example for BubbleSort:
+/* 
+Minimal usage example for BubbleSort:
 lines = [
     { f: function (s) { s.vars.temp = undefined; return s; } },
     { f: function (s) { s.vars.n = s.vars.arr.length; return s; } },
@@ -15,6 +16,7 @@ lines = [
 
 exec = new ExampleExecuter(lines);
 exec.state.vars.arr = [1,4,2,3];
+exec.outputFunction = () => showOutput(); // oder eine andere Funktion
 exec.play(false, () => console.log(JSON.stringify(exec.state.vars.arr)));
 */
 
@@ -136,8 +138,8 @@ function exe_ifElse(condition, lines, elsLines = []) {
 }
 
 class Executer {
-    lines;
-    breakpoints = [];
+    lines;      // Algo siehe oben: Minimal usage example for BubbleSort
+    breakpoints = [];   // Die lines, bei denen der Algo visualisiert wird. Zählweise siehe oben, immer eine line zählt 1
     state = {
         varsStack: [],
         vars: {
@@ -145,16 +147,18 @@ class Executer {
         line: 0
     };
     intervalId;
-    outputFunction = function () { };
+    outputFunction = function () { };   // Funktion, um den AoD zu visualisieren
     algo_is_running;
-    timeout = 500
+    timeout = 500       // Zeit zwischen den Breakpoints, wenn der Algo durchläuft
 
+    // Konstruktor
     constructor(lines){
         this.lines = lines;
     };
 
+    // private; Führt eine line aus
     step() {
-        //Abfrage vielleicht nicht nötig
+        // Abfrage vielleicht nicht nötig
         if(this.state.line === this.lines.length){
             this.stop()
             return
@@ -176,6 +180,7 @@ class Executer {
         }
     };
 
+    // private; Ruft step() bis zum nächsten Breakpoint auf
     nextBreakpoint() {
         var stepsCounter = 0;
         do {
@@ -187,6 +192,7 @@ class Executer {
         } while (!this.breakpoints.includes(this.state.line) && stepsCounter++ < 1000);
     };
 
+    // private; initialisiert den Algo, falls er noch nicht läuft
     start(){
         if(!this.algo_is_running){
             this.state.line = 0
@@ -195,6 +201,7 @@ class Executer {
         }
     }
 
+    // private; stoppt den Algo
     stop(){
         this.pause()
         this.algo_is_running = false
@@ -204,7 +211,7 @@ class Executer {
     // Button Play
     play() {
         this.start()
-        if (typeof intervalId === 'undefined') {
+        if (typeof intervalId === 'undefined') {    // Prüft, das play() noch nicht läuft
             const self = this;
             this.intervalId = setInterval(function () {
                 self.nextBreakpoint()      

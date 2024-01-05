@@ -1,5 +1,6 @@
 const content = document.getElementById("mainContainer")
 
+// Startseite fetchen
 loadStartpage()
 function loadStartpage(){
     fetch("Startpage.html")
@@ -7,6 +8,7 @@ function loadStartpage(){
             .then(data => {content.innerHTML = data});
 }
 
+// SingleLinkedList fetchen und Standardbeispiel laden
 function loadSingleLinkedList(){
     fetch("SingleLinkedList.html")
             .then(response => response.text())
@@ -18,18 +20,20 @@ function loadSingleLinkedList(){
             });
 }
 
+// DirectedUnweightedGraph fetchen und Standardbeispiel laden
 function loadDirectedUnweightedGraph(){
     fetch("DirectedUnweightedGraph.html")
             .then(response => response.text())
             .then(data => {content.innerHTML = data});
 }
 
+// BubbleSort fetchen und Standardbeispiel laden
 function loadBubbleSort(){
     fetch("BubbleSort.html")
         .then(response => response.text())
         .then(data => {
             content.innerHTML = data;
-            exec = new Executer(lines);
+            exec = new Executer(BubbleSortLines);
             exec.outputFunction = () => showOutput();
             exec.state.vars.arr = [50,35,40,15,30,45,5,20,25,10];
             exec.breakpoints = [8];
@@ -37,13 +41,14 @@ function loadBubbleSort(){
         })          
 }
 
+// MergeSort fetchen und Standardbeispiel laden
 function loadMergeSort(){
     fetch("MergeSort.html")
             .then(response => response.text())
             .then(data => {content.innerHTML = data});
 }
 
-
+// Größe des Containers für das Benutzerprofil anpassen, sodass er sich rechts am Rand öffnet/schließt
 showUserEditor()
 function showUserEditor() {
     var container = document.getElementById('container');
