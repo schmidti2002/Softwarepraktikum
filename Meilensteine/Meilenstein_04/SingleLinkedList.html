@@ -1,111 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        #graph {
-            display: none;
-            justify-content: flex-start;
-            align-items: flex-start;
-            height: 510px;
-            border: 1px solid #ccc;
-            margin-top: 20px;
-            overflow: hidden;
-            position: relative;
-            width: 100%; /* Adjust the width as needed */
-            max-width: 1000px; /* Add a maximum width if desired */
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .node {
-            width: 40px;
-            height: 40px;
-            background-color: #004f84;
-            color: #fff;
-            text-align: center;
-            line-height: 40px; /* Set line-height to the height of the node for vertical alignment */
-            border-radius: 50%;
-            position: absolute;
-        }
-
-        .arrow {
-            position: absolute;
-            width: 40px;
-            height: 2px;
-            background-color: #666666;
-        }
-
-        .arrow_tip {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 8px 0 8px 12px; /* Ändern Sie die Werte nach Bedarf */
-            border-color: transparent transparent transparent #666666; /* Ändern Sie die Farbe nach Bedarf */
-            top: -6px; /* Einstellen Sie die Position vertikal nach Bedarf */
-            left: 100%; /* Positionieren Sie es am rechten Ende des Pfeils */
-        }
-    </style>
-</head>
-<body>
-<!-- Visualisierungscontainer -->
-<div id="graph-container">
-    <div id="graph"></div>
-</div>
-
-<br>
-<br>
-SingleLinkedList
-<button type="button" onclick="fullReset()">Zurücksetzen</button>
-<button type="button" onclick="">Zu Favoriten hinzufügen</button>
-<br>
-<br> 
-<!-- Ausgabe-Bereich -->
-<div id="ausgabe">
-</div>   
-<br> 
-<button type="button" onclick="addDataAtPositionDisplayer()">Daten an Position hinzufügen</button>
-<button type="button" onclick="getDataFromPositionDisplayer()">Daten von Position zurückgeben</button>
-<button type="button" onclick="getPositionFromDataDisplayer()">Position von Daten zurückgeben</button>
-<button type="button" onclick="deleteDataFromPositionDisplayer()">Daten an Position löschen</button>
-<button type="button" onclick="invertListDisplayer()">Liste invertieren</button>
-<button type="button" onclick="deleteListDisplayer()">Liste löschen</button>
-<br>    
-<br>
-<div id="addDataToPosition" style="display: none;">
-    Position:
-    <input type="text" id="position">
-    Daten:
-    <input type="text" id="data">
-    <button type="button" onclick="addDataAtPosition()">Go</button> 
-</div>
-<div id="getDataFromPosition" style="display: none;">
-    Position:
-    <input type="text" id="getDataInput">
-    <button type="button" onclick="getDataFromPosition()">Go</button> 
-    <div id="getDataResult"></div> <!-- Ausgabe div -->
-</div>
-<div id="getPositionFromData" style="display: none;">
-    Daten:
-    <input type="text" id="getPositionInput">
-    <button type="button" onclick="getPositionFromData()">Go</button>
-    <div id="getPositionResult"></div> <!-- Ausgabe div -->
-</div>
-<div id="deleteDataFromPosition" style="display: none;">
-    Position:
-    <input type="text" id="deleteDataInput">
-    <button type="button" onclick="deleteDataFromPosition()">Go</button>
-    <div id="deleteDataResult"></div> <!-- Ausgabe div -->
-</div>
-<!-- Man könnte es auch ohne Displayer machen, sodass er direkt mit Button "Liste invertieren" invertiert/"Liste löschen" löscht. -->
-<div id="invertList" style="display: none;">
-    <button type="button" onclick="invertList()">Go</button> 
-</div>
-<div id="deleteList" style="display: none;">
-    <button type="button" onclick="deleteList()">Go</button> 
-</div>
-</div>
-</body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+         #graph {
+         display: none;
+         justify-content: flex-start;
+         align-items: flex-start;
+         height: 510px;
+         border: 1px solid #ccc;
+         margin-top: 20px;
+         overflow: hidden;
+         position: relative;
+         width: 100%;
+         max-width: 1000px;
+         margin-left: auto;
+         margin-right: auto;
+         }
+         .node {
+         width: 40px;
+         height: 40px;
+         background-color: #004f84;
+         color: #fff;
+         text-align: center;
+         line-height: 40px;
+         border-radius: 50%;
+         position: absolute;
+         }
+         .arrow {
+         position: absolute;
+         width: 40px;
+         height: 2px;
+         background-color: #666666;
+         }
+         .arrow_tip {
+         position: absolute;
+         width: 0;
+         height: 0;
+         border-style: solid;
+         border-width: 8px 0 8px 12px;
+         border-color: transparent transparent transparent #666666;
+         top: -6px; /* Einstellen der vertikalen Position */
+         left: 100%; /* Positionieren am rechten Ende des Pfeils */
+         }
+      </style>
+   </head>
+   <body>
+      <!-- Visualisierungscontainer -->
+      <div id="graph-container">
+         <div id="graph"></div>
+      </div>
+      <br>
+      <br>
+      SingleLinkedList
+      <button type="button" onclick="fullReset()">Zurücksetzen</button>
+      <button type="button" onclick="">Zu Favoriten hinzufügen</button>
+      <br>
+      <br> 
+      <!-- Ausgabe-Bereich für Print -->
+      <div id="ausgabe"></div>
+      <br>
+      <!-- Displayer: steuern die Anzeige der Bedienflächen für die SLL -->
+      <button type="button" onclick="addDataAtPositionDisplayer()">Daten an Position hinzufügen</button>
+      <button type="button" onclick="getDataFromPositionDisplayer()">Daten von Position zurückgeben</button>
+      <button type="button" onclick="getPositionFromDataDisplayer()">Position von Daten zurückgeben</button>
+      <button type="button" onclick="deleteDataFromPositionDisplayer()">Daten an Position löschen</button>
+      <button type="button" onclick="invertListDisplayer()">Liste invertieren</button>
+      <button type="button" onclick="deleteListDisplayer()">Liste löschen</button>
+      <br>    
+      <br>
+      <div id="addDataToPosition" style="display: none;">
+         Position:
+         <input type="text" id="position">
+         Daten:
+         <input type="text" id="data">
+         <button type="button" onclick="addDataAtPosition()">Go</button> 
+      </div>
+      <div id="getDataFromPosition" style="display: none;">
+         Position:
+         <input type="text" id="getDataInput">
+         <button type="button" onclick="getDataFromPosition()">Go</button> 
+         <div id="getDataResult"></div> <!-- Ausgabe div -->
+      </div>
+      <div id="getPositionFromData" style="display: none;">
+         Daten:
+         <input type="text" id="getPositionInput">
+         <button type="button" onclick="getPositionFromData()">Go</button>
+         <div id="getPositionResult"></div> <!-- Ausgabe div -->
+      </div>
+      <div id="deleteDataFromPosition" style="display: none;">
+         Position:
+         <input type="text" id="deleteDataInput">
+         <button type="button" onclick="deleteDataFromPosition()">Go</button>
+         <div id="deleteDataResult"></div> <!-- Ausgabe div -->
+      </div>
+      <!-- Man könnte es auch ohne Displayer machen, sodass er direkt mit Button "Liste invertieren" invertiert/"Liste löschen" löscht. -->
+      <div id="invertList" style="display: none;">
+         <button type="button" onclick="invertList()">Go</button> 
+      </div>
+      <div id="deleteList" style="display: none;">
+         <button type="button" onclick="deleteList()">Go</button> 
+      </div>
+      </div>
+   </body>
 </html>
