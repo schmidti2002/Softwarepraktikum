@@ -25,3 +25,4 @@ Bootstrap - einfach zu lernen & kann alles was wir brauchen
 -> paralleles Arbeiten
 ### Misslungenes
 -> Arbeitsaufteilung Teammitglieder
+-> CleanCode-Regeln zu Beginn eher weniger beachtet -> führte zu einigen Überarbeitungen -> Zeitverlust
