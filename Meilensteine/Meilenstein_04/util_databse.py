@@ -26,7 +26,7 @@ def database_create(database):
             current_tables.update({x[0]:1})
 
     if not current_tables.get("User"):
-        create_event="CREATE TABLE `Ticketsystem`.`user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(80) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `rights` BOOLEAN NULL DEFAULT NULL , `session_token` VARCHAR(64) NOT NULL , PRIMARY KEY (`user_id`, `username`, `email`)) ENGINE = InnoDB;" 
+        create_event="CREATE TABLE `Ticketsystem`.`user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `rights` BOOLEAN NULL DEFAULT NULL , `session_token` VARCHAR(64) NOT NULL , PRIMARY KEY (`user_id`)),  UNIQUE (`username`) ENGINE = InnoDB;" 
         util_db_cursor.execute(create_event)
         database.commit()
 
