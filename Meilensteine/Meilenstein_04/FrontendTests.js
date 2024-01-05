@@ -77,9 +77,9 @@ function BubbleSortTest(){
 
 function AlgoExecuterTest(){
 
-    
-}
 
+}
+/*
 function exe_start_block(state){
     state.varsStack.push(Object.keys(state.vars).filter(n => state.vars[n] !== undefined));
 }
@@ -296,3 +296,4 @@ class Executer {
         this.outputFunction()
     }
 }
+*/
