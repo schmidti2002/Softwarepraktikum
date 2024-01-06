@@ -25,8 +25,8 @@ def database_create(database):
         else:
             current_tables.update({x[0]:1})
 
-    if not current_tables.get("user"):
-        execute_sql="CREATE TABLE `user` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL , `session_token` VARCHAR(64) NOT NULL , `rights` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`user_id`), UNIQUE (`username`)) ENGINE = InnoDB;" 
+    if not current_tables.get("User"):
+        execute_sql="CREATE TABLE `User` ( `user_id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(80) NOT NULL , `email` VARCHAR(100) NOT NULL , `password` VARCHAR(64) NOT NULL , `time` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL , `session_token` VARCHAR(64) NOT NULL , `rights` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`user_id`), UNIQUE (`username`)) ENGINE = InnoDB;" 
         util_db_cursor.execute(execute_sql)
         database.commit()
 
@@ -42,6 +42,16 @@ def database_create(database):
 
     if not current_tables.get("ListNodes"):
         execute_sql="CREATE TABLE `ListNodes` ( `node_id` INT NOT NULL AUTO_INCREMENT , `value` INT NULL DEFAULT NULL , `next_node` INT NULL DEFAULT NULL , PRIMARY KEY (`node_id`)) ENGINE = InnoDB;"
+        util_db_cursor.execute(execute_sql)
+        database.commit()
+
+    if not current_tables.get("Favorits"):
+        execute_sql="CREATE TABLE `Favorits` ( `favorit_id` INT NOT NULL AUTO_INCREMENT , `struct_id` INT NOT NULL , `user_id` INT NOT NULL , `place` INT NOT NULL , PRIMARY KEY (`favorit_id`)) ENGINE = InnoDB;"
+        util_db_cursor.execute(execute_sql)
+        database.commit()
+
+    if not current_tables.get("Chronik"):
+        execute_sql="CREATE TABLE `Chronik` ( `chronik_id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `struct_id` INT NOT NULL , `sequence` INT NOT NULL , PRIMARY KEY (`chronik_id`)) ENGINE = InnoDB;"
         util_db_cursor.execute(execute_sql)
         database.commit()
 
