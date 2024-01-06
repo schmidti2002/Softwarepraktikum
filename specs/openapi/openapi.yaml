@@ -575,7 +575,7 @@ components:
       scheme: basic
     keyAuth:
       type: apiKey
-      in: "cookie"
+      in: cookie
       name: apiKey
   schemas:
     User:
@@ -731,19 +731,16 @@ components:
         - id
         - variables
         - snippet
-        - line
       properties:
         id:
           type: string
           format: uuid
-        variables:
+        state:
           type: object
           additionalProperties: true
         snippet:
           type: string
           format: uuid
-        line:
-          type: integer
     Algorithm:
       type: object
       required:
