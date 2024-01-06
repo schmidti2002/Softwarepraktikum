@@ -140,7 +140,6 @@ paths:
   /list/favorite:
     get:
       tags:
-        - favorite
         - list
       responses:
         "200":
@@ -153,7 +152,6 @@ paths:
                   $ref: "#/components/schemas/Favorite"
     post:
       tags:
-        - favorite
         - list
       requestBody:
         content:
@@ -168,7 +166,6 @@ paths:
   /list/favorite/{favoriteId}:
     delete:
       tags:
-        - favorite
         - list
       parameters:
         - name: favoriteId
@@ -245,7 +242,6 @@ paths:
   /sort/favorite:
     get:
       tags:
-        - favorite
         - sort
       responses:
         "200":
@@ -258,7 +254,6 @@ paths:
                   $ref: "#/components/schemas/Favorite"
     post:
       tags:
-        - favorite
         - sort
       requestBody:
         content:
@@ -273,7 +268,6 @@ paths:
   /sort/favorite/{favoriteId}:
     delete:
       tags:
-        - favorite
         - sort
       parameters:
         - name: favoriteId
@@ -350,7 +344,6 @@ paths:
   /graph/favorite:
     get:
       tags:
-        - favorite
         - graph
       responses:
         "200":
@@ -363,7 +356,6 @@ paths:
                   $ref: "#/components/schemas/Favorite"
     post:
       tags:
-        - favorite
         - graph
       requestBody:
         content:
@@ -378,7 +370,6 @@ paths:
   /graph/favorite/{favoriteId}:
     delete:
       tags:
-        - favorite
         - graph
       parameters:
         - name: favoriteId
