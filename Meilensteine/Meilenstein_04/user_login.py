@@ -12,7 +12,7 @@ import configparser
 # wichtige 
 from hashlib import sha256
 import mysql.connector
-
+from flask import make_response
 database = mysql.connector.connect(host=host_url,user=user_name,passwd=password,db=Datenbank,auth_plugin='mysql_native_password')
 
 class login(Resource):
@@ -38,5 +38,6 @@ class login(Resource):
             # SQL-Abfrage
             cursor.execute("UPDATE User SET session_token = %s WHERE username = %s", (token, username))
             # Token zurückgeben
-            return ({"Token":token},200)
-        
+            response = make_response('Login erfolgreich')
+            response.set_cookie('sessiontoken', token)  # Cookie setzen, um den Session-Token zu speichern
+            return response
