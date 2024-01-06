@@ -13,10 +13,7 @@ function loadSingleLinkedList(){
     fetch("SingleLinkedList.html")
             .then(response => response.text())
             .then(data => {content.innerHTML = data
-                addDataAtPosition_raw(0, "A")
-                addDataAtPosition_raw(1, "B")
-                addDataAtPosition_raw(2, "C")
-                print()
+                SLL = new SingleLinkedList()
             });
 }
 
@@ -33,11 +30,7 @@ function loadBubbleSort(){
         .then(response => response.text())
         .then(data => {
             content.innerHTML = data;
-            exec = new Executer(BubbleSortLines);
-            exec.outputFunction = () => showOutput();
-            exec.state.vars.arr = [50,35,40,15,30,45,5,20,25,10];
-            exec.breakpoints = [8];
-            exec.outputFunction();
+            BBS = new BubbleSort()
         })          
 }
 

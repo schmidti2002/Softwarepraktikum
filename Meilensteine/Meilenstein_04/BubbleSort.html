@@ -48,27 +48,27 @@
     </div>
     <br> 
     <!-- Buttons um die unteren Container zu öffnen/schließen -->
-    <button type="button1" onclick="newValues()">Neue Werte</button>
-    <button type="button2" onclick="editValues(); showArray()">Werte bearbeiten</button>
-    <button type="button3" onclick="openSort()">Sortieren</button>
+    <button type="button1" onclick="BBS.newValues()">Neue Werte</button>
+    <button type="button2" onclick="BBS.editValues(); showArray()">Werte bearbeiten</button>
+    <button type="button3" onclick="BBS.openSort()">Sortieren</button>
     <br>
     <br>
     <div id="newValues" style="display: none;">
         Anzahl der neuen zufälligen Werte:
         <input type="text" id="userInput">
-        <button type="button" onclick="generateRandomNumbers(); hide()">Go</button>        
+        <button type="button" onclick="BBS.generateRandomNumbers(); BBS.hide()">Go</button>        
     </div>
     <div id="editValues" style="display: none;">
         Array bearbeiten: 
         <input type="text" id="Array">
-        <button type="button" onclick="parseArray(); hide()">Go</button>
+        <button type="button" onclick="BBS.parseArray(); BBS.hide()">Go</button>
     </div>
     <div id="openSort" style="display: none;">
         <!-- // Buttons für die Steurerung der Visualisierung -->
         Abspielen:
-        <button type="button" onclick="exec.play()">Play</button>
-        <button type="button" onclick="exec.pause()">Pause</button>
-        <button type="button" onclick="exec.next()">Nächster Schritt</button>
-        <button type="button" onclick="exec.reset()">Reset</button>
+        <button type="button" onclick="BBS.exec.play()">Play</button>
+        <button type="button" onclick="BBS.exec.pause()">Pause</button>
+        <button type="button" onclick="BBS.exec.next()">Nächster Schritt</button>
+        <button type="button" onclick="BBS.exec.reset()">Reset</button>
     </div> 
 </div>

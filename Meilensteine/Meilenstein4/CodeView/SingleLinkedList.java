@@ -79,7 +79,7 @@ public class SingleLinkedList {
 	}
 
 	// Methode ist Button zugeschrieben und muss angezeigt werden
-	public boolean invert() {
+	public boolean invertList() {
 		if (front == null) {
 			System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: list is empty");
 			return false;
