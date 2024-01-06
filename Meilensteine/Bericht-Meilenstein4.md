@@ -44,10 +44,10 @@ Bootstrap - einfach zu lernen & kann alles was wir brauchen
 <p>Das parallele Arbeiten lief im Backend mithilfe des Branching-Guides und der Bildung kleiner Gruppen relativ gut. Die Absprache vermied Probleme, weshalb der Fortschritt bei der Frontend-Programmierung relativ zügig voranschritt.</p>
 
 ### Misslungenes
-<p>Die Arbeitsaufteilung unter den Mitgliedern innerhalb der beiden Gruppen lief schlechter als in den letzten Meilensteinen. Lostheit, </p>
+<p>Die Arbeitsaufteilung unter den Mitgliedern innerhalb der beiden Gruppen lief schlechter als in den letzten Meilensteinen. Es fehlte an vielen Stellen Hilfe von anderen Teammitgliedern, welche sich trotz der garantierten Erreichbarkeit nicht beteiligten. Weihnachten und Neujahr hatten natürlich größere Auswirkungen auf die Arbeitszeiten in diesen Zeiträumen, jedoch waren bei einigen Teammitgliedern auch abseits dieser nur wenig Beiträge zu vermerken.</p>
 
--> Arbeitsaufteilung Teammitglieder
--> fehlende Teammitglieder
+X Arbeitsaufteilung Teammitglieder
+X fehlende Teammitglieder
 -> CleanCode-Regeln zu Beginn eher weniger beachtet -> führte zu einigen Überarbeitungen -> Zeitverlust
 -> Planverfolgung im Backend ein wenig misslungen
 --> viel auf Weihnachten und Neujahr
