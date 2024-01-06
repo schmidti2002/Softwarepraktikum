@@ -30,8 +30,8 @@ function testRegisterAndLogin(){
 }
 
 //testet alle BubbleSort Funktionen
-function BubbleSortTest(){
-    console.log("BubbleSortTest beginnt")
+function HelpFunctionsTest(){
+    console.log("Hilfsfunktionen Test beginnt")
 
     //generateRandomNumbers() und generate() werden zsm geprüft
     console.log("generateRandomNumbers() & generate() Test beginnt")
@@ -74,7 +74,7 @@ function BubbleSortTest(){
     }
     console.log("parseArray() Test wurde beendet")
     console.log("")
-    console.log("BubbleSortTest beendet")
+    console.log("HilfsfunktionenTest beendet")
 }
 
 function ContentOrganizerTest(){
@@ -96,7 +96,7 @@ function ContentOrganizerTest(){
     [[1,2,3,4,5], [2,1,3,4,5], [1,1,1,1,1,1,1,1,1], [35,40,17,30,45,5,20,25,10,50], [0,5,9,12,13,3,27,2,1,42]],
     [[1,2,3,4,5], [1,2,3,4,5], [1,1,1,1,1,1,1,1,1], [35,17,40,30,45,5,20,25,10,50], [0,5,9,12,13,3,2,27,1,42]]]
 
-    console.log("exec.play() Test startet")
+    console.log("BubbleSort exec.play() Test startet")
     //prüft ob erwartetes und reales Ergebnis bei exec.play gleich sind
     for(var i = 0; i < array.length; i++){
         document.getElementById('Array').value = array[i]
@@ -106,9 +106,9 @@ function ContentOrganizerTest(){
             console.log("Fehler bei exec.play()! Beispiel: " + array[i] + "; Ergebnis: " + document.getElementById('Array').value + "; richtige Lösung: " + solutionPlay[i])
         }
     }
-    console.log("exec.play() Test beendet")
+    console.log("BubbleSort exec.play() Test beendet")
     
-    console.log("exec.next() Test startet")
+    console.log("BubbleSort exec.next() Test startet")
     //prüft ob erwartetes und reales Ergebnis bei exec.next gleich sind
     for(var i = 0; i < array.length; i++){
         document.getElementById('Array').value = array[i]
@@ -120,8 +120,43 @@ function ContentOrganizerTest(){
             }
         }
     }
-    console.log("exec.next() Test beendet")
+    console.log("BubbleSort exec.next() Test beendet")
     console.log("BubbleSort Tests beendet")
 
+
+
+
+    console.log("MergeSort Tests beginnen")
+    loadMergeSort()
+    //Beispielarrays
+    var array = [[1,2,3,4,5], [5,4,3,2,1], [1,1,1,1,1,1,1,1,1], [50,35,40,17,30,45,5,20,25,10], [12,9,0,5,13,27,42,3,2,1]]
+    var solutionPlay = [[1,2,3,4,5], [1,2,3,4,5], [1,1,1,1,1,1,1,1,1], [5,10,17,20,25,30,35,40,45,50],[0,1,2,3,5,9,12,13,27,42]]
+    var solutionNext = [[[1,2,3,4,5],[[5,4,3],[2,1]],[1,1,1,1,1,1,1,1,1],[[50,35,40,17,30],[45,5,20,25,10]],[12,9,0,5,13],[27,42,3,2,1]]]
+
+    console.log("MergeSort exec.play() Test startet")
+    //prüft ob erwartetes und reales Ergebnis bei exec.play gleich sind
+    for(var i = 0; i < array.length; i++){
+        document.getElementById('Array').value = array[i]
+        parseArray()
+        exec.play()
+        if(document.getElementById('Array').value != solutionPlay[i]){
+            console.log("Fehler bei exec.play()! Beispiel: " + array[i] + "; Ergebnis: " + document.getElementById('Array').value + "; richtige Lösung: " + solutionPlay[i])
+        }
+    }
+    console.log("MergeSort exec.play() Test beendet")
     
+    console.log("MergeSort exec.next() Test startet")
+    //prüft ob erwartetes und reales Ergebnis bei exec.next gleich sind
+    for(var i = 0; i < array.length; i++){
+        document.getElementById('Array').value = array[i]
+        parseArray()
+        for(var j = 0; j < solutionNext.length; j++){
+            exec.next()
+            if(document.getElementById('Array').value != solutionNext[j][i]){
+                console.log("Fehler bei exec.next()! Beispiel: " + array[i] + "; Schritt " + j + "; Ergebnis: " + document.getElementById('Array').value + "; richtige Lösung: " + solutionNext[j][i])
+            }
+        }
+    }
+    console.log("MergeSort exec.next() Test beendet")
+    console.log("MergeSort Tests beendet")
 }
