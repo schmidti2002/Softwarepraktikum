@@ -2,12 +2,12 @@ import mysql.connector
 
 def db_connect():
     try:           
-        host_url="localhost"
-        user_name="User"
-        password="123455678"
-        datenbank="Softwareprojekt"
+        host_url="mysql.hrz.tu-chemnitz.de"
+        user_name="SoftwarePraktikum_2023_rw"
+        password="aexoo5wiX"
+        datenbank="SoftwarePraktikum_2023"
         
-        database = mysql.connector.connect(host=host_url,user=user_name,passwd=password,db=datenbank,auth_plugin='mysql_native_password')
+        database = mysql.connector.connect(host=host_url,user=user_name,passwd=password,db=datenbank)
         return database
     except mysql.connector.Error as err:
         print("Verbindung konnte nicht hergestellt werden.\nFehler: %s \nBitte erneut probieren." % (err))
@@ -31,12 +31,12 @@ def database_create(database):
         database.commit()
 
     if not current_tables.get("StructMaster"):
-        execute_sql="CREATE TABLE `StructMaster` ( `struct_id` INT NOT NULL AUTO_INCREMENT , `struct_type` INT NOT NULL , `root_node` INT NOT NULL , `user_id` INT NOT NULL , PRIMARY KEY (`struct_id`)) ENGINE = InnoDB;"
+        execute_sql="CREATE TABLE `StructMaster` ( `struct_id` INT NOT NULL AUTO_INCREMENT , `struct_type` INT NOT NULL , `root_node` INT NOT NULL , `user_id` INT NOT NULL , `struct_id` INT NOT NULL , PRIMARY KEY (`struct_id`)) ENGINE = InnoDB;"
         util_db_cursor.execute(execute_sql)
         database.commit()
 
     if not current_tables.get("HeapNodes"):
-        execute_sql="CREATE TABLE `HeapNodes` ( `node_id` INT NOT NULL AUTO_INCREMENT , `value` INT NULL DEFAULT NULL , `child_left` INT NULL DEFAULT NULL , `child_right` INT NULL DEFAULT NULL , PRIMARY KEY (`node_id`)) ENGINE = InnoDB;"
+        execute_sql="CREATE TABLE `HeapNodes` ( `node_id` INT NOT NULL AUTO_INCREMENT , `value` INT NULL DEFAULT NULL , `child_left` INT NULL DEFAULT NULL , `child_right` INT NULL DEFAULT NULL , `struct_id` INT NOT NULL , PRIMARY KEY (`node_id`)) ENGINE = InnoDB;"
         util_db_cursor.execute(execute_sql)
         database.commit()
 
