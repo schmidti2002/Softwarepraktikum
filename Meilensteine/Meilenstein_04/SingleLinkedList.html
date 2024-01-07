@@ -54,11 +54,13 @@
 <div id="graph-container">
     <div id="graph"></div>
 </div>
-
+<div id="outputLine">
+Ausgabe-Bereich:
+</div>
 <br>
 <br>
 SingleLinkedList
-<button type="button" onclick="fullReset()">Zurücksetzen</button>
+<button type="button" onclick="loadSingleLinkedList()">Zurücksetzen</button>
 <button type="button" onclick="">Zu Favoriten hinzufügen</button>
 <br>
 <br> 
@@ -67,39 +69,41 @@ SingleLinkedList
 </div>   
 <br> 
 <!-- Buttons um die unteren Container zu öffnen/schließen -->
-<button type="button" onclick="addDataToPosition()">Daten an Position hinzufügen</button>
-<button type="button" onclick="getDataFromPosition()">Daten von Position zurückgeben</button>
-<button type="button" onclick="getPositionFromData()">Position von Daten zurückgeben</button>
-<button type="button" onclick="deleteDataFromPosition()">Daten an Position löschen</button>
-<button type="button" onclick="invertList()">Liste invertieren</button>
-<button type="button" onclick="deleteList()">Liste löschen</button>
+<button type="button" onclick="SLL.ContainerAddDataAtPosition()">Daten an Position hinzufügen</button>
+<button type="button" onclick="SLL.ContainerGetDataAtPosition()">Daten von Position zurückgeben</button>
+<button type="button" onclick="SLL.ContainerGetPositionOfData()">Position von Daten zurückgeben</button>
+<button type="button" onclick="SLL.ContainerRemoveDataAtPosition()">Daten an Position löschen</button>
+<button type="button" onclick="SLL.ContainerInvertList()">Liste invertieren</button>
+<button type="button" onclick="SLL.ContainerdeleteList()">Liste löschen</button>
 <br>    
 <br>
-<div id="addDataToPosition" style="display: none;">
+<div id="ContainerAddDataAtPosition" style="display: none;">
     Position:
-    <input type="text" id="position">
+    <input type="text" id="position0">
     Daten:
-    <input type="text" id="data">
-    <button type="button" onclick="addDataAtPosition()">Go</button> 
+    <input type="text" id="data0">
+    <button type="button" onclick="SLL.addDataAtPosition()">Go</button> 
 </div>
-<div id="getDataFromPosition" style="display: none;">
+<div id="ContainerGetDataAtPosition" style="display: none;">
     Position:
-    <input type="text" id="userInput">
-    <button type="button" onclick="">Go</button> 
+    <input type="text" id="position1">
+    <button type="button" onclick="SLL.getDataAtPosition()">Go</button> 
 </div>
-<div id="getPositionFromData" style="display: none;">
-    Daten:
-    <input type="text" id="userInput">
-    <button type="button" onclick="">Go</button> 
+<div id="ContainerGetPositionOfData" style="display: none;">
+    Daten:       
+    <input type="text" id="data2">
+    <button type="button" onclick="SLL.getPositionOfData()">Go</button> 
 </div>
-<div id="deleteDataFromPosition" style="display: none;">
+<div id="ContainerRemoveDataAtPosition" style="display: none;">
     Position:
-    <input type="text" id="userInput">
-    <button type="button" onclick="">Go</button> 
+    <input type="text" id="position3">
+    <button type="button" onclick="SLL.removeDataAtPosition()">Go</button> 
 </div>
-<div id="invertList" style="display: none;">
+<div id="ContainerInvertList" style="display: none;">
+    <button type="button" onclick="SLL.invertList()">Go</button> 
 </div>
-<div id="deleteList" style="display: none;">
+<div id="ContainerdeleteList" style="display: none;">
+    <button type="button" onclick="SLL.deleteList()">Go</button> 
 </div>
 </div>
 </html>
