@@ -93,6 +93,45 @@ def test_anlegen(cursor):
             if cursor.fetchall()[0][0] is None:
                 return False
 
+    # Testen von mehreren Leerzeichen
+    response = requests.get(BASE + "user/register/", headers={"sessiontoken":SESSIONTOKEN},
+			data={"username":"§#4 2312fsdf#  /*  +\\\\ ", "password":"  ases5 +#12< asd 123559*+-+#  %& ", "Email":" #234  234a aswer %&/%   ads25"})
+    if not response.text():
+            return False
+        else:
+            cursor.execute("SELECT * FROM 'user' WHERE username = %s", (username))
+            if cursor.fetchall()[0][0] is None:
+                return False
+
+    # Testen von leeren Strings
+    response = requests.get(BASE + "user/register/", headers={"sessiontoken":SESSIONTOKEN},
+			data={"username":"", "password":"", "Email":""})
+    if not response.text():
+            return False
+        else:
+            cursor.execute("SELECT * FROM 'user' WHERE username = %s", (username))
+            if cursor.fetchall()[0][0] is None:
+                return False
+		    
+    # Testen von None-Werten
+    response = requests.get(BASE + "user/register/", headers={"sessiontoken":SESSIONTOKEN},
+			data={"username":None, "password":None, "Email":None})
+    if not response.text():
+            return False
+        else:
+            cursor.execute("SELECT * FROM 'user' WHERE username = %s", (username))
+            if cursor.fetchall()[0][0] is None:
+                return False
+		    
+    # Testen von falschen Eingaben
+    response = requests.get(BASE + "user/register/", headers={"sessiontoken":SESSIONTOKEN},
+			data={"username":True, "password":False, "Email":False})
+    if not response.text():
+            return False
+        else:
+            cursor.execute("SELECT * FROM 'user' WHERE username = %s", (username))
+            if cursor.fetchall()[0][0] is None:
+                return False	    
     return True
 
 
