@@ -1,6 +1,6 @@
 // Jest Beispielfunktion
-const { sum } = require('./BubbleSortLogic');
+import {sum} from './BubbleSortLogic';
 
-test('adds 1 + 2 to equal 3', () => {
+it('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
 });

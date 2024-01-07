@@ -20,11 +20,11 @@ exec.outputFunction = () => showOutput(); // oder eine andere Funktion
 exec.play(false, () => console.log(JSON.stringify(exec.state.vars.arr)));
 */
 
-function exe_start_block(state) {
+export function exe_start_block(state) {
   state.varsStack.push(Object.keys(state.vars).filter((n) => state.vars[n] !== undefined));
 }
 
-function exe_end_block(state) {
+export function exe_end_block(state) {
   existingVars = state.varsStack.pop();
   Object.keys(state.vars).forEach((n) => {
     if (!existingVars.includes(n)) {
@@ -33,7 +33,7 @@ function exe_end_block(state) {
   });
 }
 
-function exe_block(lines) {
+export function exe_block(lines) {
   return [
     {
       f(s) {
@@ -52,7 +52,7 @@ function exe_block(lines) {
   ];
 }
 
-function exe_for(counter, start, condition, step, lines) {
+export function exe_for(counter, start, condition, step, lines) {
   return [
     {
       f(s) {
@@ -88,7 +88,7 @@ function exe_for(counter, start, condition, step, lines) {
   ];
 }
 
-function exe_while(condition, lines) {
+export function exe_while(condition, lines) {
   [
     {
       f(s) {
@@ -110,7 +110,7 @@ function exe_while(condition, lines) {
   ];
 }
 
-function exe_ifElse(condition, lines, elsLines = []) {
+export function exe_ifElse(condition, lines, elsLines = []) {
   return [
     {
       f(s) {
@@ -137,7 +137,7 @@ function exe_ifElse(condition, lines, elsLines = []) {
   ];
 }
 
-class Executer {
+export class Executer {
   lines; // Algo siehe oben: Minimal usage example for BubbleSort
 
   breakpoints = []; // Die lines, bei denen der Algo visualisiert wird. Zählweise siehe oben, immer eine line zählt 1
@@ -274,7 +274,3 @@ class Executer {
     console.log('4');
   }
 }
-
-module.exports = {
-  exe_for,
-};

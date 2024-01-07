@@ -1,3 +1,5 @@
+import {} from "./AlgoExecuter";
+
 // Klasse für den BubbleSort
 class BubbleSort {
   // Konstruktor
@@ -140,10 +142,6 @@ class BubbleSort {
 }
 
 // Jest Beispielfunktion
-function sum(a, b) {
+export function sum(a, b) {
   return a + b;
 }
-module.exports = {
-  sum,
-  exe_for,
-};
