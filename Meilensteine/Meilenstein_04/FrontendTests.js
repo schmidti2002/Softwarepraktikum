@@ -45,6 +45,8 @@ function HelpFunctionsTest(){
         if(state.vars.arr.length != solution[i]){
             console.log("Länge des Arrays stimmt nicht überein! Länge: " + state.vars.arr.length + "; richtige Länge :" + solution[i]);
         }else{
+
+            
             state.vars.arr.forEach(element => {
                 if(!Number.isInteger(element)){
                     console.log(element + " ist kein Integer!")
