@@ -17,7 +17,7 @@ von der Gruppe 2 (mit ASL)
 
 
 ## Wahl der Frameworks
-Bootstrap, Jest, ESLint, pytest
+Bootstrap, Jest, ESLint, pytest, Flask
 ### Frontend
 <p>Für das Frontend hat sich das Team auf Bootstrap geeinigt. Vorteile, die damit für das Team einhergehen, sind seine Leichtgewichtigkeit und die bereits vorhandene Erfahrung einiger Teammitglieder.</p>
 <p>Außerdem ergab sich Jest als Test-Framework für unsere JavaScript-Files. Die leichte Einrichtung, aber vor allem das automatische Mocking zeigte sich als hilfreich. Auch dieses Framework war einem Mitglied des Teams bereits bekannt.</p>
@@ -25,6 +25,9 @@ Bootstrap, Jest, ESLint, pytest
 
 ### Backend
 <p>Das Framework pytest soll für das Backend verwendet werden. Es eignet sich besonders, da das Backend bereits in Python geschrieben wurde. Außerderm erfordert der leichte Syntax nicht viel Zeit zum "Lernen", das Test-Framework funktioniert auch mit Flask-Funktionen und die Möglichkeit der Erweiterbarkeit durch Extensions erschien hilfreich für die Zukunft, auch wenn die Nutzung dieser Funktion bis jetzt noch nich nötig ist. Erwähnenswert ist weiterhin, dass Teammitglied bereits ein wenig Erfahrung mit pytest vorweisen kann.</p>
+<p>Zuletzt ist da noch, wie bereits erwähnt, das Framework Flask. Vorteile dafür sind Folgende:</p>
+- Erweiterbarkeit
+- 
 
 
 ## Codekonventionen
