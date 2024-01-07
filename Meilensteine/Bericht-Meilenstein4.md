@@ -19,7 +19,7 @@ von der Gruppe 2 (mit ASL)
 ## Wahl der Frameworks
 Bootstrap, Jest
 ### Frontend
-<p>Für das Frontend hat sich das Team auf Bootstrap geeinigt. Vorteile die damit für das Team einhergehen sind seine Leichtgewichtigkeit und die bereits vorhandene Erfahrung einiger Teammitglieder.</p>
+<p>Für das Frontend hat sich das Team auf Bootstrap geeinigt. Vorteile, die damit für das Team einhergehen, sind seine Leichtgewichtigkeit und die bereits vorhandene Erfahrung einiger Teammitglieder.</p>
 jest zum Testen???
 
 ### Backend
