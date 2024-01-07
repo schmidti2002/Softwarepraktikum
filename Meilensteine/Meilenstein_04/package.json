@@ -1,0 +1,12 @@
+{
+  "name": "Frontend_SWP",
+  "version": "1.0.0",
+  "main": " ",
+  "license": "AGPLv3",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2"
+  }
+}
