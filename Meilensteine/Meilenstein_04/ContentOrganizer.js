@@ -13,7 +13,7 @@ function loadStartpage() {
 }
 
 // SingleLinkedList fetchen und Standardbeispiel laden
-export default function loadSingleLinkedList() {
+export function loadSingleLinkedList() {
   fetch('SingleLinkedList.html')
     .then((response) => response.text())
     .then((data) => {
@@ -23,7 +23,7 @@ export default function loadSingleLinkedList() {
 }
 
 // DirectedUnweightedGraph fetchen und Standardbeispiel laden
-function loadDirectedUnweightedGraph() {
+export function loadDirectedUnweightedGraph() {
   fetch('DirectedUnweightedGraph.html')
     .then((response) => response.text())
     .then((data) => {
@@ -32,18 +32,17 @@ function loadDirectedUnweightedGraph() {
 }
 
 // BubbleSort fetchen und Standardbeispiel laden
-function loadBubbleSort() {
-  let BBS;
+export function loadBubbleSort() {
   fetch('BubbleSort.html')
     .then((response) => response.text())
     .then((data) => {
       content.innerHTML = data;
-      BBS = new BubbleSort();
+      const BBS = new BubbleSort();
     });
 }
 
 // MergeSort fetchen und Standardbeispiel laden
-function loadMergeSort() {
+export function loadMergeSort() {
   fetch('MergeSort.html')
     .then((response) => response.text())
     .then((data) => {
