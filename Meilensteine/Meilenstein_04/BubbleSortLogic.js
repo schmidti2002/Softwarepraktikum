@@ -1,7 +1,7 @@
 import {} from "./AlgoExecuter";
 
 // Klasse für den BubbleSort
-class BubbleSort {
+export class BubbleSort {
   // Konstruktor
   constructor() {
     this.exec = new Executer();
