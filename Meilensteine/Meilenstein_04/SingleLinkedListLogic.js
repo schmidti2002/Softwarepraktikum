@@ -156,6 +156,7 @@ class SingleLinkedList{
         }
     }
 
+    // Methode sollte nur im Konstruktur dieser Klasse verwendet werden
     addDataAtPositionDirectly(position, data) {
         this.exec.state.vars.position = parseInt(position);        
         document.getElementById('data0').value = data;
@@ -333,6 +334,7 @@ class SingleLinkedList{
         }
     }
 
+    // für node sollte s.vars.front übergeben werden
     getSize(node) {
         let size = 0;
         let currentNode = node;
@@ -345,20 +347,24 @@ class SingleLinkedList{
         return size;
     }
 
+    // Data und Position im Ausgabebereich ausgeben
     outputData(){
         //console.log(this.exec.state.vars.dataFound);
         document.getElementById('outputLine').innerHTML = 'Ausgabe-Bereich: Daten ' + this.exec.state.vars.dataFound + ' an Position ' + this.exec.state.vars.position;
     }
 
+    // Data und Position im Ausgabebereich ausgeben
     outputPosition(){
         document.getElementById('outputLine').innerHTML = 'Ausgabe-Bereich: Daten ' + this.exec.state.vars.data + ' an Position ' + this.exec.state.vars.positionFound;
     }
 
+    // Funktion zum Ausgeben der Liste
     showOutput(){
         this.print();
         this.visualizeList();
     }
 
+    // Ausgabe der Liste zu Debug-Zwecken
     print() {
         let position = 0;
         let currentNode = this.exec.state.vars.front;
@@ -374,6 +380,7 @@ class SingleLinkedList{
         document.getElementById('ausgabe').innerHTML = outputString;
     }
 
+    // Ausgabe der Liste in der Visualisierung
     visualizeList() {
         const graphContainer = document.getElementById('graph');
         graphContainer.innerHTML = '';

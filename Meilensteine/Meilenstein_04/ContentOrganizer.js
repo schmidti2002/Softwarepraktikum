@@ -12,7 +12,7 @@ function loadStartpage(){
 function loadSingleLinkedList(){
     fetch("SingleLinkedList.html")
             .then(response => response.text())
-            .then(data => {content.innerHTML = data
+            .then(data => {content.innerHTML = data                
                 SLL = new SingleLinkedList()
             });
 }
