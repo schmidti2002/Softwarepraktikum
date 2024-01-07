@@ -17,13 +17,13 @@ von der Gruppe 2 (mit ASL)
 
 
 ## Wahl der Frameworks
-Bootstrap, Jest
+Bootstrap, Jest, ESLint, pytest
 ### Frontend
 <p>Für das Frontend hat sich das Team auf Bootstrap geeinigt. Vorteile, die damit für das Team einhergehen, sind seine Leichtgewichtigkeit und die bereits vorhandene Erfahrung einiger Teammitglieder.</p>
-jest zum Testen???
-
+<p>Außerdem ergab sich Jest als Test-Framework für unsere JavaScript-Files. Die leichte Einrichtung, aber vor allem das automatische Mocking zeigte sich als hilfreich. Auch dieses Framework war einem Mitglied des Teams bereits bekannt.</p>
+<p>Zum Überprüfen des Codes und dessen Konsistenz sowie mögliche Fehler verwendete das Team ESLint. Dadurch werden nun auch die Clean-Code-Regeln für das Frontend angezeigt und hilft diese einzuhalten.</p>
 ### Backend
-jest zum Testen -> nur JavaScript also nicht in Backend (- Nico und Luke)???
+<p></p>
 
 
 ## Codekonventionen
