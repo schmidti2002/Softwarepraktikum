@@ -72,6 +72,27 @@ def test_anlegen(cursor):
             if cursor.fetchall()[0][0] is None:
                 return False
 
+    # Testen von SQL Injektions
+    response = requests.get(BASE + "user/register/", headers={"sessiontoken":SESSIONTOKEN},
+			data={"username":"Robert'); DROP TABLE a; --", "password":"Robert'); DROP TABLE a; --",
+			"Email":"Robert'); DROP TABLE a; --"})
+    if not response.text():
+            return False
+        else:
+            cursor.execute("SELECT * FROM 'user' WHERE username = %s", (username))
+            if cursor.fetchall()[0][0] is None:
+                return False
+
+    #Testen von mehreren Woertern
+    response = requests.get(BASE + "user/register/", headers={"sessiontoken":SESSIONTOKEN},
+			data={"username":"Anna Lisa ", "password":"Paul Albert ", "Email":"Nina Paola "})
+    if not response.text():
+            return False
+        else:
+            cursor.execute("SELECT * FROM 'user' WHERE username = %s", (username))
+            if cursor.fetchall()[0][0] is None:
+                return False
+
     return True
 
 
