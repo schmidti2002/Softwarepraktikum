@@ -10,7 +10,7 @@ von der Gruppe 2 (mit ASL)
 <p>Das Frontend-Team sprach sich bereits in dem ersten Meeting des 4. Meilensteins darüber ab, dass HTML für die Strukturierung der Inhalte unserer Webanwendung, TypeScript für die dazugehörige Logik und im späteren Verlauf CSS für die Gestaltung der Webanwendung verwendet werden sollen. Als die Programmierphase jedoch mit dem nächsten Meeting näher rückte, entschied man sich nur JavaScript anstelle von TypeScript zu verwenden. Diese Entscheidung ersparte uns letztendlich Arbeit, als das Frontend-Team an der Schnittstelle zur Kommunikation mit dem Backend arbeitete.</p>
 
 ### Kommunikation zwischen Front- und Backend
-<p>Für die Kommunikation zwischen Front- und Backend haben wir JSON-Datein genutzt, da damit ein einfacher Austausch an Daten gewährleistet werden kann und die dafür verantwortlichen Teammitglieder darin die meiste Erfahrung und Vertrauen hatten. Außerdem ist JSON ja genau für JavaScript entwickelt worden und daher erste Wahl. ??? APIspec???</p>
+<p>Für die Kommunikation zwischen Front- und Backend haben wir JSON-Datein genutzt, da damit ein einfacher Austausch an Daten gewährleistet werden kann und die dafür verantwortlichen Teammitglieder darin die meiste Erfahrung und Vertrauen hatten. Außerdem ist JSON ja genau für JavaScript entwickelt worden und daher erste Wahl.
 
 ### Backend
 <p>Im Backend wurde Python bereits in Meilenstein 1 als zu nutzende Programmiersprache ausgewählt, da darin die meiste Programmiererfahrung bestand und es bereits fertige APIs (z.B. flask) gibt. Das ersparte Programmierzeit, da wir nicht erst eine eigene API erstellen mussten.</p>
@@ -25,10 +25,8 @@ Bootstrap, Jest, ESLint, pytest, Flask
 
 ### Backend
 <p>Das Framework pytest soll für das Backend verwendet werden. Es eignet sich besonders, da das Backend bereits in Python geschrieben wurde. Außerderm erfordert der leichte Syntax nicht viel Zeit zum "Lernen", das Test-Framework funktioniert auch mit Flask-Funktionen und die Möglichkeit der Erweiterbarkeit durch Extensions erschien hilfreich für die Zukunft, auch wenn die Nutzung dieser Funktion bis jetzt noch nich nötig ist. Erwähnenswert ist weiterhin, dass Teammitglied bereits ein wenig Erfahrung mit pytest vorweisen kann.</p>
-<p>Zuletzt ist da noch, wie bereits erwähnt, das Framework Flask. Vorteile dafür sind Folgende:</p>
-- Erweiterbarkeit
-- 
-
+<p>Zuletzt ist da noch, wie bereits erwähnt, das Framework Flask. Vorteile dafür sind Folgende: Leichtgewichtigkeit des Frameworks, leichte Lernbarkeit, Erweiterbarkeit durch Extensions für die Zukunft.</p>
+ 
 
 ## Codekonventionen
 <p>Das Team einigte sich bereits zu Beginn des Praktikums mit den ersten Files, dass Dokumentnamen stets groß geschrieben werden. Dies wurde im Verlauf beibehalten.</p>
