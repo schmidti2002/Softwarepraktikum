@@ -139,15 +139,20 @@ function exe_ifElse(condition, lines, elsLines = []) {
 
 class Executer {
     lines;      // Algo siehe oben: Minimal usage example for BubbleSort
-    breakpoints = [];   // Die lines, bei denen der Algo visualisiert wird. Zählweise siehe oben, immer eine line zählt 1
+    breakpoints = [];   // Die lines, bei denen der Algo visualisiert wird. Zählweise siehe oben, immer eine line zählt 1    
+    timeout;      // Zeit zwischen den Breakpoints, wenn der Algo durchläuft    
+    outputFunction = function () { };   // Funktion, um den AoD zu visualisieren
     state = {
         currentLine: -1,  // Zeile, die der Algo gerade bearbeitet
         varsStack: [],
         vars: {},
     };
+    OldState = {
+        currentLine: -1,
+        varsStack: [],
+        vars: {},
+    };
     intervalId;
-    outputFunction = function () { };   // Funktion, um den AoD zu visualisieren
-    timeout;      // Zeit zwischen den Breakpoints, wenn der Algo durchläuft
 
     // Konstruktor
     constructor(){
@@ -190,11 +195,32 @@ class Executer {
         } while (!this.breakpoints.includes(this.state.currentLine) && stepsCounter++ < 1000);
     };
 
+    // Ändern des Algorithmus; stellt sicher, dass zurzeit kein Algorithmus läuft
+    changeAlgo(lines, breakpoints, timeout){
+        if(this.state.currentLine === -1){
+            this.lines = lines;
+            this.breakpoints = breakpoints;
+            this.timeout = timeout;
+            return true;
+        }else{
+            console.log("Algorithmus ist noch nicht beendet");
+            return false;
+        }
+    }
+
+    // Führt einen Algorithmus zwangsweise aus, nur im Konstruktor einer Klasse zum Initialisieren der Datenstruktur verwenden.
+    forcePlay(lines){
+        this.lines = lines
+        this.breakpoints = [];
+        this.start();
+        this.nextBreakpoint();
+    }
+
     // private; initialisiert den Algo, falls er noch nicht läuft
     start(){
         if(this.state.currentLine === -1){
-            this.state.currentLine = 0
-            //this.state.vars.old_arr = [...this.state.vars.arr]
+            this.OldState = JSON.parse(JSON.stringify(this.state));
+            this.state.currentLine = 0            
         }
     }
 
@@ -234,8 +260,12 @@ class Executer {
 
     // Button Reset
     reset(){
+        console.log("1")
         this.stop()
-        //this.state.vars.arr = [...this.state.vars.old_arr]
+        console.log("2")
+        this.state = JSON.parse(JSON.stringify(this.OldState));
+        console.log("3")
         this.outputFunction()
+        console.log("4")
     }
 }

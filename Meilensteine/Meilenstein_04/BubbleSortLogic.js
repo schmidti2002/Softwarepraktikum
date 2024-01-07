@@ -4,11 +4,9 @@ class BubbleSort{
     // Konstruktor
     constructor(){
         this.exec = new Executer();
+        this.exec.changeAlgo(this.linesForBubbleSort, [8], 10);
+        this.exec.state.vars.arr = [50,35,40,15,30,45,5,20,25,10];        
         this.exec.outputFunction = () => this.showOutput();
-        this.exec.lines = this.linesForBubbleSort;
-        this.exec.timeout = 100;
-        this.exec.state.vars.arr = [50,35,40,15,30,45,5,20,25,10];
-        this.exec.breakpoints = [8];
         this.exec.outputFunction();
     };
 
@@ -29,7 +27,7 @@ class BubbleSort{
 
     // Array ausgeben, um es zu bearbeiten
     showArray(){
-        document.getElementById('Array').value = exec.state.vars.arr;
+        document.getElementById('Array').value = this.exec.state.vars.arr;
     }
 
     // Funktion zum Einlesen der eigenen Werte
@@ -44,14 +42,14 @@ class BubbleSort{
         }
 
         this.exec.state.vars.arr = integerArray;
-        showOutput();
+        this.showOutput();
     }
 
     // Funktion, um n einzulesen und n Zufallszahlen zu generieren und anzuzeigen
     generateRandomNumbers() {
         // Die Anzahl der Zufallszahlen vom Benutzer eingeben lassen
         var count = parseInt(document.getElementById('userInput').value);
-        generate(count)    
+        this.generate(count);
     }
 
     // Funktion, um n Zufallszahlen zu generieren
@@ -62,13 +60,13 @@ class BubbleSort{
             var randomNumber = Math.floor(Math.random() * 50) + 1; // Zufallszahlen zwischen 1 und 50
             this.exec.state.vars.arr.push(randomNumber);
         }
-        showOutput()
+        this.showOutput()
     }
 
     // Container 'newValues' öffnen/schließen
     newValues(){
         if(document.getElementById('newValues').style.display == "block"){
-            hide()
+            this.hide()
         }else{
             document.getElementById('newValues').style.display = "block";
             document.getElementById('editValues').style.display = "none";
@@ -79,7 +77,7 @@ class BubbleSort{
     // Container 'editValues' öffnen/schließen
     editValues(){
         if (document.getElementById('editValues').style.display == "block"){
-            hide()
+            this.hide()
         }else{
             document.getElementById('newValues').style.display = "none";
             document.getElementById('editValues').style.display = "block";
@@ -90,7 +88,7 @@ class BubbleSort{
     // Container 'openSort' öffnen/schließen
     openSort(){
         if(document.getElementById('openSort').style.display == "block"){
-            hide()
+            this.hide()
         }else{
             document.getElementById('newValues').style.display = "none";
             document.getElementById('editValues').style.display = "none";
@@ -132,5 +130,4 @@ class BubbleSort{
             chart.appendChild(bar);
         }
     }
-
 }

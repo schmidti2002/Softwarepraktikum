@@ -54,7 +54,9 @@
 <div id="graph-container">
     <div id="graph"></div>
 </div>
-
+<div id="outputLine">
+Ausgabe-Bereich:
+</div>
 <br>
 <br>
 SingleLinkedList
@@ -77,29 +79,31 @@ SingleLinkedList
 <br>
 <div id="ContainerAddDataAtPosition" style="display: none;">
     Position:
-    <input type="text" id="position">
+    <input type="text" id="position0">
     Daten:
-    <input type="text" id="data">
+    <input type="text" id="data0">
     <button type="button" onclick="SLL.addDataAtPosition()">Go</button> 
 </div>
 <div id="ContainerGetDataAtPosition" style="display: none;">
     Position:
-    <input type="text" id="userInput">
-    <button type="button" onclick="">Go</button> 
+    <input type="text" id="position1">
+    <button type="button" onclick="SLL.getDataAtPosition()">Go</button> 
 </div>
 <div id="ContainerGetPositionOfData" style="display: none;">
-    Daten:
-    <input type="text" id="userInput">
-    <button type="button" onclick="">Go</button> 
+    Daten:       
+    <input type="text" id="data2">
+    <button type="button" onclick="SLL.getPositionOfData()">Go</button> 
 </div>
 <div id="ContainerRemoveDataAtPosition" style="display: none;">
     Position:
-    <input type="text" id="userInput">
-    <button type="button" onclick="">Go</button> 
+    <input type="text" id="position3">
+    <button type="button" onclick="SLL.removeDataAtPosition()">Go</button> 
 </div>
 <div id="ContainerInvertList" style="display: none;">
+    <button type="button" onclick="SLL.invertList()">Go</button> 
 </div>
 <div id="ContainerdeleteList" style="display: none;">
+    <button type="button" onclick="SLL.deleteList()">Go</button> 
 </div>
 </div>
 </html>
