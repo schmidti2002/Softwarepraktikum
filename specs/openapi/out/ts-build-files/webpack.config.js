@@ -18,8 +18,5 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-  },
-  optimization: {
-    runtimeChunk: 'single',
-  },
+  }
 };
