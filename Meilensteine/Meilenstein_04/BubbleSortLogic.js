@@ -131,3 +131,12 @@ class BubbleSort{
         }
     }
 }
+
+//Jest Beispielfunktion
+function sum(a, b) {
+    return a + b;
+  }
+  module.exports = {
+    sum,
+    exe_for
+};
