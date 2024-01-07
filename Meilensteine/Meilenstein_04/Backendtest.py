@@ -34,46 +34,70 @@ def test_response(response):
         return False
     return True
 
+def test_login():
+    userdata = {}
+    with open('logins.txt', 'r') as file:
+        for line in file:
+        # Trennen von Benutzername und Passwort anhand des Leerzeichens
+            username, password = line.strip().split(' ')
+
+            # Hinzufügen von Benutzername und Passwort zum Dictionary
+            userdata[username] = password
+    
+    for username, password in userdata.items():
+        response = requests.get(
+            BASE + "user/login/", data={"username": username, "password": password})
+        muster = r'^[a-zA-Z0-9]{40}$'
+        if (not re.match(muster, response.text())) and response.status_code == 200:
+            return False
+    return True
+
+def test_anlegen(cursor):
+    userdata = {}
+    with open('userdaten.txt', 'r') as file:
+        for line in file:
+        # Trennen von Benutzername und Passwort anhand des Leerzeichens
+            username, password, email = line.strip().split(' ')
+
+            # Hinzufügen von Benutzername und Passwort, Email zum Dictionary
+            userdata[username] = (password, email)
+    
+    for username, data in userdata.items():
+        response = requests.get(BASE + "user/register/", headers={"sessiontoken": SESSIONTOKEN}, 
+                            data={"username": username, "password": data[username][0], "Email": data[username][1]})
+        if not response.text():
+            return False
+        else:
+            cursor.execute("SELECT * FROM 'user' WHERE username = %s", (username))
+            if cursor.fetchall()[0][0] is None:
+                return False
+
+    return True
+
 
 def test_user():
     # Datenbank Cursor
     cursor = database.cursor()
 
     # Erfolgreichenes Einloggen
-    login_user = "Admin"
-    login_pass = "sdhvbs"
-
-    response = requests.get(
-        BASE + "user/login/", data={"username": login_user, "password": login_pass})
-    muster = r'^[a-zA-Z0-9]{40}$'
-    if (not re.match(muster, response.text())) and response.status_code == 200:
+    if not test_login():
         return False
 
     # Datenabfrage testen
     response = requests.get(BASE + "user/UserData/",
-                            headers={"sessiontoken": response.text()})
+                            headers={"sessiontoken": SESSIONTOKEN})
     if not test_response(response.json()):
         return False
 
     # Erfolgreichenes Ausloggen
     response = requests.get(BASE + "user/logout/",
-                            headers={"sessiontoken": response.text()})
+                            headers={"sessiontoken": SESSIONTOKEN})
     if not response.text():
         return False
 
     # Nutzer Anlegen
-    new_user = "User_".join(random.choice(string.ascii_letters) for _ in range(5))
-    new_password = "Pass_".join(random.choice(string.ascii_letters) for _ in range(5))
-    new_email = "Mail_".join(random.choice(string.ascii_letters) for _ in range(5)).join("@uni.de")
-
-    response = requests.get(BASE + "user/register/", headers={"sessiontoken": SESSIONTOKEN}, 
-                            data={"username": new_user, "password": new_password, "Email": new_email})
-    if not response.text():
+    if not test_anlegen(cursor):
         return False
-    else:
-        cursor.execute("SELECT * FROM 'user' WHERE username = %s", (new_user))
-        if cursor.fetchall()[0][0] is None:
-            return False
 
     return True
 
