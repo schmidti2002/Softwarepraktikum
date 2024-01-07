@@ -4,7 +4,7 @@ von der Gruppe 2 (mit ASL)
 
 ## Allgemeine Informationen zum Meilenstein 4
 
-<p>Das Team hielt im Meilenstein 4 insgesamt 5 Online-Meetings über Discord ab. Deren besprochene Inhalte waren vorallem die Planphase, die Teamaufteilung, die Implementation der Webanwendung und die Implementierung der Tests. Zurückblickend arbeitete das Team jedoch eher in kleinen Guppen unter sich und rief nur Teammeetings aus, wenn es für das gesamte Team nötig war. Die meiste Zeit wurde jedoch zum alleinigen Arbeiten verwendet, was unsere Teamaufteilung ermöglichte. Die dabei durchschnittlich aufgewendete Zeit betrug bei den Teammitgliedern ca. ??? Stunden. In dem Zip-Ordner sind weitere Details zu dieser Thematik in der Datei "arbeitszeiterfassung.pdf" zu finden.</p>
+<p>Das Team hielt im Meilenstein 4 insgesamt 5 Online-Meetings über Discord ab. Deren besprochene Inhalte waren vorallem die Planphase, die Teamaufteilung, die Implementation der Webanwendung und die Implementierung der Tests. Zurückblickend arbeitete das Team jedoch eher in kleinen Guppen unter sich und rief nur Teammeetings aus, wenn es für das gesamte Team nötig war. Die meiste Zeit wurde jedoch zum alleinigen Arbeiten verwendet, was unsere Teamaufteilung ermöglichte. Die dabei durchschnittlich aufgewendete Zeit betrug bei den Teammitgliedern ca. 20 Stunden. In dem Zip-Ordner sind weitere Details zu dieser Thematik in der Datei "arbeitszeiterfassung.pdf" zu finden.</p>
 
 
 ## Wahl der Programmiersprache(n)
