@@ -269,3 +269,7 @@ class Executer {
         console.log("4")
     }
 }
+
+module.exports = {
+    exe_for
+}
