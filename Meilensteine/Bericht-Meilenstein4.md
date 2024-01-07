@@ -16,7 +16,7 @@ von der Gruppe 2 (mit ASL)
 <p>Für die Kommunikation zwischen Front- und Backend haben wir JSON-Datein genutzt, da damit ein einfacher Austausch an Daten gewährleistet werden kann und die dafür verantwortlichen Teammitglieder darin die meiste Erfahrung und Vertrauen (?) hatten.</p>
 
 ### Backend
-<p>Im Backend wurde Python als zu nutzende Programmiersprache ausgewählt, da darin die meiste Programmiererfahrung bestand und es bereits fertige APIs (z.B. flask) gibt.</p>
+<p>Im Backend wurde Python bereits in Meilenstein 1 als zu nutzende Programmiersprache ausgewählt, da darin die meiste Programmiererfahrung bestand und es bereits fertige APIs (z.B. flask) gibt. Das ersparte Programmierzeit, da wir nicht erst eine eigene API erstellen mussten.</p>
 
 
 ## Wahl der Frameworks
