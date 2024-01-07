@@ -1,5 +1,5 @@
-import { SingleLinkedList } from 'SingleLinkedList.js';
-import { BubbleSort } from 'BubbleSortLogic.js';
+import { SingleLinkedList } from './SingleLinkedListLogic';
+import { BubbleSort } from './BubbleSortLogic';
 
 const content = document.getElementById('mainContainer');
 

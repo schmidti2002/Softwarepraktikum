@@ -1,5 +1,5 @@
 // Klasse der SingleLinkedList
-class SingleLinkedList {
+export class SingleLinkedList {
   // Konstruktor um SingleLinkedList mit Standardwerten zu laden
   constructor() {
     this.exec = new Executer();
