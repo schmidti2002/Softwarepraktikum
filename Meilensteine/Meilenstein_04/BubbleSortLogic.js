@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { exe_for, exe_ifElse, Executer } from './AlgoExecuter';
+=======
+import {exe_for, exe_ifElse, Executer} from "./AlgoExecuter";
+>>>>>>> 0071499 (added first working jest tests)
 
 // Klasse für den BubbleSort
 export class BubbleSort {
@@ -117,6 +121,10 @@ export class BubbleSort {
   showOutput() {
     // Dieser Teil ist gut zum Debuggen, kann man später vielleicht weglassen
     const output = document.getElementById('ausgabe');
+    if(!output){
+      console.error("id=ausgabe not found");
+      return;
+    }
     output.innerHTML = `Das Array lautet: ${this.exec.state.vars.arr.join(', ')}`;
     if (!this.exec.state.vars === -1) {
       output.innerHTML += `, Algo läuft in Line:${this.exec.state.currentLine}`;

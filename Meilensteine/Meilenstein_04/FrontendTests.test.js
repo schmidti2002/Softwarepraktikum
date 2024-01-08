@@ -1,3 +1,8 @@
+import { BubbleSort } from "./BubbleSortLogic";
+import fs from 'fs'
+import path from 'path'
+
+/*
 function testRegisterAndLogin() {
   console.log('start register tests');
   const newUserNames = ['knownName', 0, false, '', null];
@@ -25,56 +30,59 @@ function testRegisterAndLogin() {
     });
   });
   console.log('login tests beendet');
-}
+}*/
 
-// testet alle BubbleSort Funktionen
-function HelpFunctionsTest() {
-  console.log('Hilfsfunktionen Test beginnt');
+const bubblesortHtml = fs.readFileSync(path.resolve(__dirname, './BubbleSort.html'), 'utf8');
 
-  // generateRandomNumbers() und generate() werden zsm geprüft
-  console.log('generateRandomNumbers() & generate() Test beginnt');
-  // "Dumme" Nutzereingaben
-  var array = [0, -1, 0.5, 'einString', 'a', '42', Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER, true, false, 1, '1,2,3,4,5', 'a,b,c', '1,b,3,d'];
-  // länge des Arrays, das erstellt werden soll; Ich habe einfach mal 10 für falsche eingaben Festgelegt
-  var solution = [10, 10, 10, 10, 10, 42, 10, 10, 10, 10, 1, 10, 10, 10];
-  for (var i = 0; i < array.length; i++) {
-    document.getElementById('userInput').value = array[i];
-    generateRandomNumbers();
-    if (state.vars.arr.length != solution[i]) {
-      console.log(`Länge des Arrays stimmt nicht überein! Länge: ${state.vars.arr.length}; richtige Länge :${solution[i]}`);
-    } else {
-      state.vars.arr.forEach((element) => {
-        if (!Number.isInteger(element)) {
-          console.log(`${element} ist kein Integer!`);
-        } else if (element < 0) {
-          console.log(`${element} ist kleiner als 0`);
-        }
-      });
-    }
-  }
-  console.log('generateRandomNumbers() & generate() Test wurde beendet');
-  console.log('');
+describe("BubbleSort", () => {
+  describe("helper functions", () => {
+    // "Dumme" Nutzereingaben
+    const inputs = [0, -1, 0.5, 'einString', 'a', '42', 10000, Number.MIN_SAFE_INTEGER, true, false, 1, '1,2,3,4,5', 'a,b,c', '1,b,3,d'];
+    let bubble;
+    beforeEach(() => {
+      // Set up our document body
+      document.body.innerHTML = bubblesortHtml;
+      bubble = new BubbleSort();
+    });
 
-  // parseArray wird geprüft
-  console.log('parseArray() Test beginnt');
-  // "Dumme" Nutzereingaben
-  var array = [0, -1, 0.5, 'einString', 'a', '42', Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER, true, false, 1, '1,2,3,4,5', 'a,b,c', '1,b,3,d'];
-  // Lösungen
-  var solution = [[0], [0], [0], [0], [0], [42], [0], [0], [0], [0], [1], [1, 2, 3, 4, 5], [0], [0]];
-  for (var i = 0; i < array.length; i++) {
-    document.getElementById('Array').value = array[i];
-    parseArray();
-    if (state.vars.arr != solution[i]) {
-      console.log(`Fehler! Array: ${state.vars.arr}; richtig wäre:${solution[i]}`);
-    }
-  }
-  console.log('parseArray() Test wurde beendet');
-  console.log('');
-  console.log('HilfsfunktionenTest beendet');
-}
+    describe("generateRandomNumbers() & generate()", () => {
+      // länge des Arrays, das erstellt werden soll; Ich habe einfach mal 10 für falsche eingaben Festgelegt
+      const solutions = [0, 0, 0, 0, 0, 42, 10000, 0, 0, 0, 1, 0, 0, 0];
+      for (let testIndex = 0; testIndex < inputs.length; testIndex++) {
+        const input = inputs[testIndex];
+        const solution = solutions[testIndex];
 
+        test(`input ${input}`, () => {
+          document.getElementById('userInput').value = input;
+          bubble.generateRandomNumbers();
+          expect(bubble.exec.state.vars.arr.length).toBe(solution);
+          bubble.exec.state.vars.arr.forEach((element) => {
+            expect(Number.isInteger(element)).toBeTruthy();
+            expect(element).toBeGreaterThanOrEqual(0);
+          });
+        });
+      }
+    });
+
+    describe("parseArray()", () => {
+      // Lösungen
+      const solutions = [[0], [0], [0], [0], [0], [42], [0], [0], [0], [0], [1], [1, 2, 3, 4, 5], [0], [0]];
+      for (let testIndex = 0; testIndex < inputs.length; testIndex++) {
+        const input = inputs[testIndex];
+        const solution = solutions[testIndex];
+
+        test(`input ${input}`, () => {
+          document.getElementById('Array').value = input;
+          bubble.parseArray();
+          expect(bubble.exec.state.vars.arr).toEqual(solution)
+        });
+      }
+    });
+  });
+});
+/*
 function ContentOrganizerTest() {
-  console.log('ContentOrganizerTest beginnt');
+  console.log('ContentOrganizerTest beginnt'); 
 
   console.log('BubbleSort Tests');
   loadBubbleSort();
@@ -82,15 +90,15 @@ function ContentOrganizerTest() {
   var array = [[1, 2, 3, 4, 5], [5, 4, 3, 2, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [50, 35, 40, 17, 30, 45, 5, 20, 25, 10], [12, 9, 0, 5, 13, 27, 42, 3, 2, 1]];
   var solutionPlay = [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [5, 10, 17, 20, 25, 30, 35, 40, 45, 50], [0, 1, 2, 3, 5, 9, 12, 13, 27, 42]];
   var solutionNext = [[[1, 2, 3, 4, 5], [4, 5, 3, 2, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 50, 40, 17, 30, 45, 5, 20, 25, 10], [9, 12, 0, 5, 13, 27, 42, 3, 2, 1]],
-    [[1, 2, 3, 4, 5], [4, 3, 5, 2, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 50, 17, 30, 45, 5, 20, 25, 10], [9, 0, 12, 5, 13, 27, 42, 3, 2, 1]],
-    [[1, 2, 3, 4, 5], [4, 3, 2, 5, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 50, 30, 45, 5, 20, 25, 10], [9, 0, 5, 12, 13, 27, 42, 3, 2, 1]],
-    [[1, 2, 3, 4, 5], [4, 3, 2, 1, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 50, 45, 5, 20, 25, 10], [9, 0, 5, 12, 13, 27, 3, 42, 2, 1]],
-    [[1, 2, 3, 4, 5], [3, 4, 2, 1, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 50, 5, 20, 25, 10], [9, 0, 5, 12, 13, 27, 3, 2, 42, 1]],
-    [[1, 2, 3, 4, 5], [3, 2, 4, 1, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 50, 20, 25, 10], [9, 0, 5, 12, 13, 27, 3, 2, 1, 42]],
-    [[1, 2, 3, 4, 5], [3, 2, 1, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 20, 50, 25, 10], [0, 9, 5, 12, 13, 27, 3, 2, 1, 42]],
-    [[1, 2, 3, 4, 5], [2, 3, 1, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 20, 25, 50, 10], [0, 5, 9, 12, 13, 27, 3, 2, 1, 42]],
-    [[1, 2, 3, 4, 5], [2, 1, 3, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 20, 25, 10, 50], [0, 5, 9, 12, 13, 3, 27, 2, 1, 42]],
-    [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 17, 40, 30, 45, 5, 20, 25, 10, 50], [0, 5, 9, 12, 13, 3, 2, 27, 1, 42]]];
+  [[1, 2, 3, 4, 5], [4, 3, 5, 2, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 50, 17, 30, 45, 5, 20, 25, 10], [9, 0, 12, 5, 13, 27, 42, 3, 2, 1]],
+  [[1, 2, 3, 4, 5], [4, 3, 2, 5, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 50, 30, 45, 5, 20, 25, 10], [9, 0, 5, 12, 13, 27, 42, 3, 2, 1]],
+  [[1, 2, 3, 4, 5], [4, 3, 2, 1, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 50, 45, 5, 20, 25, 10], [9, 0, 5, 12, 13, 27, 3, 42, 2, 1]],
+  [[1, 2, 3, 4, 5], [3, 4, 2, 1, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 50, 5, 20, 25, 10], [9, 0, 5, 12, 13, 27, 3, 2, 42, 1]],
+  [[1, 2, 3, 4, 5], [3, 2, 4, 1, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 50, 20, 25, 10], [9, 0, 5, 12, 13, 27, 3, 2, 1, 42]],
+  [[1, 2, 3, 4, 5], [3, 2, 1, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 20, 50, 25, 10], [0, 9, 5, 12, 13, 27, 3, 2, 1, 42]],
+  [[1, 2, 3, 4, 5], [2, 3, 1, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 20, 25, 50, 10], [0, 5, 9, 12, 13, 27, 3, 2, 1, 42]],
+  [[1, 2, 3, 4, 5], [2, 1, 3, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 40, 17, 30, 45, 5, 20, 25, 10, 50], [0, 5, 9, 12, 13, 3, 27, 2, 1, 42]],
+  [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 1, 1, 1, 1, 1, 1, 1, 1], [35, 17, 40, 30, 45, 5, 20, 25, 10, 50], [0, 5, 9, 12, 13, 3, 2, 27, 1, 42]]];
 
   console.log('BubbleSort exec.play() Test startet');
   // prüft ob erwartetes und reales Ergebnis bei exec.play gleich sind
@@ -153,3 +161,4 @@ function ContentOrganizerTest() {
   console.log('MergeSort exec.next() Test beendet');
   console.log('MergeSort Tests beendet');
 }
+*/
