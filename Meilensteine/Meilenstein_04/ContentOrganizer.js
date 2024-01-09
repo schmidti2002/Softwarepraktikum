@@ -4,8 +4,8 @@ import { BubbleSort } from './BubbleSortLogic';
 const content = document.getElementById('mainContainer');
 
 // Startseite fetchen
-function loadStartpage() {
-  fetch('Startpage.html')
+export function loadStartpage() {
+  fetch('StartPage.html')
     .then((response) => response.text())
     .then((data) => {
       content.innerHTML = data;
@@ -18,7 +18,7 @@ export function loadSingleLinkedList() {
     .then((response) => response.text())
     .then((data) => {
       content.innerHTML = data;
-      const SLL = new SingleLinkedList();
+      window.SLL = new SingleLinkedList();
     });
 }
 
@@ -37,7 +37,7 @@ export function loadBubbleSort() {
     .then((response) => response.text())
     .then((data) => {
       content.innerHTML = data;
-      const BBS = new BubbleSort();
+      window.BBS = new BubbleSort();
     });
 }
 
@@ -52,7 +52,7 @@ export function loadMergeSort() {
 
 // Größe des Containers für das Benutzerprofil anpassen,
 // sodass er sich rechts am Rand öffnet/schließt
-function showUserEditor() {
+export function showUserEditor() {
   const container = document.getElementById('container');
   const mainContainer = document.getElementById('mainContainer');
   const userEditor = document.getElementById('userEditor');

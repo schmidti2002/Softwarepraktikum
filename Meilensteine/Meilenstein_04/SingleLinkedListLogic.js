@@ -1,3 +1,5 @@
+import { exe_for, exe_ifElse, Executer } from './AlgoExecuter';
+
 // Klasse der SingleLinkedList
 export class SingleLinkedList {
   // Konstruktor um SingleLinkedList mit Standardwerten zu laden
