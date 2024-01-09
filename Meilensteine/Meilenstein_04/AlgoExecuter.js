@@ -25,7 +25,7 @@ export function exe_start_block(state) {
 }
 
 export function exe_end_block(state) {
-  existingVars = state.varsStack.pop();
+  const existingVars = state.varsStack.pop();
   Object.keys(state.vars).forEach((n) => {
     if (!existingVars.includes(n)) {
       state.vars[n] = undefined;

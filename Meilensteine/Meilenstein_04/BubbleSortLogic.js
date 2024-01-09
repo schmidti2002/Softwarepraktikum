@@ -1,4 +1,4 @@
-import {} from "./AlgoExecuter";
+import { exe_for, exe_ifElse, Executer } from './AlgoExecuter';
 
 // Klasse für den BubbleSort
 export class BubbleSort {

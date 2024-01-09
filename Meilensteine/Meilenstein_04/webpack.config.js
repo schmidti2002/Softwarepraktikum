@@ -1,15 +1,20 @@
 const path = require('path');
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
   entry: './ContentOrganizer.js',
   devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  devServer: {
+    static: './',
+  },
   output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true,
+    filename: 'dist/bundle.js',
+    path: path.resolve(__dirname, '.'),
+    library: {
+      type: 'window',
+    },
   },
 };
