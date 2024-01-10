@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { exe_for, exe_ifElse, Executer } from './AlgoExecuter';
-=======
-import {exe_for, exe_ifElse, Executer} from "./AlgoExecuter";
->>>>>>> 0071499 (added first working jest tests)
 
 // Klasse für den BubbleSort
 export class BubbleSort {
