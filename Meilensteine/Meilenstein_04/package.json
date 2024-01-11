@@ -18,7 +18,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint *.js",
-    "sonar": "yarn test --coverage; yarn lint -f json -o ./coverage/lint-lcov.info",
+    "sonar": "yarn test --coverage; yarn lint -f json -o ./coverage/eslint.json",
     "watch": "webpack --watch",
     "build": "webpack",
     "start": "webpack serve --open --host 0.0.0.0"
