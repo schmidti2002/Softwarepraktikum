@@ -18,8 +18,10 @@ jobs:
         run: yarn
         working-directory: ./Meilensteine/Meilenstein_04
       - name: run FE tests & linter
-        run: yarn sonar || cat ./coverage/eslint.json
-        working-directory: ./Meilensteine/Meilenstein_04
+        run: yarn sonar || echo Done
+      - name: patch ESLint result
+        run: sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' eslint.json
+        working-directory: ./Meilensteine/Meilenstein_04/coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
