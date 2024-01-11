@@ -21,7 +21,7 @@ jobs:
         run: yarn sonar || echo Done
         working-directory: ./Meilensteine/Meilenstein_04
       - name: patch ESLint result
-        run:  ls -R coverage; sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' eslint.json
+        run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' eslint.json
         working-directory: ./Meilensteine/Meilenstein_04/coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
