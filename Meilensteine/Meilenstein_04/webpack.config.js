@@ -10,6 +10,18 @@ module.exports = {
   devServer: {
     static: './',
   },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
   output: {
     filename: 'dist/bundle.js',
     path: path.resolve(__dirname, '.'),
