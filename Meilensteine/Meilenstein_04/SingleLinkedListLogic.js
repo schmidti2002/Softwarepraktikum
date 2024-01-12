@@ -1,7 +1,35 @@
-import { exe_for, exe_ifElse, Executer } from './AlgoExecuter';
+import * as _ from 'lodash';
+import { execFor, execIfElse, Executer } from './AlgoExecuter';
+
+// Node-Klasse
+class Node {
+  // Möglicherweise sollte die Möglichkeit bestehen,
+  // sich diese Klasse irgendwo anzeigen zu lassen
+
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
+
+  getData() {
+    return this.data;
+  }
+
+  setData(data) {
+    this.data = data;
+  }
+
+  getNext() {
+    return this.next;
+  }
+
+  setNext(next) {
+    this.next = next;
+  }
+}
 
 // Klasse der SingleLinkedList
-export class SingleLinkedList {
+export default class SingleLinkedList {
   // Konstruktor um SingleLinkedList mit Standardwerten zu laden
   constructor() {
     this.exec = new Executer();
@@ -111,7 +139,8 @@ export class SingleLinkedList {
   /* public boolean addDataAtPosition(int position, String data) {
         if (position < 0 || position > getSize()) {
             System.err.println(
-                    "Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: position is out of list");
+                "Exeption in thread \"main\""
+                + "java.lang.ListIndexOutOfBounceExeption: position is out of list");
             return false;
         }
         Node newNode = new Node(data);
@@ -134,23 +163,47 @@ export class SingleLinkedList {
     //    console.error("Exception: position is out of list");
     //    return false;
     // }
-    { f(s) { s.vars.newNode = new Node(s.vars.data); return s; } },
-    ...exe_ifElse((s) => s.vars.position === 0, [
-      { f(s) { s.vars.newNode.setNext(s.vars.front); return s; } },
-      { f(s) { s.vars.front = s.vars.newNode; return s; } }, // Breakpoint
+    { f(os) { const s = _.cloneDeep(os); s.vars.newNode = new Node(s.vars.data); return s; } },
+    ...execIfElse((s) => s.vars.position === 0, [
+      { f(os) { const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.front); return s; } },
+      {
+        f(os) { // Breakpoint
+          const s = _.cloneDeep(os);
+          s.vars.front = s.vars.newNode;
+          return s;
+        },
+      },
     ], [
-      { f(s) { s.vars.currentNode = s.vars.front; return s; } },
-      ...exe_for('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
-        { f(s) { s.vars.currentNode = s.vars.currentNode.getNext(); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+      ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
+        {
+          f(os) {
+            const s = _.cloneDeep(os);
+            s.vars.currentNode = s.vars.currentNode.getNext();
+            return s;
+          },
+        },
       ]),
-      { f(s) { s.vars.newNode.setNext(s.vars.currentNode.getNext()); return s; } },
-      { f(s) { s.vars.currentNode.setNext(s.vars.newNode); return s; } }, // Breakpoint
+      {
+        f(os) {
+          const s = _.cloneDeep(os);
+          s.vars.newNode.setNext(s.vars.currentNode.getNext());
+          return s;
+        },
+      },
+      {
+        f(os) { // Breakpoint
+          const s = _.cloneDeep(os);
+          s.vars.currentNode.setNext(s.vars.newNode);
+          return s;
+        },
+      },
     ]),
   ];
 
   addDataAtPosition() {
     if (this.exec.changeAlgo(this.linesForAddDataAtPosition, [], 1)) {
-      this.exec.state.vars.position = parseInt(document.getElementById('position0').value);
+      this.exec.state.vars.position = parseInt(document.getElementById('position0').value, 10);
       this.exec.state.vars.data = document.getElementById('data0').value;
       this.exec.outputFunction = () => this.showOutput();
       this.exec.play();
@@ -159,7 +212,7 @@ export class SingleLinkedList {
 
   // Methode sollte nur im Konstruktur dieser Klasse verwendet werden
   addDataAtPositionDirectly(position, data) {
-    this.exec.state.vars.position = parseInt(position);
+    this.exec.state.vars.position = parseInt(position, 10);
     document.getElementById('data0').value = data;
     this.exec.state.vars.data = document.getElementById('data0').value;
     document.getElementById('data0').value = '';
@@ -169,7 +222,8 @@ export class SingleLinkedList {
   /* public String getDataAtPosition(int position) {
         if (position < 0 || position >= getSize()) {
             System.err.println(
-                    "Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: position is out of list");
+                    "Exeption in thread \"main\""
+                    + "java.lang.ListIndexOutOfBounceExeption: position is out of list");
             return null;
         }
         Node currentNode = front;
@@ -180,16 +234,28 @@ export class SingleLinkedList {
   } */
 
   linesForGetDataAtPosition = [
-    { f(s) { s.vars.currentNode = s.vars.front; return s; } },
-    ...exe_for('i', () => 0, (s) => s.vars.i < s.vars.position, 1, [
-      { f(s) { s.vars.currentNode = s.vars.currentNode.getNext(); return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+    ...execFor('i', () => 0, (s) => s.vars.i < s.vars.position, 1, [
+      {
+        f(os) {
+          const s = _.cloneDeep(os);
+          s.vars.currentNode = s.vars.currentNode.getNext();
+          return s;
+        },
+      },
     ]),
-    { f(s) { s.vars.dataFound = s.vars.currentNode.getData(); return s; } },
+    {
+      f(os) {
+        const s = _.cloneDeep(os);
+        s.vars.dataFound = s.vars.currentNode.getData();
+        return s;
+      },
+    },
   ];
 
   getDataAtPosition() {
     if (this.exec.changeAlgo(this.linesForGetDataAtPosition, [], 1)) {
-      this.exec.state.vars.position = parseInt(document.getElementById('position1').value);
+      this.exec.state.vars.position = parseInt(document.getElementById('position1').value, 10);
       this.exec.state.vars.dataFound = '-1';
       this.exec.outputFunction = () => this.outputData();
       this.exec.play();
@@ -198,7 +264,8 @@ export class SingleLinkedList {
 
   /* public int getPositionOfData(String data) {
     if (front === null) {
-      System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: list is empty");
+      System.err.println("Exeption in thread \"main\""
+      +"java.lang.NullPointerExeption: list is empty");
       return -1;
     }
     Node currentNode = front;
@@ -213,13 +280,19 @@ export class SingleLinkedList {
   } */
 
   linesForGetPositionOfData = [
-    { f(s) { s.vars.currentNode = s.vars.front; return s; } },
-    ...exe_for('i', () => 0, (s) => s.vars.i < this.getSize(s.vars.front), 1, [
-      ...exe_ifElse((s) => s.vars.currentNode.getData() === s.vars.data, [
-        { f(s) { s.vars.positionFound = s.vars.i; return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+    ...execFor('i', () => 0, (s) => s.vars.i < this.getSize(), 1, [
+      ...execIfElse((s) => s.vars.currentNode.getData() === s.vars.data, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.positionFound = s.vars.i; return s; } },
         // Return-Statement noch hinzufügen
       ]),
-      { f(s) { s.vars.currentNode = s.vars.currentNode.getNext(); return s; } },
+      {
+        f(os) {
+          const s = _.cloneDeep(os);
+          s.vars.currentNode = s.vars.currentNode.getNext();
+          return s;
+        },
+      },
     ]),
   ];
 
@@ -235,7 +308,8 @@ export class SingleLinkedList {
   /* public boolean removeDataAtPosition(int position) {
     if (position < 0 || position >= getSize()) {
       System.err.println(
-          "Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: position is out of list");
+          "Exeption in thread \"main\""
+          +"java.lang.ListIndexOutOfBounceExeption: position is out of list");
       return false;
     }
     if (position === 0) {
@@ -252,20 +326,32 @@ export class SingleLinkedList {
 
   // Auch hier die Return-Statements noch hinzufügen
   linesForRemoveDataAtPosition = [
-    ...exe_ifElse((s) => s.vars.position === 0, [
-      { f(s) { s.vars.front = s.vars.front.getNext(); return s; } },
+    ...execIfElse((s) => s.vars.position === 0, [
+      { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.front.getNext(); return s; } },
     ], [
-      { f(s) { s.vars.currentNode = s.vars.front; return s; } },
-      ...exe_for('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
-        { f(s) { s.vars.currentNode = s.vars.currentNode.getNext(); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+      ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
+        {
+          f(os) {
+            const s = _.cloneDeep(os);
+            s.vars.currentNode = s.vars.currentNode.getNext();
+            return s;
+          },
+        },
       ]),
-      { f(s) { s.vars.currentNode.setNext(s.vars.currentNode.getNext().getNext()); return s; } },
+      {
+        f(os) {
+          const s = _.cloneDeep(os);
+          s.vars.currentNode.setNext(s.vars.currentNode.getNext().getNext());
+          return s;
+        },
+      },
     ]),
   ];
 
   removeDataAtPosition() {
     if (this.exec.changeAlgo(this.linesForRemoveDataAtPosition, [], 1)) {
-      this.exec.state.vars.position = parseInt(document.getElementById('position3').value);
+      this.exec.state.vars.position = parseInt(document.getElementById('position3').value, 10);
       this.exec.outputFunction = () => this.showOutput();
       this.exec.play();
     }
@@ -273,7 +359,8 @@ export class SingleLinkedList {
 
   /* public boolean invertList() {
     if (front === null) {
-      System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: list is empty");
+      System.err.println("Exeption in thread \"main\""
+      +"java.lang.NullPointerExeption: list is empty");
       return false;
     }
     Node newFront = front;
@@ -296,21 +383,45 @@ export class SingleLinkedList {
 
   // Visualisierung bricht am Breakpoint, muss man sich sowieso nochmal genauer anschauen
   linesForInvertList = [
-    { f(s) { s.vars.newFront = s.vars.front; return s; } },
-    { f(s) { s.vars.size = SLL.getSize(s.vars.front) - 1; return s; } },
-    ...exe_for('i', () => 0, (s) => s.vars.i < s.vars.size, 1, [
-      { f(s) { s.vars.newFront = s.vars.newFront.getNext(); return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.newFront = s.vars.front; return s; } },
+    {
+      f(os) {
+        const s = _.cloneDeep(os);
+        s.vars.size = this.getSize(s.vars.front) - 1;
+        return s;
+      },
+    },
+    ...execFor('i', () => 0, (s) => s.vars.i < s.vars.size, 1, [
+      {
+        f(os) {
+          const s = _.cloneDeep(os);
+          s.vars.newFront = s.vars.newFront.getNext();
+          return s;
+        },
+      },
     ]),
-    { f(s) { s.vars.currentNode = undefined; return s; } },
-    ...exe_for('j', () => 0, (s) => s.vars.j < s.vars.size, 1, [
-      { f(s) { s.vars.currentNode = s.vars.front; return s; } },
-      ...exe_for('k', () => 0, (s) => s.vars.k < s.vars.size - 1 - s.vars.j, 1, [
-        { f(s) { s.vars.currentNode = s.vars.currentNode.getNext(); return s; } }, // Breakpoint
+    { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = undefined; return s; } },
+    ...execFor('j', () => 0, (s) => s.vars.j < s.vars.size, 1, [
+      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+      ...execFor('k', () => 0, (s) => s.vars.k < s.vars.size - 1 - s.vars.j, 1, [
+        {
+          f(os) { // Breakpoint
+            const s = _.cloneDeep(os);
+            s.vars.currentNode = s.vars.currentNode.getNext();
+            return s;
+          },
+        },
       ]),
-      { f(s) { s.vars.currentNode.getNext().setNext(s.vars.currentNode); return s; } },
+      {
+        f(os) {
+          const s = _.cloneDeep(os);
+          s.vars.currentNode.getNext().setNext(s.vars.currentNode);
+          return s;
+        },
+      },
     ]),
-    { f(s) { s.vars.front.setNext(null); return s; } },
-    { f(s) { s.vars.front = s.vars.newFront; return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.front.setNext(null); return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.newFront; return s; } },
   ];
 
   invertList() {
@@ -325,7 +436,7 @@ export class SingleLinkedList {
   } */
 
   linesForDeleteList = [
-    { f(s) { s.vars.front = null; return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.front = null; return s; } },
   ];
 
   deleteList() {
@@ -335,10 +446,9 @@ export class SingleLinkedList {
     }
   }
 
-  // für node sollte s.vars.front übergeben werden
-  getSize(node) {
+  getSize() {
     let size = 0;
-    let currentNode = node;
+    let currentNode = this.exec.state.vars.front;
 
     while (currentNode !== null) {
       currentNode = currentNode.getNext();
@@ -351,12 +461,16 @@ export class SingleLinkedList {
   // Data und Position im Ausgabebereich ausgeben
   outputData() {
     // console.log(this.exec.state.vars.dataFound);
-    document.getElementById('outputLine').innerHTML = `Ausgabe-Bereich: Daten ${this.exec.state.vars.dataFound} an Position ${this.exec.state.vars.position}`;
+    document.getElementById('outputLine').innerHTML = 'Ausgabe-Bereich: '
+      + `Daten ${this.exec.state.vars.dataFound}`
+      + ` an Position ${this.exec.state.vars.position}`;
   }
 
   // Data und Position im Ausgabebereich ausgeben
   outputPosition() {
-    document.getElementById('outputLine').innerHTML = `Ausgabe-Bereich: Daten ${this.exec.state.vars.data} an Position ${this.exec.state.vars.positionFound}`;
+    document.getElementById('outputLine').innerHTML = 'Ausgabe-Bereich: '
+      + `Daten ${this.exec.state.vars.data}`
+      + ` an Position ${this.exec.state.vars.positionFound}`;
   }
 
   // Funktion zum Ausgeben der Liste
@@ -395,7 +509,8 @@ export class SingleLinkedList {
       nodeElement.innerText = currentNode.getData();
 
       // Setze die Position des Knotens basierend auf der Position
-      nodeElement.style.left = `${(position * 90) + 50}px`; // Abstand zwischen den Knoten: 60px, Start bei 50px
+      // Abstand zwischen den Knoten: 60px, Start bei 50px:
+      nodeElement.style.left = `${(position * 90) + 50}px`;
       nodeElement.style.top = '50px'; // Abstand vom oberen Rand: 50px
 
       graphContainer.appendChild(nodeElement);
@@ -404,7 +519,8 @@ export class SingleLinkedList {
       if (position > 0) {
         const arrowElement = document.createElement('div');
         arrowElement.classList.add('arrow');
-        arrowElement.style.left = `${(position * 90) + 0}px`; // Position der Mitte zwischen den Knoten
+        // Position der Mitte zwischen den Knoten:
+        arrowElement.style.left = `${(position * 90) + 0}px`;
         arrowElement.style.top = '70px'; // Setze die Höhe des Pfeils auf 70px (oder nach Bedarf)
         graphContainer.appendChild(arrowElement);
 
@@ -422,32 +538,5 @@ export class SingleLinkedList {
 
     // Zeige den Graphen an
     graphContainer.style.display = 'flex';
-  }
-}
-
-// Node-Klasse
-class Node {
-  // Möglicherweise sollte die Möglichkeit bestehen,
-  // sich diese Klasse irgendwo anzeigen zu lassen
-
-  constructor(data) {
-    this.data = data;
-    this.next = null;
-  }
-
-  getData() {
-    return this.data;
-  }
-
-  setData(data) {
-    this.data = data;
-  }
-
-  getNext() {
-    return this.next;
-  }
-
-  setNext(next) {
-    this.next = next;
   }
 }

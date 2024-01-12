@@ -8,6 +8,8 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "max-classes-per-file": "warn",
+        "class-methods-use-this": "warn"
     }
 }
