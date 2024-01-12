@@ -1,4 +1,4 @@
-import { SingleLinkedList } from './SingleLinkedListLogic';
+import SingleLinkedList from './SingleLinkedListLogic';
 import { BubbleSort } from './BubbleSortLogic';
 
 const content = document.getElementById('mainContainer');
