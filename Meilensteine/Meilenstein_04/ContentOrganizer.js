@@ -5,6 +5,7 @@ const content = document.getElementById('mainContainer');
 
 // Startseite fetchen
 export function loadStartpage() {
+  localStorage.setItem("lastLoad", "loadStartpage");
   fetch('StartPage.html')
     .then((response) => response.text())
     .then((data) => {
@@ -14,6 +15,7 @@ export function loadStartpage() {
 
 // SingleLinkedList fetchen und Standardbeispiel laden
 export function loadSingleLinkedList() {
+  localStorage.setItem("lastLoad", "loadSingleLinkedList");
   fetch('SingleLinkedList.html')
     .then((response) => response.text())
     .then((data) => {
@@ -24,6 +26,7 @@ export function loadSingleLinkedList() {
 
 // DirectedUnweightedGraph fetchen und Standardbeispiel laden
 export function loadDirectedUnweightedGraph() {
+  localStorage.setItem("lastLoad", "loadDirectedUnweightedGraph");
   fetch('DirectedUnweightedGraph.html')
     .then((response) => response.text())
     .then((data) => {
@@ -33,6 +36,7 @@ export function loadDirectedUnweightedGraph() {
 
 // BubbleSort fetchen und Standardbeispiel laden
 export function loadBubbleSort() {
+  localStorage.setItem("lastLoad", "loadBubbleSort");
   fetch('BubbleSort.html')
     .then((response) => response.text())
     .then((data) => {
@@ -43,6 +47,7 @@ export function loadBubbleSort() {
 
 // MergeSort fetchen und Standardbeispiel laden
 export function loadMergeSort() {
+  localStorage.setItem("lastLoad", "loadMergeSort");
   fetch('MergeSort.html')
     .then((response) => response.text())
     .then((data) => {
@@ -73,5 +78,14 @@ export function showUserEditor() {
   }
 }
 
-loadStartpage();
+export function restore(){
+  let lastLoad = localStorage.getItem("lastLoad");
+  if(lastLoad){
+    setTimeout(() => window[lastLoad](), 500);
+  }else{
+    loadStartpage();
+  }
+}
+
+restore();
 showUserEditor();
