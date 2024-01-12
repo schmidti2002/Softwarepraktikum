@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 /*
 Minimal usage example for BubbleSort:
 lines = [
@@ -20,42 +21,45 @@ exec.outputFunction = () => showOutput(); // oder eine andere Funktion
 exec.play(false, () => console.log(JSON.stringify(exec.state.vars.arr)));
 */
 
-export function exe_start_block(state) {
+function execStartBlock(oldState) {
+  const state = _.cloneDeep(oldState);
   state.varsStack.push(Object.keys(state.vars).filter((n) => state.vars[n] !== undefined));
+  return state;
 }
 
-export function exe_end_block(state) {
+function execEndBlock(oldState) {
+  const state = _.cloneDeep(oldState);
   const existingVars = state.varsStack.pop();
   Object.keys(state.vars).forEach((n) => {
     if (!existingVars.includes(n)) {
       state.vars[n] = undefined;
     }
   });
+  return state;
 }
 
-export function exe_block(lines) {
+export function execBlock(lines) {
   return [
     {
       f(s) {
-        exe_start_block(s);
-        return s;
+        return execStartBlock(s);
       },
     },
     ...lines,
     {
       f(s) {
-        exe_end_block(s);
-        return s;
+        return execEndBlock(s);
       },
     },
 
   ];
 }
 
-export function exe_for(counter, start, condition, step, lines) {
+export function execFor(counter, start, condition, step, lines) {
   return [
     {
-      f(s) {
+      f(os) {
+        const s = _.cloneDeep(os);
         s.vars[counter] = start(s);
         if (!condition(s)) {
           s.currentLine += lines.length + 2;
@@ -64,8 +68,9 @@ export function exe_for(counter, start, condition, step, lines) {
       },
     },
     {
-      f(s) {
-        exe_start_block(s);
+      f(os) {
+        let s = _.cloneDeep(os);
+        s = execStartBlock(s);
         if (lines[0]) {
           return lines[0].f(s);
         }
@@ -74,8 +79,9 @@ export function exe_for(counter, start, condition, step, lines) {
     },
     ...lines.slice(1),
     {
-      f(s) {
-        exe_end_block(s);
+      f(os) {
+        let s = _.cloneDeep(os);
+        s = execEndBlock(s);
         s.vars[counter] += typeof step === 'number' ? step : step(s);
         if (condition(s)) {
           s.currentLine -= lines.length;
@@ -88,11 +94,12 @@ export function exe_for(counter, start, condition, step, lines) {
   ];
 }
 
-export function exe_while(condition, lines) {
-  [
+export function execWhile(condition, lines) {
+  return [
     {
-      f(s) {
-        exe_start_block(s);
+      f(os) {
+        let s = _.cloneDeep(os);
+        s = execStartBlock(s);
         if (!condition(s)) {
           s.currentLine += lines.length + 2;
         }
@@ -101,20 +108,22 @@ export function exe_while(condition, lines) {
     },
     ...lines,
     {
-      f(s) {
+      f(os) {
+        let s = _.cloneDeep(os);
         s.currentLine -= lines.length + 1;
-        exe_end_block(s);
+        s = execEndBlock(s);
         return s;
       },
     },
   ];
 }
 
-export function exe_ifElse(condition, lines, elsLines = []) {
+export function execIfElse(condition, lines, elsLines = []) {
   return [
     {
-      f(s) {
-        exe_start_block(s);
+      f(os) {
+        let s = _.cloneDeep(os);
+        s = execStartBlock(s);
         if (!condition(s)) {
           s.currentLine += lines.length + 2;
         }
@@ -123,24 +132,26 @@ export function exe_ifElse(condition, lines, elsLines = []) {
     },
     ...lines,
     {
-      f(s) {
-        exe_end_block(s);
+      f(os) {
+        let s = _.cloneDeep(os);
+        s = execEndBlock(s);
         s.currentLine += elsLines.length + 1;
         if (elsLines.length) {
-          exe_start_block(s);
+          s = execStartBlock(s);
         }
         return s;
       },
     },
     ...elsLines,
-    ...(elsLines.length ? [{ f(s) { exe_end_block(s); return s; } }] : []),
+    ...(elsLines.length ? [{ f(s) { return execEndBlock(s); } }] : []),
   ];
 }
 
 export class Executer {
   lines; // Algo siehe oben: Minimal usage example for BubbleSort
 
-  breakpoints = []; // Die lines, bei denen der Algo visualisiert wird. Zählweise siehe oben, immer eine line zählt 1
+  // Die lines, bei denen der Algo visualisiert wird. Zählweise siehe oben, immer eine line zählt 1
+  breakpoints = [];
 
   timeout; // Zeit zwischen den Breakpoints, wenn der Algo durchläuft
 
@@ -172,12 +183,12 @@ export class Executer {
       this.stop();
       return;
     }
-    const old_l = this.state.currentLine;
+    const oldLine = this.state.currentLine;
     const { f } = this.lines[this.state.currentLine];
     if (f) {
       this.state = f(this.state);
     }
-    if (old_l === this.state.currentLine) {
+    if (oldLine === this.state.currentLine) {
       this.state.currentLine += 1;
     } else if (typeof this.state.currentLine === 'string') {
       for (let i = 0; i < this.lines.length; i++) {
@@ -213,7 +224,8 @@ export class Executer {
     return false;
   }
 
-  // Führt einen Algorithmus zwangsweise aus, nur im Konstruktor einer Klasse zum Initialisieren der Datenstruktur verwenden.
+  // Führt einen Algorithmus zwangsweise aus
+  // Nur im Konstruktor einer Klasse zum Initialisieren der Datenstruktur verwenden.
   forcePlay(lines) {
     this.lines = lines;
     this.breakpoints = [];

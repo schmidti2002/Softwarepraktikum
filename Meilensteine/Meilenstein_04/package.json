@@ -22,12 +22,17 @@
   "scripts": {
     "test": "jest",
     "api-prepare": "openapi-generator-cli generate -i ../../specs/openapi/openapi.yaml -g typescript-fetch -o ./api",
+    "lint": "eslint *.js",
+    "sonar": "yarn test --coverage; yarn lint -f json -o ./coverage/eslint.json",
     "watch": "webpack --watch",
     "build": "webpack",
     "package": "yarn run api-prepare && webpack --prod --minify",
     "start": "webpack serve --open --host 0.0.0.0"
   },
   "dependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "lodash": "^4.17.21",
     "webpack": "^5.89.0"
   }
 }

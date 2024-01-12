@@ -1,4 +1,5 @@
-import { exe_for, exe_ifElse, Executer } from './AlgoExecuter';
+import * as _ from 'lodash';
+import { execFor, execIfElse, Executer } from './AlgoExecuter';
 
 // Klasse für den BubbleSort
 export class BubbleSort {
@@ -13,22 +14,34 @@ export class BubbleSort {
 
   // Algorithmus, der schrittweise ausgeführt wird
   linesForBubbleSort = [
-    { f(s) { s.vars.temp = undefined; return s; } },
-    { f(s) { s.vars.n = s.vars.arr.length; return s; } },
-    ...exe_for(
+    { f(os) { const s = _.cloneDeep(os); s.vars.temp = undefined; return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
+    ...execFor(
       'i',
       () => 0,
       (s) => s.vars.i < s.vars.n - 1,
       1,
-      exe_for(
+      execFor(
         'k',
         () => 0,
         (s) => s.vars.k < s.vars.n - 1 - s.vars.i,
         1,
-        exe_ifElse((s) => s.vars.arr[s.vars.k] > s.vars.arr[s.vars.k + 1], [
-          { f(s) { s.vars.temp = s.vars.arr[s.vars.k]; return s; } },
-          { f(s) { s.vars.arr[s.vars.k] = s.vars.arr[s.vars.k + 1]; return s; } },
-          { f(s) { s.vars.arr[s.vars.k + 1] = s.vars.temp; return s; } },
+        execIfElse((s) => s.vars.arr[s.vars.k] > s.vars.arr[s.vars.k + 1], [
+          { f(os) { const s = _.cloneDeep(os); s.vars.temp = s.vars.arr[s.vars.k]; return s; } },
+          {
+            f(os) {
+              const s = _.cloneDeep(os);
+              s.vars.arr[s.vars.k] = s.vars.arr[s.vars.k + 1];
+              return s;
+            },
+          },
+          {
+            f(os) {
+              const s = _.cloneDeep(os);
+              s.vars.arr[s.vars.k + 1] = s.vars.temp;
+              return s;
+            },
+          },
         ]),
       ),
     ),
@@ -46,7 +59,7 @@ export class BubbleSort {
 
     for (let i = 0; i < inputArray.length; i++) {
       const integerValue = parseInt(inputArray[i].trim(), 10); // Basis 10 für Dezimalzahlen
-      if (!isNaN(integerValue)) {
+      if (!Number.isNaN(integerValue)) {
         integerArray.push(integerValue);
       }
     }
@@ -58,7 +71,7 @@ export class BubbleSort {
   // Funktion, um n einzulesen und n Zufallszahlen zu generieren und anzuzeigen
   generateRandomNumbers() {
     // Die Anzahl der Zufallszahlen vom Benutzer eingeben lassen
-    const count = parseInt(document.getElementById('userInput').value);
+    const count = parseInt(document.getElementById('userInput').value, 10);
     this.generate(count);
   }
 
@@ -117,6 +130,10 @@ export class BubbleSort {
   showOutput() {
     // Dieser Teil ist gut zum Debuggen, kann man später vielleicht weglassen
     const output = document.getElementById('ausgabe');
+    if (!output) {
+      console.error('id=ausgabe not found');
+      return;
+    }
     output.innerHTML = `Das Array lautet: ${this.exec.state.vars.arr.join(', ')}`;
     if (!this.exec.state.vars === -1) {
       output.innerHTML += `, Algo läuft in Line:${this.exec.state.currentLine}`;
@@ -134,7 +151,9 @@ export class BubbleSort {
       const bar = document.createElement('div');
       bar.className = 'bar';
       bar.style.width = '20px'; // Skaliere Breite der Bars
-      bar.style.height = `${this.exec.state.vars.arr[i] * 10 + 10}px`; // Skaliere die Höhe der Bars
+
+      // Skaliere die Höhe der Bars:
+      bar.style.height = `${this.exec.state.vars.arr[i] * 10 + 10}px`;
       bar.innerHTML = `<span>${this.exec.state.vars.arr[i]}</span>`;
       chart.appendChild(bar);
     }
