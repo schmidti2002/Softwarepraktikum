@@ -12,181 +12,172 @@ import configparser
 
 # wichtige 
 from hashlib import sha256
-import mysql.connector
+import psycopg2
 from flask import make_response
-database = mysql.connector.connect(host=host_url,user=user_name,passwd=password,db=Datenbank,auth_plugin='mysql_native_password')
+database = psycopg2.connector.connect(host=host_url,port=port, user=user_name,password=password,database=Datenbank)
+cursor = database.cursor()
+
+def verifyapikey(request):
+    # Daten aus dem Request holen und überprüfen
+    try:
+        apikey = request.cookies.get('apiKey')
+        cursor.execute('SELECT key FROM public."ApiKey" WHERE key = %s", (apikey)')
+        result = cursor.fetchone()
+        if len(result) == 0:
+            return abort(401, message="API key is missing or invalid")
+        return apikey # API-Key zurückgeben
+    except psycopg2.errors:
+        return abort(401, message="API key is missing or invalid ")
+
+def verifyapikey_admin(apikey):
+    cursor.execute('SELECT rights FROM public."User" JOIN public."ApiKey" on public."ApiKey"."user" = public."User"."id" WHERE key = %s', (apikey))
+    result = cursor.fetchone()
+    if result[0][0] != 1:
+        return abort(403, message="User not allowed to execute this operation")
+    return True # Adminrechte zurückgeben
 
 class login(Resource):
     def get(self):
-        cursor = database.cursor()
 
         # Daten aus dem Request holen
         username = request.form.get("username")
         password = request.form.get("password")
 
         # SQL-Abfrage
-        cursor.execute("SELECT * FROM User WHERE username = %s AND password = %s", (username, sha256(password.encode('utf-8')).hexdigest()))
+        cursor.execute('SELECT id FROM public."User" WHERE name = %s AND passwd = %s', (username, sha256(password.encode('utf-8')).hexdigest()))
         # Ergebnis der Abfrage
-        result = cursor.fetchall()
+        result = cursor.fetchone()
         # Wenn kein Ergebnis zurückgegeben wird, ist der Login fehlgeschlagen
         if len(result) == 0:
-            return abort(401, message="Login failed")
+            return abort(401, message="login not successfull")
         
         # Wenn ein Ergebnis zurückgegeben wird, ist der Login erfolgreich
         else:
-            # 40 stelligen Token generieren
-            token = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
+            # 64 stelligen SessionToken generieren
+            apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
             # SQL-Abfrage
-            cursor.execute("UPDATE User SET session_token = %s WHERE username = %s", (token, username))
+            cursor.execute('UPDATE ApiKey SET key = %s WHERE user = (SELECT id FROM public."User" WHERE name = %s)', (apikey, username))
             # Token zurückgeben
-            response = make_response('Login erfolgreich')
-            response.set_cookie('sessiontoken', token)  # Cookie setzen, um den Session-Token zu speichern
+            response = make_response('login successfull. apiKey-cookie set.')
+            response.set_cookie('apiKey', apikey)  # Cookie setzen, um den Session-Token zu speichern
             return response
         
-
-class user(Resource):
+class user(Resource):   
     def get(self):
-        cursor = database.cursor()
 
         # Daten aus dem Request holen und überprüfen
-        try:
-            user_token = request.cookies.get('sessiontoken')
-            cursor.execute("SELECT * FROM User WHERE session_token = %s", (user_token))
-            result = cursor.fetchall()
-            if len(result) == 0:
-                return abort(401, message="API key is missing or invalid")
-        except:
-            return abort(401, message="API key is missing or invalid ")
-        
+        apikey = verifyapikey(request)
+
         # SQL-Abfrage und Ergebnis zurückgeben
-        cursor.execute("SELECT `username`, `rights`, `email` FROM User WHERE session_token = %s", (user_token))
+        cursor.execute("SELECT id, name, rights, email FROM User JOIN public.'ApiKey' ON public.'ApiKey'.'user' = public.'User'.'id' WHERE public.'ApiKey'.'user' = %s", (apikey))
         result = cursor.fetchall()
 
-        response_dic = {"username": result[0][0], "admin": result[0][1], "email": result[0][2]}
+        response_dic = {"id": result[0][0], "username": result[0][1], "admin": result[0][2], "email": result[0][3]}
         return (200,response_dic)
     
     def post(self):
-        cursor = database.cursor()
-
         # Daten aus dem Request holen und überprüfen
-        try:
-            user_token = request.cookies.get('sessiontoken')
-            cursor.execute("SELECT `rights` FROM User WHERE session_token = %s", (user_token))
-            result = cursor.fetchall()
-            if len(result) == 0 or result[0][0] != 1:
-                return abort(401, message="API key is missing or invalid")
-        except:
-            return abort(401, message="API key is missing or invalid ")
+        apikey = verifyapikey(request)
+
+        # Auf Adminrechte überprüfen
+        verifyapikey_admin(apikey)
         
         # Daten aus dem Request holen
-        username = request.form.get("username")
-        password = request.form.get("password")
-        email = request.form.get("email")
-        admin = request.form.get("admin")
-
+        try:
+            id = request.form.get("id")
+            name = request.form.get("username")
+            passwd= request.form.get("passwd")
+            email = request.form.get("email")
+            admin = request.form.get("admin")
+        except :
+            return abort(409, message="Send data conflicts with existing entry")
+        
         # SQL-Abfrage
-        cursor.execute("INSERT INTO User (username, password, email, rights) VALUES (%s, %s, %s, %s)", (username, sha256(password.encode('utf-8')).hexdigest(), email, admin))
-        database.commit()
-        return (200,"user successfully created")
+        try:
+            cursor.execute('INSERT INTO public."User" (id, name, passwd, email, rights) VALUES (%s,%s, %s, %s, %s)', (id, name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin))
+            database.commit()
+            cursor.execute('INSERT INTO public."ApiKey" (user, key) VALUES (%s,%s)', (id, "000000"))
+            database.commit()
+        except :
+            return abort(409, message="Send data conflicts with existing entry")
+
+        return abort(200, message="user successfully created")
     
     def put(self):
-        cursor = database.cursor()
 
         # Daten aus dem Request holen und überprüfen
-        try:
-            user_token = request.cookies.get('sessiontoken')
-            cursor.execute("SELECT `rights` FROM User WHERE session_token = %s", (user_token))
-            result = cursor.fetchall()
-            if len(result) == 0:
-                return abort(404, message="User not found ")
-            if result[0][0] != 1:
-                return abort(403, message="User not allowed to execute this operation")
-        except:
-            return abort(401, message="API key is missing or invalid ")
+        apikey = verifyapikey(request)
+
+        # Auf Adminrechte überprüfen
+        verifyapikey_admin(apikey)
         
         # Daten aus dem Request holen
-        username = request.form.get("username")
-        password = request.form.get("password")
-        email = request.form.get("email")
-        admin = request.form.get("admin")
+        try:
+            id = request.form.get("id")
+            name = request.form.get("username")
+            passwd= request.form.get("passwd")
+            email = request.form.get("email")
+            admin = request.form.get("admin")
+        except :
+            return abort(409, message="Send data conflicts with existing entry")
 
         # SQL-Abfrage
-        cursor.execute("UPDATE User SET password = %s, email = %s, rights = %s WHERE username = %s", (sha256(password.encode('utf-8')).hexdigest(), email, admin, username))
-        database.commit()
-        return (200,"user got updated")
+        try:
+            cursor.execute('UPDATE public."User" SET name = %s, passwd = %s, email = %s, rights = %s WHERE id = %s', (name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin, id))
+            database.commit()
+        except psycopg2.errors:
+            return abort(404, message="User not found")
+        
+        return abort(200, message="User got updated")
     
-class user_delete(Resource):
+class user_edit(Resource):
     def delete(self, edit_userid):
-        cursor = database.cursor()
 
         # Daten aus dem Request holen und überprüfen
-        try:
-            user_token = request.cookies.get('sessiontoken')
-            cursor.execute("SELECT `rights` FROM User WHERE session_token = %s", (user_token))
-            result = cursor.fetchall()
-            if len(result) == 0:
-                return abort(401, message="API key is missing or invalid ")
-            if result[0][0] != 1:
-                return abort(403, message="User not allowed to execute this operation")
-        except:
-            return abort(401, message="API key is missing or invalid ")
+        apikey = verifyapikey(request)
+
+        # Auf Adminrechte überprüfen
+        verifyapikey_admin(apikey)
         
         # Daten des zu löschenden Users überprüfen
-        cursor.execute("SELECT * FROM User WHERE user_id = %s", (edit_userid,))
-        if len(cursor.fetchall()) == 0:
-            return abort(404, message="User not found ")
+        try:
+            cursor.execute('DELETE FROM public."User" WHERE id = %s', (edit_userid,))
+            database.commit()
+        except psycopg2.errors:
+            return abort(404, message="User not found")
 
-        # SQL-Abfrage
-        cursor.execute("DELETE FROM User WHERE user_id = %s", (edit_userid,))
-        database.commit()
-        return (200,"user got deleted")
+        return abort(200, message="user got deleted")
     
     def get(self, edit_userid):
-        cursor = database.cursor()
 
         # Daten aus dem Request holen und überprüfen
-        try:
-            user_token = request.cookies.get('sessiontoken')
-            cursor.execute("SELECT `rights` FROM User WHERE session_token = %s", (user_token))
-            result = cursor.fetchall()
-            if len(result) == 0:
-                return abort(401, message="API key is missing or invalid ")
-            if result[0][0] != 1:
-                return abort(403, message="User not allowed to execute this operation")
-        except:
-            return abort(401, message="API key is missing or invalid ")
+        apikey = verifyapikey(request)
+        # Auf Adminrechte überprüfen
+        verifyapikey_admin(apikey)
         
         # Daten des Users überprüfen
-        cursor.execute("SELECT * FROM User WHERE user_id = %s", (edit_userid,))
-        result = cursor.fetchall()
-        if len(result) == 0:
-            return abort(404, message="User not found ")
+        try:
+            cursor.execute('SELECT * FROM public."User" WHERE id = %s', (edit_userid,))
+            result = cursor.fetchall()
+            if len(result) == 0:
+                return abort(404, message="User not found")
+        except psycopg2.errors:
+            return abort(404, message="User not found")
 
-        # SQL-Abfrage
-        cursor.execute("SELECT `user_is`, `username`, `rights`, `email` FROM User WHERE user_id = %s", (edit_userid,))
-        result = cursor.fetchall()
-
+        # SQL Anfrage Auswertung
         response_dic = {"id":result[0][0],"username": result[0][1], "admin": result[0][2], "email": result[0][3]}
         return (200,response_dic)
     
 class useres(Resource):
     def get(self):
-        cursor = database.cursor()
 
         # Daten aus dem Request holen und überprüfen
-        try:
-            user_token = request.cookies.get('sessiontoken')
-            cursor.execute("SELECT `rights` FROM User WHERE session_token = %s", (user_token))
-            result = cursor.fetchall()
-            if len(result) == 0:
-                return abort(401, message="API key is missing or invalid ")
-            if result[0][0] != 1:
-                return abort(403, message="User not allowed to execute this operation")
-        except:
-            return abort(401, message="API key is missing or invalid ")
+        apikey = verifyapikey(request)
+        # Auf Adminrechte überprüfen
+        verifyapikey_admin(apikey)
         
         # SQL-Abfrage
-        cursor.execute("SELECT `user_id`, `username`, `rights`, `email` FROM User")
+        cursor.execute('SELECT `user_id`, `username`, `rights`, `email` FROM public."User"')
         result = cursor.fetchall()
 
         response_dic = []
