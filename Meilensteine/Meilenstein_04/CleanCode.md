@@ -2,7 +2,7 @@
 ## Obligatorisch
 - Sprache des Codes: Englisch (-> alle Benennungen im Code (Variablen- und Funktionsnamen, etc.))
 - Benennungen im Code im "camelCase" ohne Sonderzeichen
-- Standard-Benennungen wenn gegeben verwenden
+- Konventionelle Benennungen wenn gegeben verwenden
 - Benennungen mit einheitlichen, verständlichen und ihre Funktionen beschreibenden Namen
 
 - Sprache der Kommentierung: Deutsch
