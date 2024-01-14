@@ -5,16 +5,23 @@ from flask_restful import Api, Resource, abort
 from flask_cors import CORS
 import random
 import string
-import datetime
-import socket
-import os
-import configparser
 
 # wichtige 
 from hashlib import sha256
 import psycopg2
 from flask import make_response
-database = psycopg2.connector.connect(host=host_url,port=port, user=user_name,password=password,database=Datenbank)
+
+app = Flask(__name__)
+CORS(app)
+api = Api(app)
+
+host_url = "swp.dczlabs.xyz"
+port = "3131"
+user_name = "swpusr"
+password = "251f6100a8ff1dd2"
+Datenbank = "swp"
+
+database = psycopg2.connect(host=host_url,port=port, user=user_name,password=password,database=Datenbank)
 cursor = database.cursor()
 
 def verifyapikey(request):
@@ -44,7 +51,7 @@ class login(Resource):
         password = request.form.get("password")
 
         # SQL-Abfrage
-        cursor.execute('SELECT id FROM public."User" WHERE name = %s AND passwd = %s', (username, sha256(password.encode('utf-8')).hexdigest()))
+        cursor.execute("""SELECT id FROM public."User" WHERE name = %s AND passwd = %s""", (username, sha256(password.encode('utf-8')).hexdigest()))
         # Ergebnis der Abfrage
         result = cursor.fetchone()
         # Wenn kein Ergebnis zurückgegeben wird, ist der Login fehlgeschlagen
@@ -56,7 +63,7 @@ class login(Resource):
             # 64 stelligen SessionToken generieren
             apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
             # SQL-Abfrage
-            cursor.execute('UPDATE ApiKey SET key = %s WHERE user = (SELECT id FROM public."User" WHERE name = %s)', (apikey, username))
+            cursor.execute("""UPDATE public."ApiKey" SET key = %s WHERE "user" = (SELECT id FROM public."User" WHERE name = %s)""", (apikey, username))
             # Token zurückgeben
             response = make_response('login successfull. apiKey-cookie set.')
             response.set_cookie('apiKey', apikey)  # Cookie setzen, um den Session-Token zu speichern
