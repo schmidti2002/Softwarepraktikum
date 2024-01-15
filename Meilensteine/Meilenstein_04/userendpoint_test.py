@@ -4,6 +4,8 @@ from flask import Flask
 from flask.testing import FlaskClient
 from user_login import app  # Stelle sicher, dass 'app' der Name deiner Flask-Anwendung ist
 
+apicookies = []
+
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
@@ -12,13 +14,16 @@ def client():
 
 def test_login(client):
     # Annahme: Du hast einen gültigen Benutzer für Testzwecke in der Datenbank
-    response = client.get('/login', data=dict(username='florian', password='florian'))
+    response = client.get('/login', data={"username":'Florian', "password":'florian'})
+    apicookies = response.headers.get('Set-Cookie')
+    client.set_cookie('apiKey', apicookies)
+
     assert response.status_code == 200
     assert 'login successfull' in response.get_data(as_text=True)
 
 def test_user_get(client):
     # Annahme: Du hast einen gültigen API-Key für Testzwecke
-    response = client.get('/user', headers={'Cookie': 'apiKey=test_api_key'})
+    response = client.get('/user')
     assert response.status_code == 404
     # Hier müsstest du die erwarteten Daten anhand der Testdatenbank oder Mock-Daten überprüfen
 
