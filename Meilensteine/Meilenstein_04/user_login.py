@@ -61,6 +61,9 @@ class login(Resource):
         result = cursor.fetchone()
         
         # Wenn kein Ergebnis zurückgegeben wird, ist der Login fehlgeschlagen
+        if result == None:
+            return abort(401, message="login not successfull")
+        
         if result[0] != sha256(password.encode('utf-8')).hexdigest():
             return abort(401, message="login not successfull")
         
@@ -112,12 +115,13 @@ class user(Resource):
         try:
             cursor.execute("""INSERT INTO public."User" (id, name, passwd, email, rights) VALUES (%s,%s, %s, %s, %s)""", (id, name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin))
             database.commit()
-            cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s)""", (id, "0", "2000-01-01 00:00:00+00"))
+            apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
+            cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s,%s)""", (id, apikey, "2000-01-01 00:00:00+00"))
             database.commit()
         except :
             return abort(409, message="Send data conflicts with existing entry")
 
-        return abort(200, message="user successfully created")
+        return jsonify("user successfully created")
     
     def put(self):
 
@@ -144,7 +148,7 @@ class user(Resource):
         except psycopg2.errors:
             return abort(404, message="User not found")
         
-        return abort(200, message="User got updated")
+        return jsonify("User got updated")
     
 class user_edit(Resource):
     def delete(self, edit_userid):
@@ -162,7 +166,7 @@ class user_edit(Resource):
         except psycopg2.errors:
             return abort(404, message="User not found")
 
-        return abort(200, message="user got deleted")
+        return jsonify("user got deleted")
     
     def get(self, edit_userid):
 
@@ -173,7 +177,7 @@ class user_edit(Resource):
         
         # Daten des Users überprüfen
         try:
-            cursor.execute("""SELECT * FROM public."User" WHERE id = %s""", (edit_userid,))
+            cursor.execute("""SELECT id, name, email, rights FROM public."User" WHERE id = %s""", (edit_userid,))
             result = cursor.fetchall()
             if len(result) == 0:
                 return abort(404, message="User not found")
@@ -181,8 +185,8 @@ class user_edit(Resource):
             return abort(404, message="User not found")
 
         # SQL Anfrage Auswertung
-        response_dic = {"id":result[0][0],"username": result[0][1], "admin": result[0][2], "email": result[0][3]}
-        return (200,response_dic)
+        response_dic = {"id":result[0][0],"username": result[0][1], "admin": result[0][3], "email": result[0][2]}
+        return jsonify(response_dic)
     
 class useres(Resource):
     def get(self):
@@ -205,6 +209,3 @@ api.add_resource(login, '/login')
 api.add_resource(user, '/user') 
 api.add_resource(user_edit, '/user/edit/<string:edit_userid>')
 api.add_resource(useres, '/useres')
-
-if __name__ == "__main__":
-    app.run(debug=True)
