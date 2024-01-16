@@ -3,7 +3,7 @@ import path from 'path';
 import {
   expect, describe, test, beforeEach,
 } from '@jest/globals';
-import { BubbleSort } from './BubbleSortLogic';
+import BubbleSort from '../src/BubbleSortLogic';
 
 /*
 function testRegisterAndLogin() {
@@ -47,7 +47,7 @@ function testRegisterAndLogin() {
   console.log('login tests beendet');
 } */
 
-const bubblesortHtml = fs.readFileSync(path.resolve(__dirname, './BubbleSort.html'), 'utf8');
+const bubblesortHtml = fs.readFileSync(path.resolve(__dirname, '../src/BubbleSort.html'), 'utf8');
 
 describe('BubbleSort', () => {
   describe('helper functions', () => {

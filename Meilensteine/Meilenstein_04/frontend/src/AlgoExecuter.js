@@ -158,13 +158,13 @@ export class Executer {
   outputFunction = function () { }; // Funktion, um den AoD zu visualisieren
 
   state = {
-    currentLine: -1, // Zeile, die der Algo gerade bearbeitet
+    currentLine: 0, // Zeile, die der Algo gerade bearbeitet
     varsStack: [],
     vars: {},
   };
 
   OldState = {
-    currentLine: -1,
+    currentLine: 0,
     varsStack: [],
     vars: {},
   };
@@ -172,15 +172,15 @@ export class Executer {
   intervalId;
 
   // Konstruktor
-  constructor() {
-    this.state.currentLine = -1;
+  constructor(errorReporter) {
+    this.errorReporter = errorReporter;
   }
 
   // private; Führt eine line aus
-  step() {
+  #step() {
     // Abfrage vielleicht nicht nötig
-    if (this.state.currentLine === this.lines.length || this.state.currentLine === -1) {
-      this.stop();
+    if (this.state.currentLine === this.lines.length) {
+      this.#stop();
       return;
     }
     const oldLine = this.state.currentLine;
@@ -200,27 +200,38 @@ export class Executer {
     }
   }
 
+  step() {
+    this.#step();
+    this.outputFunction();
+  }
+
   // private; Ruft step() bis zum nächsten Breakpoint auf
-  nextBreakpoint() {
+  #nextBreakpoint() {
     let stepsCounter = 0;
     do {
-      if (this.state.currentLine === this.lines.length || this.state.currentLine === -1) {
-        this.stop();
+      if (this.state.currentLine === this.lines.length) {
+        this.#stop();
         return;
       }
-      this.step();
+      this.#step();
     } while (!this.breakpoints.includes(this.state.currentLine) && stepsCounter++ < 1000);
   }
 
   // Ändern des Algorithmus; stellt sicher, dass zurzeit kein Algorithmus läuft
-  changeAlgo(lines, breakpoints, timeout) {
-    if (this.state.currentLine === -1) {
+  changeAlgo(lines, breakpoints, timeout, vars) {
+    if (!this.isRunning()) {
       this.lines = lines;
       this.breakpoints = breakpoints;
       this.timeout = timeout;
+      this.state = {
+        currentLine: 0,
+        varsStack: [],
+        vars,
+      };
+      this.OldState = _.cloneDeep(this.state);
       return true;
     }
-    console.log('Algorithmus ist noch nicht beendet');
+    this.errorReporter.warn('Algorithmus ist noch nicht beendet');
     return false;
   }
 
@@ -229,32 +240,25 @@ export class Executer {
   forcePlay(lines) {
     this.lines = lines;
     this.breakpoints = [];
-    this.start();
-    this.nextBreakpoint();
+    this.#nextBreakpoint();
   }
 
-  // private; initialisiert den Algo, falls er noch nicht läuft
-  start() {
-    if (this.state.currentLine === -1) {
-      this.OldState = JSON.parse(JSON.stringify(this.state));
-      this.state.currentLine = 0;
-    }
+  isRunning() {
+    return this.intervalId !== undefined;
   }
 
   // private; stoppt den Algo
-  stop() {
+  #stop() {
     this.pause();
-    this.state.currentLine = -1;
     this.outputFunction();
   }
 
   // Button Play
   play() {
-    this.start();
-    if (typeof intervalId === 'undefined') { // Prüft, das play() noch nicht läuft
+    if (!this.isRunning()) { // Prüft, das play() noch nicht läuft
       const self = this;
       this.intervalId = setInterval(() => {
-        self.nextBreakpoint();
+        self.#nextBreakpoint();
         self.outputFunction();
       }, this.timeout);
     }
@@ -263,26 +267,21 @@ export class Executer {
   // Button Pause
   pause() {
     clearInterval(this.intervalId);
-    this.intervalId = 'undefined';
+    this.intervalId = undefined;
     this.outputFunction();
   }
 
   // Button Nächster Schritt
   next() {
-    this.start();
     this.pause();
-    this.nextBreakpoint();
+    this.#nextBreakpoint();
     this.outputFunction();
   }
 
   // Button Reset
   reset() {
-    console.log('1');
-    this.stop();
-    console.log('2');
-    this.state = JSON.parse(JSON.stringify(this.OldState));
-    console.log('3');
+    this.#stop();
+    this.state = _.cloneDeep(this.OldState);
     this.outputFunction();
-    console.log('4');
   }
 }

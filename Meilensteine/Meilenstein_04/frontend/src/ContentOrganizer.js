@@ -1,11 +1,11 @@
 import SingleLinkedList from './SingleLinkedListLogic';
-import { BubbleSort } from './BubbleSortLogic';
+import AuD from './AuD';
 
 const content = document.getElementById('mainContainer');
 
 // Startseite fetchen
 export function loadStartpage() {
-  localStorage.setItem("lastLoad", "loadStartpage");
+  localStorage.setItem('lastLoad', 'loadStartpage');
   fetch('StartPage.html')
     .then((response) => response.text())
     .then((data) => {
@@ -15,7 +15,7 @@ export function loadStartpage() {
 
 // SingleLinkedList fetchen und Standardbeispiel laden
 export function loadSingleLinkedList() {
-  localStorage.setItem("lastLoad", "loadSingleLinkedList");
+  localStorage.setItem('lastLoad', 'loadSingleLinkedList');
   fetch('SingleLinkedList.html')
     .then((response) => response.text())
     .then((data) => {
@@ -26,7 +26,7 @@ export function loadSingleLinkedList() {
 
 // DirectedUnweightedGraph fetchen und Standardbeispiel laden
 export function loadDirectedUnweightedGraph() {
-  localStorage.setItem("lastLoad", "loadDirectedUnweightedGraph");
+  localStorage.setItem('lastLoad', 'loadDirectedUnweightedGraph');
   fetch('DirectedUnweightedGraph.html')
     .then((response) => response.text())
     .then((data) => {
@@ -36,18 +36,18 @@ export function loadDirectedUnweightedGraph() {
 
 // BubbleSort fetchen und Standardbeispiel laden
 export function loadBubbleSort() {
-  localStorage.setItem("lastLoad", "loadBubbleSort");
+  localStorage.setItem('lastLoad', 'loadBubbleSort');
   fetch('BubbleSort.html')
     .then((response) => response.text())
     .then((data) => {
       content.innerHTML = data;
-      window.BBS = new BubbleSort();
+      // window.BBS = new BubbleSort();
     });
 }
 
 // MergeSort fetchen und Standardbeispiel laden
 export function loadMergeSort() {
-  localStorage.setItem("lastLoad", "loadMergeSort");
+  localStorage.setItem('lastLoad', 'loadMergeSort');
   fetch('MergeSort.html')
     .then((response) => response.text())
     .then((data) => {
@@ -78,13 +78,23 @@ export function showUserEditor() {
   }
 }
 
-export function restore(){
-  let lastLoad = localStorage.getItem("lastLoad");
-  if(lastLoad){
+export function restore() {
+  const lastLoad = localStorage.getItem('lastLoad');
+  if (lastLoad) {
     setTimeout(() => window[lastLoad](), 500);
-  }else{
+  } else {
     loadStartpage();
   }
+
+  setTimeout(() => { // TODO remove timeout and rewrite ContentOrganizer to interface AuD
+    const container = document.getElementById('test');
+    const test = new AuD(container);
+    test.initPromise.then(
+      () => {
+        test.loadAuD('BubbleSort');
+      },
+    );
+  }, 1000);
 }
 
 restore();

@@ -2,13 +2,13 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './ContentOrganizer.js',
+  entry: './src/ContentOrganizer.js',
   devtool: 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   devServer: {
-    static: './',
+    static: './src',
   },
   module: {
     rules: [

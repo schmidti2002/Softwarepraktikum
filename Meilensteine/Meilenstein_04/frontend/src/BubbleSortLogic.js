@@ -1,20 +1,30 @@
 import * as _ from 'lodash';
-import { execFor, execIfElse, Executer } from './AlgoExecuter';
+import { execFor, execIfElse } from './AlgoExecuter';
+import Logic from './Logic';
+import { arrayEveryEntry, minMax, notEmpty } from './inputValidators';
 
 // Klasse für den BubbleSort
-export class BubbleSort {
+export default class BubbleSort extends Logic {
+  #stateChangeCallback;
+
   // Konstruktor
-  constructor() {
-    this.exec = new Executer();
-    this.exec.changeAlgo(this.linesForBubbleSort, [8], 10);
-    this.exec.state.vars.arr = [50, 35, 40, 15, 30, 45, 5, 20, 25, 10];
+  constructor(errorReporter, stateChangeCallback) {
+    super(errorReporter);
+    this.#stateChangeCallback = stateChangeCallback;
+    console.log(this.exec);
+    this.exec.changeAlgo(
+      this.linesForBubbleSort,
+      [8],
+      10,
+      { arr: [50, 35, 40, 15, 30, 45, 5, 20, 25, 10] },
+    );
     this.exec.outputFunction = () => this.showOutput();
     this.exec.outputFunction();
   }
 
   // Algorithmus, der schrittweise ausgeführt wird
   linesForBubbleSort = [
-    { f(os) { const s = _.cloneDeep(os); s.vars.temp = undefined; return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.temp = 0; return s; } },
     { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
     ...execFor(
       'i',
@@ -45,6 +55,85 @@ export class BubbleSort {
         ]),
       ),
     ),
+  ];
+
+  jsCodeExampleLines = [
+    'let temp;',
+    'const n = arr.length;',
+    'for (let i = 0; i < n - 1; i++) {',
+    '    for (let k = 0; k < n - 1 - i; k++) {',
+    '        if (arr[k] > arr[k + 1]) {',
+    '            temp = arr[k];',
+    '            arr[k] = arr[k + 1];',
+    '            arr[k + 1] = temp;',
+    '        }',
+    '    }',
+    '}'];
+
+  algos = [
+    {
+      name: 'Sortieren',
+      algo: {
+        code: this.jsCodeExampleLines,
+        lines: this.linesForBubbleSort,
+        breakpoints: [8],
+      },
+      inputs: [
+        {
+          name: 'Werte',
+          field: 'arr',
+          type: 'integer[]',
+          prefill: () => _.join(this.exec.state.vars.arr),
+          validators: [{
+            func: arrayEveryEntry(minMax),
+            param: { min: 0 },
+          },
+          {
+            func: arrayEveryEntry(notEmpty),
+          },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Neue Werte',
+      func: (inputs) => this.generate(inputs.count),
+      inputs: [
+        {
+          name: 'Anzahl',
+          field: 'count',
+          type: 'integer',
+          validators: [{
+            func: minMax,
+            param: { min: 0 },
+          },
+          {
+            func: notEmpty,
+          },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Werte bearbeiten',
+      func: (inputs) => this.generate(inputs.count),
+      inputs: [
+        {
+          name: 'Werte',
+          field: 'arr',
+          type: 'integer[]',
+          prefill: () => _.join(this.exec.state.vars.arr),
+          validators: [{
+            func: arrayEveryEntry(minMax),
+            param: { min: 0 },
+          },
+          {
+            func: arrayEveryEntry(notEmpty),
+          },
+          ],
+        },
+      ],
+    },
   ];
 
   // Array ausgeben, um es zu bearbeiten
@@ -128,13 +217,20 @@ export class BubbleSort {
 
   // Funktion, um das Array auszugeben
   showOutput() {
+    this.#stateChangeCallback(
+      this.exec.state.vars.arr,
+      this.exec.state.vars,
+      this.exec.state.currentLine,
+      this.exec.isRunning(),
+    );
     // Dieser Teil ist gut zum Debuggen, kann man später vielleicht weglassen
     const output = document.getElementById('ausgabe');
     if (!output) {
       console.error('id=ausgabe not found');
       return;
     }
-    output.innerHTML = `Das Array lautet: ${this.exec.state.vars.arr.join(', ')}`;
+    const { arr } = this.exec.state.vars;
+    output.innerHTML = `Das Array lautet: ${arr ? arr.join(', ') : ''}`;
     if (!this.exec.state.vars === -1) {
       output.innerHTML += `, Algo läuft in Line:${this.exec.state.currentLine}`;
     }
@@ -147,7 +243,8 @@ export class BubbleSort {
     const chart = document.getElementById('chart');
     chart.innerHTML = '';
 
-    for (let i = 0; i < this.exec.state.vars.arr.length; i++) { // For-Loop erstellt alle Bars
+    const { arr } = this.exec.state.vars;
+    for (let i = 0; arr && i < this.exec.state.vars.arr.length; i++) { // For erstellt alle Bars
       const bar = document.createElement('div');
       bar.className = 'bar';
       bar.style.width = '20px'; // Skaliere Breite der Bars
@@ -158,9 +255,4 @@ export class BubbleSort {
       chart.appendChild(bar);
     }
   }
-}
-
-// Jest Beispielfunktion
-export function sum(a, b) {
-  return a + b;
 }
