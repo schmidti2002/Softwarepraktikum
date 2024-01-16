@@ -18,7 +18,14 @@ export default class BubbleSort extends Logic {
       10,
       { arr: [50, 35, 40, 15, 30, 45, 5, 20, 25, 10] },
     );
-    this.exec.outputFunction = () => this.showOutput();
+    this.exec.outputFunction = () => {
+      this.#stateChangeCallback(
+        this.exec.state.vars.arr,
+        this.exec.state.vars,
+        this.exec.state.currentLine,
+        this.exec.isRunning(),
+      );
+    };
     this.exec.outputFunction();
   }
 
@@ -223,36 +230,5 @@ export default class BubbleSort extends Logic {
       this.exec.state.currentLine,
       this.exec.isRunning(),
     );
-    // Dieser Teil ist gut zum Debuggen, kann man später vielleicht weglassen
-    const output = document.getElementById('ausgabe');
-    if (!output) {
-      console.error('id=ausgabe not found');
-      return;
-    }
-    const { arr } = this.exec.state.vars;
-    output.innerHTML = `Das Array lautet: ${arr ? arr.join(', ') : ''}`;
-    if (!this.exec.state.vars === -1) {
-      output.innerHTML += `, Algo läuft in Line:${this.exec.state.currentLine}`;
-    }
-    // wichtig
-    this.renderBars();
-  }
-
-  // Visualisiert Array in Balken-Diagramm auf Canvas
-  renderBars() {
-    const chart = document.getElementById('chart');
-    chart.innerHTML = '';
-
-    const { arr } = this.exec.state.vars;
-    for (let i = 0; arr && i < this.exec.state.vars.arr.length; i++) { // For erstellt alle Bars
-      const bar = document.createElement('div');
-      bar.className = 'bar';
-      bar.style.width = '20px'; // Skaliere Breite der Bars
-
-      // Skaliere die Höhe der Bars:
-      bar.style.height = `${this.exec.state.vars.arr[i] * 10 + 10}px`;
-      bar.innerHTML = `<span>${this.exec.state.vars.arr[i]}</span>`;
-      chart.appendChild(bar);
-    }
   }
 }

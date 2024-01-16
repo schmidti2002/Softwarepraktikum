@@ -36,7 +36,7 @@ export function loadDirectedUnweightedGraph() {
 
 // BubbleSort fetchen und Standardbeispiel laden
 export function loadBubbleSort() {
-  localStorage.setItem('lastLoad', 'loadBubbleSort');
+ localStorage.setItem('lastLoad', 'loadBubbleSort');
   fetch('BubbleSort.html')
     .then((response) => response.text())
     .then((data) => {
