@@ -2,7 +2,7 @@
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
-from user_login import app  # Stelle sicher, dass 'app' der Name deiner Flask-Anwendung ist
+from Meilensteine.Meilenstein_04.user_endpoints import app  # Stelle sicher, dass 'app' der Name deiner Flask-Anwendung ist
 
 apicookies = []
 
