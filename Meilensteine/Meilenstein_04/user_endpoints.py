@@ -59,20 +59,20 @@ class user(Resource):
     def get(self):
 
         # Daten aus dem Request holen und überprüfen
-        apikey = verifyapikey(request)
+        user_uuid = Endpoints_util.getUserUUID(request, database)
 
         # SQL-Abfrage und Ergebnis zurückgeben
-        cursor.execute("""SELECT id, name, rights, email FROM public."User" JOIN public."ApiKey" ON public."ApiKey".user = public."User".id WHERE public."ApiKey".key =%s;""", (apikey,))
+        cursor.execute("""SELECT id, name, rights, email FROM public."User" WHERE id =%s;""", (user_uuid,))
         result = cursor.fetchall()
         response_dic = {"id": result[0][0], "username": result[0][1], "admin": result[0][2], "email": result[0][3]}
         return (response_dic, 200)
     
     def post(self):
         # Daten aus dem Request holen und überprüfen
-        apikey = verifyapikey(request)
+        user_uuid = Endpoints_util.getUserUUID(request, database)
 
         # Auf Adminrechte überprüfen
-        verifyapikey_admin(apikey)
+        Endpoints_util.verify_admin(user_uuid, database)
         
         # Daten aus dem Request holen
         try:
@@ -99,10 +99,10 @@ class user(Resource):
     def put(self):
 
         # Daten aus dem Request holen und überprüfen
-        apikey = Endpoints_util.verifyapikey(request, database)
+        user_uuid = Endpoints_util.getUserUUID(request, database)
 
         # Auf Adminrechte überprüfen
-        Endpoints_util.verifyapikey_admin(apikey, database)
+        Endpoints_util.verify_admin(user_uuid, database)
         
         # Daten aus dem Request holen
         try:
@@ -127,10 +127,10 @@ class user_edit(Resource):
     def delete(self, edit_userid):
 
         # Daten aus dem Request holen und überprüfen
-        apikey = verifyapikey(request)
+        user_uuid = Endpoints_util.getUserUUID(request, database)
 
         # Auf Adminrechte überprüfen
-        verifyapikey_admin(apikey)
+        Endpoints_util.verify_admin(user_uuid, database)
         
         # Daten des zu löschenden Users überprüfen
         try:
@@ -144,9 +144,9 @@ class user_edit(Resource):
     def get(self, edit_userid):
 
         # Daten aus dem Request holen und überprüfen
-        apikey = verifyapikey(request)
+        user_uuid = Endpoints_util.getUserUUID(request, database)
         # Auf Adminrechte überprüfen
-        verifyapikey_admin(apikey)
+        Endpoints_util.verify_admin(user_edit, database)
         
         # Daten des Users überprüfen
         try:
@@ -165,9 +165,9 @@ class useres(Resource):
     def get(self):
 
         # Daten aus dem Request holen und überprüfen
-        apikey = verifyapikey(request)
+        user_uuid = Endpoints_util.getUserUUID(request, database)
         # Auf Adminrechte überprüfen
-        verifyapikey_admin(apikey)
+        Endpoints_util.verify_admin(user_uuid, database)
         
         # SQL-Abfrage
         cursor.execute("""SELECT id, name, rights, email FROM public."User"; """)

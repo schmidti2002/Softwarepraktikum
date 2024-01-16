@@ -16,7 +16,7 @@ def db_connect():
     database = psycopg2.connect(host=host_url, port= port, user=user_name, password=password, database=Datenbank)
     return database
 
-def verifyapikey(request, database):
+def getUserUUID(request, database):
     # Daten aus dem Request holen und überprüfen
     try:
         apikey = request.cookies.get('apiKey')
@@ -26,15 +26,15 @@ def verifyapikey(request, database):
         result = util_cursor.fetchone()
         time_diff = datetime.strptime(timestamp, DESIRED_FORMAT) - datetime.strptime(str(result[1]), DESIRED_FORMAT)
         util_cursor.close()
-        if result[0] == apikey and time_diff.total_seconds() <= MAX_APIKEY_AGE_MIN * 60:
+        if time_diff.total_seconds() <= MAX_APIKEY_AGE_MIN * 60:
             return abort(401, message="API key is missing or invalid")
-        return apikey # API-Key zurückgeben
+        return result[0] # User-UUID zurückgeben
     except :
         return abort(401, message="API key is missing or invalid ")
 
-def verifyapikey_admin(apikey, database):
+def verify_admin(user_uuid, database):
     util_cursor = database.cursor()
-    util_cursor.execute("""SELECT rights FROM public."User" JOIN public."ApiKey" on public."ApiKey"."user" = public."User"."id" WHERE key = %s;""", (apikey,))
+    util_cursor.execute("""SELECT rights FROM public."User" WHERE id = %s;""", (user_uuid,))
     result = util_cursor.fetchone()
     util_cursor.close()
     if not result[0]:
