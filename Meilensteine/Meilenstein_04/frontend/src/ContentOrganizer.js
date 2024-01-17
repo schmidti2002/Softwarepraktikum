@@ -34,17 +34,6 @@ export function loadDirectedUnweightedGraph() {
     });
 }
 
-// BubbleSort fetchen und Standardbeispiel laden
-/*export function loadBubbleSort() {
- localStorage.setItem('lastLoad', 'loadBubbleSort');
-  fetch('BubbleSort.html')
-    .then((response) => response.text())
-    .then((data) => {
-      content.innerHTML = data;
-      // window.BBS = new BubbleSort();
-    });
-}*/
-
 // BubbleSort direkt laden und AuD-Logik einbinden
 export function loadBubbleSort() {
   localStorage.setItem('lastLoad', 'loadBubbleSort');
@@ -99,16 +88,6 @@ export function restore() {
   } else {
     loadStartpage();
   }
-
-  /*setTimeout(() => { // TODO remove timeout and rewrite ContentOrganizer to interface AuD
-    const container = document.getElementById('test');
-    const test = new AuD(container);
-    test.initPromise.then(
-      () => {
-        test.loadAuD('BubbleSort');
-      },
-    );
-  }, 1000);*/
 }
 
 restore();
