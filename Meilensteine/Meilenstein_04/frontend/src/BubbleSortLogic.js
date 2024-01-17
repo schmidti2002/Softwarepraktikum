@@ -123,7 +123,7 @@ export default class BubbleSort extends Logic {
     },
     {
       name: 'Werte bearbeiten',
-      func: (inputs) => this.parseArray(inputs.arr),
+      func: (inputs) => this.editArray(inputs.arr),
       inputs: [
         {
           name: 'Werte',
@@ -142,6 +142,7 @@ export default class BubbleSort extends Logic {
       ],
     },
     {
+      // eher unwichtig, kann rausgenommen werden
       name: 'Array leeren',
       func: () => this.clearArray(),
       inputs: [
@@ -188,55 +189,16 @@ export default class BubbleSort extends Logic {
   }
 
   // Funktion zum Einlesen der eigenen Werte
-  parseArray(integerArray) {
+  editArray(integerArray) {
     this.exec.state.vars.arr = integerArray;
     this.exec.outputFunction();
   }
 
   // Funktion, die Array leert
+  // eher unwichtig, kann rausgenommen werden
   clearArray() {
     this.exec.state.vars.arr = [];
     this.exec.outputFunction();
-  }
-
-  // Container 'newValues' öffnen/schließen
-  newValues() {
-    if (document.getElementById('newValues').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('newValues').style.display = 'block';
-      document.getElementById('editValues').style.display = 'none';
-      document.getElementById('openSort').style.display = 'none';
-    }
-  }
-
-  // Container 'editValues' öffnen/schließen
-  editValues() {
-    if (document.getElementById('editValues').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('newValues').style.display = 'none';
-      document.getElementById('editValues').style.display = 'block';
-      document.getElementById('openSort').style.display = 'none';
-    }
-  }
-
-  // Container 'openSort' öffnen/schließen
-  openSort() {
-    if (document.getElementById('openSort').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('newValues').style.display = 'none';
-      document.getElementById('editValues').style.display = 'none';
-      document.getElementById('openSort').style.display = 'block';
-    }
-  }
-
-  // Alle Container schließen
-  hide() {
-    document.getElementById('newValues').style.display = 'none';
-    document.getElementById('editValues').style.display = 'none';
-    document.getElementById('openSort').style.display = 'none';
   }
 
   // Funktion, um das Array auszugeben
