@@ -123,7 +123,7 @@ export default class BubbleSort extends Logic {
     },
     {
       name: 'Werte bearbeiten',
-      func: (inputs) => this.generate(inputs.count),
+      func: (inputs) => this.parseArray(inputs.arr),
       inputs: [
         {
           name: 'Werte',
@@ -149,19 +149,9 @@ export default class BubbleSort extends Logic {
   }
 
   // Funktion zum Einlesen der eigenen Werte
-  parseArray() {
-    const inputArray = document.getElementById('Array').value.split(',');
-    const integerArray = [];
-
-    for (let i = 0; i < inputArray.length; i++) {
-      const integerValue = parseInt(inputArray[i].trim(), 10); // Basis 10 für Dezimalzahlen
-      if (!Number.isNaN(integerValue)) {
-        integerArray.push(integerValue);
-      }
-    }
-
+  parseArray(integerArray) {
     this.exec.state.vars.arr = integerArray;
-    this.showOutput();
+    this.exec.outputFunction();
   }
 
   // Funktion, um n einzulesen und n Zufallszahlen zu generieren und anzuzeigen

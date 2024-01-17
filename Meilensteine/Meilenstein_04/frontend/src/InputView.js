@@ -42,7 +42,7 @@ export default class InputView extends View {
   }
 
   #types = {
-    integer: {
+    'integer': {
       html: 'number',
       parser: InputView.parseInt,
     },

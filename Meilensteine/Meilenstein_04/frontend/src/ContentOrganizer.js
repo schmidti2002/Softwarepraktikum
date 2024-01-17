@@ -35,7 +35,7 @@ export function loadDirectedUnweightedGraph() {
 }
 
 // BubbleSort fetchen und Standardbeispiel laden
-export function loadBubbleSort() {
+/*export function loadBubbleSort() {
  localStorage.setItem('lastLoad', 'loadBubbleSort');
   fetch('BubbleSort.html')
     .then((response) => response.text())
@@ -43,6 +43,20 @@ export function loadBubbleSort() {
       content.innerHTML = data;
       // window.BBS = new BubbleSort();
     });
+}*/
+
+// BubbleSort direkt laden und AuD-Logik einbinden
+export function loadBubbleSort() {
+  localStorage.setItem('lastLoad', 'loadBubbleSort');
+
+  // Einbinden der AuD-Logik
+  const container = document.getElementById('mainContainer');
+    const mainContainer = new AuD(container);
+    mainContainer.initPromise.then(
+      () => {
+        mainContainer.loadAuD('BubbleSort');
+      },
+  );
 }
 
 // MergeSort fetchen und Standardbeispiel laden
@@ -55,15 +69,15 @@ export function loadMergeSort() {
     });
 }
 
-// Größe des Containers für das Benutzerprofil anpassen,
+// ToDo: Größe des Containers für das Benutzerprofil anpassen,
 // sodass er sich rechts am Rand öffnet/schließt
 export function showUserEditor() {
   const container = document.getElementById('container');
   const mainContainer = document.getElementById('mainContainer');
   const userEditor = document.getElementById('userEditor');
   container.style.flexDirection = 'row';
-  // Benutzerprofil ist ausgeblendet
-  if (mainContainer.style.width === '100%') {
+  
+  if (mainContainer.style.width === '100%') { // Benutzerprofil ist bereits ausgeblendet
     mainContainer.style.width = '75%';
     userEditor.style.width = '25%';
     fetch('UserEditor.html')
@@ -71,7 +85,7 @@ export function showUserEditor() {
       .then((data) => {
         userEditor.innerHTML = data;
       });
-  } else { // Benutzerprofil ist eingeblendet
+  } else { // Benutzerprofil ist bereits eingeblendet
     mainContainer.style.width = '100%';
     userEditor.style.width = '0%';
     userEditor.innerHTML = '';
@@ -86,7 +100,7 @@ export function restore() {
     loadStartpage();
   }
 
-  setTimeout(() => { // TODO remove timeout and rewrite ContentOrganizer to interface AuD
+  /*setTimeout(() => { // TODO remove timeout and rewrite ContentOrganizer to interface AuD
     const container = document.getElementById('test');
     const test = new AuD(container);
     test.initPromise.then(
@@ -94,7 +108,7 @@ export function restore() {
         test.loadAuD('BubbleSort');
       },
     );
-  }, 1000);
+  }, 1000);*/
 }
 
 restore();
