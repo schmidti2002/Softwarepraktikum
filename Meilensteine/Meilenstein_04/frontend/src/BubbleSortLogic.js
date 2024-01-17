@@ -141,19 +141,34 @@ export default class BubbleSort extends Logic {
         },
       ],
     },
+    {
+      name: 'Array leeren',
+      func: () => this.clearArray(),
+      inputs: [
+        {
+          name: 'Werte',
+          field: 'arr',
+          type: 'integer[]',
+          prefill: () => _.join(this.exec.state.vars.arr),
+          validators: [
+            {
+              func: arrayEveryEntry(minMax),
+              param: { min: 0 },
+            },
+            {
+              func: arrayEveryEntry(notEmpty),
+            },
+          ],
+        },
+      ],
+    },
   ];
 
   // Array ausgeben, um es zu bearbeiten
   showArray() {
     document.getElementById('Array').value = this.exec.state.vars.arr;
   }
-
-  // Funktion zum Einlesen der eigenen Werte
-  parseArray(integerArray) {
-    this.exec.state.vars.arr = integerArray;
-    this.exec.outputFunction();
-  }
-
+  
   // Funktion, um n einzulesen und n Zufallszahlen zu generieren und anzuzeigen
   generateRandomNumbers() {
     // Die Anzahl der Zufallszahlen vom Benutzer eingeben lassen
@@ -170,6 +185,18 @@ export default class BubbleSort extends Logic {
       this.exec.state.vars.arr.push(randomNumber);
     }
     this.showOutput();
+  }
+
+  // Funktion zum Einlesen der eigenen Werte
+  parseArray(integerArray) {
+    this.exec.state.vars.arr = integerArray;
+    this.exec.outputFunction();
+  }
+
+  // Funktion, die Array leert
+  clearArray() {
+    this.exec.state.vars.arr = [];
+    this.exec.outputFunction();
   }
 
   // Container 'newValues' öffnen/schließen
