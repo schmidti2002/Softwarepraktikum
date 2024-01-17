@@ -1,5 +1,7 @@
 import { expect, describe, test } from '@jest/globals';
-import { minMax, notEmpty, regex } from '../src/inputValidators';
+import {
+  minMax, notEmpty, regex, arrayEveryEntry,
+} from '../src/inputValidators';
 
 describe('inputValidators.js', () => {
   describe('minMax module', () => {
@@ -118,10 +120,15 @@ describe('inputValidators.js', () => {
   describe('arrayEveryEntry module', () => {
     test.each([
       // Hier Beispielwerte einfügen
-      ['Beispiel Validator', 'result'],
+      [minMax, ('-1,-1,40,15,30,45,5,20,25,10', { min: 0, max: 50 }), 'Darf nicht kleiner als 0 sein(Position 0),Darf nicht kleiner als 0 sein(Position 1)'],
+      [minMax, ('1,-1,40,15,30,45,5,20,25,10', { min: 0, max: 50 }), null],
+      [notEmpty, ',1,40,15,30,45,5,20,25,10', 'Darf nicht leer sein(Position 0)'],
+      [notEmpty, '2,1,40,15,30,45,5,20,25,10', null],
+      [regex, ('A,B,C,D', '/^[A|B]$/'), 'Enstpricht nicht dem erwarteten Muster(Position 2),Enstpricht nicht dem erwarteten Muster(Position 3)'],
+      [regex, ('A,B,A,B', '/^[A|B]$/'), null],
     ]);
-    test('Macht einen Validator aus einem Validator und viel Magie', (validator, result) => {
-      expect(notEmpty(validator)).toBe(result);
+    test('Macht einen Validator aus einem Validator und viel Magie', (validator, value, result) => {
+      expect(arrayEveryEntry(validator)(value)).toBe(result);
     });
   });
 });
