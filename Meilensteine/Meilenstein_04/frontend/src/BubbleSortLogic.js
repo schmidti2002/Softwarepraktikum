@@ -104,7 +104,7 @@ export default class BubbleSort extends Logic {
     },
     {
       name: 'Neue Werte',
-      func: (inputs) => this.generate(inputs.count),
+      func: (inputs) => this.generateRandomNumbers(inputs.count),
       inputs: [
         {
           name: 'Anzahl',
@@ -141,8 +141,8 @@ export default class BubbleSort extends Logic {
         },
       ],
     },
-    {
-      // eher unwichtig, kann rausgenommen werden
+    /*{
+      // Eher unwichtig
       name: 'Array leeren',
       func: () => this.clearArray(),
       inputs: [
@@ -162,23 +162,11 @@ export default class BubbleSort extends Logic {
           ],
         },
       ],
-    },
+    },*/
   ];
-
-  // Array ausgeben, um es zu bearbeiten
-  showArray() {
-    document.getElementById('Array').value = this.exec.state.vars.arr;
-  }
   
-  // Funktion, um n einzulesen und n Zufallszahlen zu generieren und anzuzeigen
-  generateRandomNumbers() {
-    // Die Anzahl der Zufallszahlen vom Benutzer eingeben lassen
-    const count = parseInt(document.getElementById('userInput').value, 10);
-    this.generate(count);
-  }
-
   // Funktion, um n Zufallszahlen zu generieren
-  generate(count) {
+  generateRandomNumbers(count) {
     // Zufallszahlen initialisieren und anzeigen
     this.exec.state.vars.arr = [];
     for (let i = 0; i < count; i++) {
@@ -195,11 +183,11 @@ export default class BubbleSort extends Logic {
   }
 
   // Funktion, die Array leert
-  // eher unwichtig, kann rausgenommen werden
-  clearArray() {
+  // eher unwichtig
+  /*clearArray() {
     this.exec.state.vars.arr = [];
     this.exec.outputFunction();
-  }
+  }*/
 
   // Funktion, um das Array auszugeben
   showOutput() {
