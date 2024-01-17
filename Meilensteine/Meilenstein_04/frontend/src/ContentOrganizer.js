@@ -40,11 +40,11 @@ export function loadBubbleSort() {
 
   // Einbinden der AuD-Logik
   const container = document.getElementById('mainContainer');
-    const mainContainer = new AuD(container);
-    mainContainer.initPromise.then(
-      () => {
-        mainContainer.loadAuD('BubbleSort');
-      },
+  const mainContainer = new AuD(container);
+  mainContainer.initPromise.then(
+    () => {
+      mainContainer.loadAuD('BubbleSort');
+    },
   );
 }
 
@@ -65,7 +65,7 @@ export function showUserEditor() {
   const mainContainer = document.getElementById('mainContainer');
   const userEditor = document.getElementById('userEditor');
   container.style.flexDirection = 'row';
-  
+
   if (mainContainer.style.width === '100%') { // Benutzerprofil ist bereits ausgeblendet
     mainContainer.style.width = '75%';
     userEditor.style.width = '25%';

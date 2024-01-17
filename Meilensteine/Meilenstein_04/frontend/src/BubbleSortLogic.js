@@ -11,7 +11,6 @@ export default class BubbleSort extends Logic {
   constructor(errorReporter, stateChangeCallback) {
     super(errorReporter);
     this.#stateChangeCallback = stateChangeCallback;
-    console.log(this.exec);
     this.exec.changeAlgo(
       this.linesForBubbleSort,
       [8],
@@ -141,7 +140,7 @@ export default class BubbleSort extends Logic {
         },
       ],
     },
-    /*{
+    /* {
       // Eher unwichtig
       name: 'Array leeren',
       func: () => this.clearArray(),
@@ -162,9 +161,9 @@ export default class BubbleSort extends Logic {
           ],
         },
       ],
-    },*/
+    }, */
   ];
-  
+
   // Funktion, um n Zufallszahlen zu generieren
   generateRandomNumbers(count) {
     // Zufallszahlen initialisieren und anzeigen
@@ -184,10 +183,10 @@ export default class BubbleSort extends Logic {
 
   // Funktion, die Array leert
   // eher unwichtig
-  /*clearArray() {
+  /* clearArray() {
     this.exec.state.vars.arr = [];
     this.exec.outputFunction();
-  }*/
+  } */
 
   // Funktion, um das Array auszugeben
   showOutput() {
