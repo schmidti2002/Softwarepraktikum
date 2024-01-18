@@ -21,5 +21,22 @@ database = Endpoints_util.db_connect()
 
 class list_algo(Resource):
     def get(self):
-        apikey = Endpoints_util.verifyapikey(request, database)
+        user_uuid = Endpoints_util.getUserUUID(request, database)
+        if user_uuid == None:
+            return abort(401, message="API key is missing or invalid")
+        
+        cursor = database.cursor()
+        cursor.execute("""SELECT * FROM public."ListAlgo";""")
+        result = cursor.fetchall()
+        
+
+
+class list_favorite(Resource):
+    def get(self):
+        user_uuid = Endpoints_util.getUserUUID(request, database)
+        pass
+
+    def post(self):
+        user_uuid = Endpoints_util.getUserUUID(request, database)
+        pass
         
