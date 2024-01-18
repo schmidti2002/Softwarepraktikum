@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "jest",
-    "api-prepare": "openapi-generator-cli generate -i ../../specs/openapi/openapi.yaml -g typescript-fetch -o ./src/api",
+    "api-prepare": "openapi-generator-cli generate -i ../../../specs/openapi/openapi.yaml -g typescript-fetch -o ./src/api",
     "lint": "eslint ./src/*.js",
     "sonar": "yarn test --coverage; yarn lint -f json -o ./coverage/eslint.json",
     "watch": "webpack --watch",
