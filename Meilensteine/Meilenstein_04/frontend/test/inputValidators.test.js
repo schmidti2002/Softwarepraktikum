@@ -1,134 +1,100 @@
-import { expect, describe, test } from '@jest/globals';
+import { expect, describe, test, jest, beforeEach } from '@jest/globals';
 import {
   minMax, notEmpty, regex, arrayEveryEntry,
 } from '../src/inputValidators';
 
 describe('inputValidators.js', () => {
-  describe('minMax module', () => {
+  describe('minMax validator', () => {
     test.each([
       ['2', { min: 1, max: 3 }, null],
       ['-2', { min: -999, max: -1 }, null],
-      ['2', { min: 2, max: 2 }, null],
       ['3', { min: 1, max: 2 }, 'Darf nicht größer als 2 sein'],
       ['1', { min: 2, max: 3 }, 'Darf nicht kleiner als 2 sein'],
-      ['0', { min: -1, max: 2 }, null],
-      ['-1', { min: -2, max: 0 }, null],
-      ['1', { min: 0, max: 2 }, null],
-      ['100', { min: 1, max: 42 }, 'Darf nicht größer als 42 sein'],
-      ['-100', { min: -1, max: -42 }, 'Darf nicht kleiner als -42 sein'],
-      ['99999', { min: 99997, max: 99998 }, 'Darf nicht größer als 99998 sein'],
-      ['-99999', { min: -99997, max: -99998 }, 'Darf nicht kleiner als -99998 sein'],
-      ['2.9', { min: 1.9, max: 3.9 }, null],
-      ['-2.9', { min: -999.9, max: -1.9 }, null],
-      ['2.9', { min: 2.9, max: 2.9 }, null],
-      ['3.9', { min: 1.9, max: 2.9 }, 'Darf nicht größer als 2 sein'],
-      ['1.9', { min: 2.9, max: 3.9 }, 'Darf nicht kleiner als 2 sein'],
+      ['3.9', { min: 1.9, max: 2.9 }, 'Darf nicht größer als 2.9 sein'],
+      ['1.9', { min: 2.9, max: 3.9 }, 'Darf nicht kleiner als 2.9 sein'],
       ['0.0', { min: -1.9, max: 2.9 }, null],
-      ['-1.9', { min: -2.9, max: 0.9 }, null],
-      ['1.9', { min: 0.9, max: 2.9 }, null],
-      ['100.9', { min: 1.9, max: 42.9 }, 'Darf nicht größer als 42 sein'],
-      ['-100.9', { min: -1.9, max: -42.9 }, 'Darf nicht kleiner als -42 sein'],
-      ['99999.9', { min: 99997.9, max: 99998.9 }, 'Darf nicht größer als 99998 sein'],
-      ['-99999.9', { min: -99997.9, max: -99998.9 }, 'Darf nicht kleiner als -99998 sein'],
-    ]);
-    test('%s liegt zwischen %s und %s', (value, params, result) => {
+    ])('%s liegt im Bereich %s', (value, params, result) => {
       expect(minMax(value, params)).toBe(result);
     });
   });
 
-  describe('notEmpty module', () => {
+  describe('notEmpty validator', () => {
     test.each([
       ['', 'Darf nicht leer sein'],
       ['1', null],
-      ['42', null],
       ['0', null],
-      ['null', 'darf nicht leer sein'],
+      ['null', null],
       ['-1', null],
-      ['1', null],
-      ['99999', null],
-      ['-99999', null],
+      ['undefined', null],
       ['true', null],
       ['false', null],
       ['1.1', null],
       ['2.2', null],
       ['-1.1', null],
       ['-2.2', null],
-    ]);
-    test('%s ist nicht leer', (value, result) => {
+    ])('%s ist nicht leer', (value, result) => {
       expect(notEmpty(value)).toBe(result);
     });
   });
 
-  describe('regex module', () => {
+  const numRegex = /^[+-]?\d+$/;
+  const abRegex = /^[A|B]$/;
+
+  describe('regex validator', () => {
     test.each([
-      ['1', '^[+-]?\\d+$', null],
-      ['2', '^[+-]?\\d+$', null],
-      ['3', '^[+-]?\\d+$', null],
-      ['4', '^[+-]?\\d+$', null],
-      ['5', '^[+-]?\\d+$', null],
-      ['6', '^[+-]?\\d+$', null],
-      ['7', '^[+-]?\\d+$', null],
-      ['8', '^[+-]?\\d+$', null],
-      ['9', '^[+-]?\\d+$', null],
-      ['0', '^[+-]?\\d+$', null],
-      ['10', '^[+-]?\\d+$', null],
-      ['100', '^[+-]?\\d+$', null],
-      ['+1', '^[+-]?\\d+$', null],
-      ['-1', '^[+-]?\\d+$', null],
-      ['+10', '^[+-]?\\d+$', null],
-      ['-10', '^[+-]?\\d+$', null],
-      ['+-1', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['+', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['-', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['-+1', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['++1', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['--1', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['null', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['true', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['false', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['1.0', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['1.', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['String', '^[+-]?\\d+$', 'Enstpricht nicht dem erwarteten Muster'],
-      ['A1', '/^[A-Z]+\\d+\\D?$/', null],
-      ['A1', '/^[A-Z]+\\d+\\D?$/', null],
-      ['?', '/^[A-Z]+\\d+\\D?$/', 'Enstpricht nicht dem erwarteten Muster'],
-      ['1', '/^[A-Z]+\\d+\\D?$/', 'Enstpricht nicht dem erwarteten Muster'],
-      ['A1a', '/^[A-Z]+\\d+\\D?$/', null],
-      ['AA1a', '/^[A-Z]+\\d+\\D?$/', null],
-      ['A111', '/^[A-Z]+\\d+\\D?$/', null],
-      ['A1aa', '/^[A-Z]+\\d+\\D?$/', 'Enstpricht nicht dem erwarteten Muster'],
-      ['a1', '/^[A-Z]+\\d+\\D?$/', 'Enstpricht nicht dem erwarteten Muster'],
-      ['Z1', '/^[A-Z]+\\d+\\D?$/', null],
-      ['ABCDE1a', '/^[A-Z]+\\d+\\D?$/', null],
-      ['ABCDE1234567890a', '/^[A-Z]+\\d+\\D?$/', null],
-      ['A1z', '/^[A-Z]+\\d+\\D?$/', null],
-      ['A1m', '/^[A-Z]+\\d+\\D?$/', null],
-      ['A1s', '/^[A-Z]+\\d+\\D?$/', null],
-      ['A', '/^[A|B]$/', null],
-      ['B', '/^[A|B]$/', null],
-      ['C', '/^[A|B]$/', 'Enstpricht nicht dem erwarteten Muster'],
-      ['1', '/^[A|B]$/', 'Enstpricht nicht dem erwarteten Muster'],
-      ['?', '/^[A|B]$/', 'Enstpricht nicht dem erwarteten Muster'],
-    ]);
-    test('prüft ob %s der regular expresion %s entspricht', (value, param, result) => {
+      ['1', numRegex, null],
+      ['10', numRegex, null],
+      ['100', numRegex, null],
+      ['+1', numRegex, null],
+      ['-1', numRegex, null],
+      ['+10', numRegex, null],
+      ['-10', numRegex, null],
+      ['+-1', numRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['+', numRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['-', numRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['-+1', numRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['++1', numRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['--1', numRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['A', abRegex, null],
+      ['B', abRegex, null],
+      ['C', abRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['1', abRegex, 'Enstpricht nicht dem erwarteten Muster'],
+      ['?', abRegex, 'Enstpricht nicht dem erwarteten Muster'],
+    ])('prüft ob %s der regular expresion %s entspricht', (value, param, result) => {
       expect(regex(value, param)).toBe(result);
     });
   });
 
-  // To Do
-  describe('arrayEveryEntry module', () => {
-    test.each([
-      // Hier Beispielwerte einfügen
-      [minMax, ('-1,-1,40,15,30,45,5,20,25,10', { min: 0, max: 50 }), 'Darf nicht kleiner als 0 sein(Position 0),Darf nicht kleiner als 0 sein(Position 1)'],
-      [minMax, ('1,-1,40,15,30,45,5,20,25,10', { min: 0, max: 50 }), null],
-      [notEmpty, ',1,40,15,30,45,5,20,25,10', 'Darf nicht leer sein(Position 0)'],
-      [notEmpty, '2,1,40,15,30,45,5,20,25,10', null],
-      [regex, ('A,B,C,D', '/^[A|B]$/'), 'Enstpricht nicht dem erwarteten Muster(Position 2),Enstpricht nicht dem erwarteten Muster(Position 3)'],
-      [regex, ('A,B,A,B', '/^[A|B]$/'), null],
-    ]);
-    test('Macht einen Validator aus einem Validator und viel Magie', (validator, value, result) => {
-      expect(arrayEveryEntry(validator)(value)).toBe(result);
+  describe('arrayEveryEntry validator', () => {
+    const validator = jest.fn((value) => (value === 'error' ? 'err' : null));
+
+    beforeEach(() => {
+      validator.mockClear();
+    });
+
+    test('validator is called with all values and params', () => {
+      arrayEveryEntry(validator)('1,2,3,a,b,c', 'validatorParams');
+      expect(validator.mock.calls.map((call) => call[0])).toEqual(['1', '2', '3', 'a', 'b', 'c']);
+      validator.mock.calls.forEach((call) => {
+        expect(call[1]).toBe('validatorParams');
+      });
+    });
+
+    test('whitespaces are trimmed', () => {
+      arrayEveryEntry(validator)(' 1,2 ,3   ,a b c ', 'validatorParams');
+      expect(validator.mock.calls.map((call) => call[0])).toEqual(['1', '2', '3', 'a b c']);
+    });
+
+    test('correct input results in return value null', () => {
+      expect(arrayEveryEntry(validator)(' 1,2 ,3   ,a b c ', 'validatorParams')).toBe(null);
+      expect(arrayEveryEntry(validator)('')).toBe(null);
+      expect(arrayEveryEntry(validator)(',,')).toBe(null);
+    });
+
+    test('incorrect input results in error message(s) with index', () => {
+      expect(arrayEveryEntry(validator)('error', 'validatorParams')).toBe('err(Position 0)');
+      expect(arrayEveryEntry(validator)('1,error')).toBe('err(Position 1)');
+      expect(arrayEveryEntry(validator)('error,1,error')).toBe('err(Position 0),err(Position 2)');
     });
   });
 });
