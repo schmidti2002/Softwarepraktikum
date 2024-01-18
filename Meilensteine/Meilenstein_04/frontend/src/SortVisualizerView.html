@@ -1,1 +1,29 @@
+<style>
+    #sortview-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        height: 510px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .bar {
+        background-color: #3498db;
+        transition: height 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 2px; /* Dinstanz zwischen Balken */
+        position: relative;
+    }
+
+    .bar span {
+        margin-top: 5px;
+        color: white;
+        position: absolute;
+        bottom: 0;
+    }
+</style>
 <div id="sortview-container"></div>
