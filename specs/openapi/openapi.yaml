@@ -1,0 +1,828 @@
+openapi: 3.0.3
+info:
+  title: Softwarepraktikum
+  description: |-
+    API spec for the server developed for the software technology internship at TU Chemnitz.
+  license:
+    name: AGPL V3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.en.html#license-text
+  version: "0.0.1"
+servers:
+  - url: swp.dczlabs.xyz:3130
+  - url: localhost:3130
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      responses:
+        "200":
+          description: user found and returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    post:
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: user successfully created
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "409":
+          $ref: "#/components/responses/ConflictError"
+    put:
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPartial"
+      responses:
+        "200":
+          description: user got updated
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          description: user not found
+  /user/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        description: ID of user to return
+        required: true
+        schema:
+          type: string
+          format: uuid
+    delete:
+      tags:
+        - user
+      responses:
+        "200":
+          description: user got deleted
+        "404":
+          description: user not found
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+    get:
+      tags:
+        - user
+      responses:
+        "200":
+          description: user found and returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: user not found
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+  /users:
+    get:
+      tags:
+        - user
+      responses:
+        "200":
+          description: all users returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+  /user/login:
+    get:
+      tags:
+        - user
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: login successfull. apiKey-cookie set.
+        "401":
+          description: login not successfull
+
+  /list/algo:
+    get:
+      tags:
+        - list
+      responses:
+        "200":
+          description: latest versions of all list algorithms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Algorithm"
+  /list/favorite:
+    get:
+      tags:
+        - list
+      responses:
+        "200":
+          description: all list favorites of the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Favorite"
+    post:
+      tags:
+        - list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Favorite"
+      responses:
+        "200":
+          description: new favorite created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+  /list/favorite/{favoriteId}:
+    delete:
+      tags:
+        - list
+      parameters:
+        - name: favoriteId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: favorite removed
+        "404":
+          description: favorite not found
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+  /list/data:
+    get:
+      tags:
+        - list
+      responses:
+        "200":
+          description: all list data ids & names owned by the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdNameList"
+    post:
+      tags:
+        - list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/List"
+      responses:
+        "200":
+          description: data entry created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+  /list/data/{listId}:
+    get:
+      tags:
+        - list
+      parameters:
+        - name: listId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: list returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/List"
+        "404":
+          description: list not found
+
+  /sort/algo:
+    get:
+      tags:
+        - sort
+      responses:
+        "200":
+          description: latest versions of all sort algorithms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SortAlgorithm"
+  /sort/favorite:
+    get:
+      tags:
+        - sort
+      responses:
+        "200":
+          description: all sort favorites of the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Favorite"
+    post:
+      tags:
+        - sort
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Favorite"
+      responses:
+        "200":
+          description: new favorite created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+  /sort/favorite/{favoriteId}:
+    delete:
+      tags:
+        - sort
+      parameters:
+        - name: favoriteId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: favorite removed
+        "404":
+          description: favorite not found
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+  /sort/data:
+    get:
+      tags:
+        - sort
+      responses:
+        "200":
+          description: all sort data ids & names owned by the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdNameList"
+    post:
+      tags:
+        - sort
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sort"
+      responses:
+        "200":
+          description: data entry created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+  /sort/data/{sortId}:
+    get:
+      tags:
+        - sort
+      parameters:
+        - name: sortId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: sort returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sort"
+        "404":
+          description: sort not found
+
+  /graph/algo:
+    get:
+      tags:
+        - graph
+      responses:
+        "200":
+          description: latest versions of all graph algorithms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Algorithm"
+  /graph/favorite:
+    get:
+      tags:
+        - graph
+      responses:
+        "200":
+          description: all graph favorites of the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Favorite"
+    post:
+      tags:
+        - graph
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Favorite"
+      responses:
+        "200":
+          description: new favorite created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+  /graph/favorite/{favoriteId}:
+    delete:
+      tags:
+        - graph
+      parameters:
+        - name: favoriteId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: favorite removed
+        "404":
+          description: favorite not found
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+  /graph/data:
+    get:
+      tags:
+        - graph
+      responses:
+        "200":
+          description: all graph data ids & names owned by the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdNameList"
+    post:
+      tags:
+        - graph
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Graph"
+      responses:
+        "200":
+          description: data entry created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+  /graph/data/{graphId}:
+    get:
+      tags:
+        - graph
+      parameters:
+        - name: graphId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: graph returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Graph"
+        "404":
+          description: graph not found
+
+  /history/{type}:
+    get:
+      tags:
+        - history
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            type: string
+            enum:
+              - all
+              - graph
+              - list
+              - sort
+        - $ref: "#/components/parameters/offsetParam"
+        - $ref: "#/components/parameters/limitParam"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GetHistoryEntry"
+          description: history returned
+    post:
+      tags:
+        - history
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            type: string
+            enum:
+              - graph
+              - list
+              - sort
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HistoryEntry"
+      responses:
+        "200":
+          description: history entry created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+
+  /code-state/:
+    post:
+      tags:
+        - code-state
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CodeState"
+      responses:
+        "200":
+          description: State created
+        "409":
+          $ref: "#/components/responses/ConflictError"
+  /code-state/{stateId}:
+    get:
+      tags:
+        - code-state
+      parameters:
+        - name: stateId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CodeState"
+          description: code-state returned
+    delete:
+      tags:
+        - code-state
+      parameters:
+        - name: stateId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: State deleted
+        "404":
+          description: State not found
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+
+  /snippet/{snippetId}:
+    get:
+      tags:
+        - snippet
+      parameters:
+        - name: snippetId
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snippet"
+          description: snippet returned
+        "404":
+          description: snippet not found
+
+  /brew-coffee:
+    get:
+      tags:
+        - other
+      responses:
+        "418":
+          description: I'm a teapot
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    keyAuth:
+      type: apiKey
+      in: cookie
+      name: apiKey
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - admin
+        - email
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+          example: Admin
+        admin:
+          type: boolean
+        email:
+          type: string
+          example: admin@example.org
+    UserPartial:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        admin:
+          type: boolean
+        email:
+          type: string
+          example: admin@example.org
+    Favorite:
+      type: object
+      required:
+        - id
+        - name
+        - data
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        data:
+          type: string
+          format: uuid
+          description: reference to data entry.
+        state:
+          type: string
+          format: uuid
+          description: |-
+            reference to CodeState entry.
+            Leave away to only mark data entry as favorite.
+
+    List:
+      type: object
+      required:
+        - id
+        - values
+      properties:
+        id:
+          type: string
+          format: uuid
+        values:
+          type: array
+          items:
+            type: string
+    Sort:
+      type: object
+      required:
+        - id
+        - values
+        - type
+      properties:
+        id:
+          type: string
+          format: uuid
+        values:
+          type: array
+          items:
+            type: integer
+        type:
+          $ref: "#/components/schemas/SortType"
+    Graph:
+      type: object
+      required:
+        - id
+        - nodes
+        - edges
+      properties:
+        id:
+          type: string
+          format: uuid
+        nodes:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - value
+            properties:
+              id:
+                type: string
+                format: uuid
+              value:
+                type: string
+        edges:
+          type: array
+          items:
+            type: object
+            required:
+              - from
+              - to
+            properties:
+              from:
+                type: string
+                format: uuid
+              to:
+                type: string
+                format: uuid
+    HistoryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        time:
+          type: string
+          format: timestamp
+        data:
+          type: string
+          format: uuid
+        algo:
+          type: string
+          format: uuid
+    GetHistoryEntry:
+      allOf:
+        - $ref: "#/components/schemas/HistoryEntry"
+        - type: object
+          required:
+            - algoName
+          properties:
+            algoName:
+              type: string
+    CodeState:
+      type: object
+      required:
+        - id
+        - variables
+        - snippet
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          type: object
+          additionalProperties: true
+        snippet:
+          type: string
+          format: uuid
+    Algorithm:
+      type: object
+      required:
+        - id
+        - name
+        - version
+        - snippet
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        version:
+          type: number
+        snippet:
+          type: string
+          format: uuid
+    SortType:
+      type: string
+      enum: [merge, bubble]
+
+    SortAlgorithm:
+      allOf:
+        - $ref: "#/components/schemas/Algorithm"
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              $ref: "#/components/schemas/SortType"
+    IdNameList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+          name:
+            type: string
+    Snippet:
+      type: object
+      required:
+        - id
+        - code
+        - js
+      properties:
+        id:
+          type: string
+          format: uuid
+        code:
+          type: array
+          items:
+            type: string
+        js:
+          type: string
+
+  parameters:
+    offsetParam:
+      name: offset
+      in: query
+      description: number of items to skip
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+    limitParam:
+      name: limit
+      in: query
+      description: max. number of items to return
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 20
+  responses:
+    UnauthorizedError:
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+    ForbiddenError:
+      description: User not allowed to execute this operation
+    ConflictError:
+      description: Send data conflicts with existing entry
+
+security:
+  - keyAuth: []
