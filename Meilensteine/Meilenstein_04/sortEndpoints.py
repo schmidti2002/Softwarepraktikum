@@ -134,11 +134,9 @@ class sort_data_id(Resource):
             return abort(401, message="API key is missing or invalid")
         
         try:
-            cursor.execute("""SELECT id, values FROM public."Sort" WHERE id = %s;""", (sort_id,))
+            cursor.execute("""SELECT id, values, type FROM public."Sort" WHERE id = %s;""", (sort_id,))
         except :
             return abort(404, message="sort not found")
         result = cursor.fetchall()
-        response_dic = []
-        for i in range(len(result)):
-            response_dic.append({"id":result[i-1][0],"name": result[i-1][1]})
-        return jsonify(response_dic)
+        response_dic = {"id":result[0],"values": result[1], "type": result[2]}
+        return (response_dic,200)
