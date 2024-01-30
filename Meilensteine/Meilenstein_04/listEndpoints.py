@@ -34,7 +34,6 @@ class list_algo(Resource):
             response_dic.append({"id":result[i-1][0],"name": result[i-1][1], "version": result[i-1][2], "snippet": result[i-1][3]})
         return jsonify(response_dic)
 
-
 class list_favorite(Resource):
     def get(self):
         user_uuid = Endpoints_util.getUserUUID(request, database)
