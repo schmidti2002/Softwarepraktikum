@@ -135,7 +135,6 @@ class list_data_id(Resource):
         except :
             return abort(404, message="list not found")
         result = cursor.fetchall()
-        response_dic = []
-        for i in range(len(result)):
-            response_dic.append({"id":result[i-1][0],"name": result[i-1][1]})
-        return jsonify(response_dic)
+        response_dic = {"id":result[0],"values": result[1]}
+        
+        return (response_dic,200)
