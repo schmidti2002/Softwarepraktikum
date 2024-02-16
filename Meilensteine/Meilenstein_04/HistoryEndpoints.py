@@ -13,13 +13,6 @@ from flask import make_response, jsonify
 from datetime import datetime
 import Endpoints_util
 
-app = Flask(__name__)
-CORS(app)
-api = Api(app)
-
-database = Endpoints_util.db_connect()
-cursor = database.cursor()
-
 class history(Resource):
     def get(self, type):
         user_uuid = Endpoints_util.getUserUUID(request, database)
@@ -51,7 +44,7 @@ class history(Resource):
         result = cursor.fetchall()
 
         response_dic = []
-        for i in range(len(result)):
+        for i in range(offset,min(len(result), offset+limit)):
             response_dic.append({"id":result[i-1][0],"time": result[i-1][1], "data": result[i-1][2], "algo": result[i-1][3], "algoName": result[i-1][4]})
         return jsonify(response_dic)
 
