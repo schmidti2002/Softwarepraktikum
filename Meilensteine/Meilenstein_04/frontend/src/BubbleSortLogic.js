@@ -8,8 +8,8 @@ export default class BubbleSort extends Logic {
   #stateChangeCallback;
 
   // Konstruktor
-  constructor(errorReporter, stateChangeCallback) {
-    super(errorReporter);
+  constructor(eventReporter, stateChangeCallback) {
+    super(eventReporter);
     this.#stateChangeCallback = stateChangeCallback;
     this.exec.changeAlgo(
       this.linesForBubbleSort,

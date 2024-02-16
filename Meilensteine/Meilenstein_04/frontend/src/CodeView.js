@@ -3,8 +3,8 @@ import View from './View';
 export default class CodeView extends View {
   #container;
 
-  constructor(parentNode, errorReporter) {
-    super('CodeView', parentNode, errorReporter);
+  constructor(parentNode, eventReporter) {
+    super('CodeView', parentNode, eventReporter);
     this.initPromise
       .then(() => {
         this.#container = document.getElementById('codeview-container');
@@ -12,6 +12,7 @@ export default class CodeView extends View {
   }
 
   showEmpty() {
+    // TODO good placeholder
     this.#container.innerHTML = 'Placeholder for nothing to show';
   }
 
@@ -36,7 +37,6 @@ export default class CodeView extends View {
   }
 
   renderBreakpoints(breakpoints) {
-    console.log(this.#container);
     this.#container.firstChild.childNodes.forEach((child, lineNr) => {
       if (breakpoints.includes(lineNr)) {
         child.classList.add('break');

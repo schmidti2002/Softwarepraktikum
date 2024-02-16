@@ -1,8 +1,9 @@
 import VisualizerView from './VisualizerView';
 
+// Visualisiert ein Array von Zahlen als Säulendiagram
 export default class SortVisualizerView extends VisualizerView {
-  constructor(parentNode, errorReporter) {
-    super('SortVisualizerView', parentNode, errorReporter);
+  constructor(parentNode, eventReporter) {
+    super('SortVisualizerView', parentNode, eventReporter);
     this.initPromise.then(() => {
       this.container = document.getElementById('sortview-container');
     });

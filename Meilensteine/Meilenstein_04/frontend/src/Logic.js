@@ -3,9 +3,9 @@ import { Executer } from './AlgoExecuter';
 export default class Logic {
   algos = [];
 
-  constructor(errorReporter) {
-    this.errorReporter = errorReporter;
-    this.exec = new Executer(errorReporter);
+  constructor(eventReporter) {
+    this.eventReporter = eventReporter;
+    this.exec = new Executer(eventReporter);
   }
 
   stateChangeCallback = () => {}; // data, variables, line
@@ -34,6 +34,8 @@ export default class Logic {
     const { algo } = this.algos[index];
     if (algo) {
       this.exec.changeAlgo(algo.lines, algo.breakpoints, 100, inputs);
+    } else {
+      this.eventReporter.fatal(`No algorithm with index ${index}!`);
     }
   }
 }

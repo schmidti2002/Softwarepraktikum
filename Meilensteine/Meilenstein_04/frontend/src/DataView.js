@@ -3,8 +3,8 @@ import View from './View';
 export default class DataView extends View {
   #container;
 
-  constructor(parentNode, errorReporter) {
-    super('DataView', parentNode, errorReporter);
+  constructor(parentNode, eventReporter) {
+    super('DataView', parentNode, eventReporter);
     this.initPromise
       .then(() => {
         this.#container = document.getElementById('dataview-container');

@@ -2,12 +2,18 @@ import * as _ from 'lodash';
 import View from './View';
 
 export default class InputView extends View {
-  callback; // (valid, values)
+  // Callback bei Eingaben.
+  // valid(bool)
+  // values(object)
+  callback;
 
   #inputs = [];
 
-  constructor(parentNode, errorReporter, callback) {
-    super('InputView', parentNode, errorReporter);
+  // Callback bei Eingaben.
+  // valid(bool)
+  // values(object)
+  constructor(parentNode, eventReporter, callback) {
+    super('InputView', parentNode, eventReporter);
     this.initPromise
       .then(() => {
         this.container = document.getElementById('inputview-container');
@@ -15,6 +21,9 @@ export default class InputView extends View {
     this.callback = callback;
   }
 
+  // Parser für die verschiedenen Inputtypen
+  // value(string)
+  // return({error: string|{value: T})
   static parseInt(value) {
     const wsRemoved = value.trim();
     if (!/^[+-]?\d+$/.test(wsRemoved)) {
@@ -41,8 +50,13 @@ export default class InputView extends View {
     return { value: arr };
   }
 
+  static parseString(value) {
+    return { value };
+  }
+
+  // Map der Inputtypen auf ihre HTML type-Attributwerte und ihren Parser
   #types = {
-    'integer': {
+    integer: {
       html: 'number',
       parser: InputView.parseInt,
     },
@@ -50,15 +64,42 @@ export default class InputView extends View {
       html: 'text',
       parser: InputView.parseIntArray,
     },
+    string: {
+      html: 'text',
+      parser: InputView.parseString,
+    },
+    password: {
+      html: 'password',
+      parser: InputView.parseString,
+    },
   };
 
+  /* Lädt eine Reihe an Inputs und erzeugt deren Elemente und Logik
+  *  Format:
+  *  {
+  *   name: 'Anzahl',           // Anzeige für Nutzer
+  *   field: 'foo.bar.count',   // Pfad(!) im values-Objekt
+  *   type: 'integer',          // Typ
+  *   validators: [{            // Array an Validatoren
+  *   func: minMax,             // Ein Validator
+  *   param: { min: 0 },        // Parameter des Validators
+  * },
+  * {
+  *   func: notEmpty,
+  * },
+  * ],
+  *},
+  */
   loadConfig(inputs) {
     const div = document.createElement('div');
-    console.log(inputs);
 
     this.#inputs = inputs.map((input) => {
+      if (this.#types[input.type] === undefined) {
+        this.eventReporter.fatal(`input type ${input.type} not implemented!`);
+      }
       const inputDiv = document.createElement('div');
       inputDiv.classList.add('form-floating');
+      inputDiv.classList.add('mb-2');
 
       const inputElm = document.createElement('input');
       inputElm.classList.add('form-control');
@@ -86,7 +127,6 @@ export default class InputView extends View {
       inputDiv.appendChild(label);
       inputDiv.appendChild(errorElm);
       div.appendChild(inputDiv);
-      console.log(inputDiv, div);
 
       return {
         elm: inputElm,
@@ -99,9 +139,10 @@ export default class InputView extends View {
 
     this.container.innerHTML = '';
     this.container.appendChild(div);
-    this.validate();
+    this.callback(this.validate(), this.getValues());
   }
 
+  // (de)aktiviert alle Inputs
   setDisabled(disabled) {
     this.#inputs.forEach((input) => {
       // eslint-disable-next-line no-param-reassign
@@ -109,6 +150,7 @@ export default class InputView extends View {
     });
   }
 
+  // Gibt Objekt mit Werten aller Inputs zurück
   getValues() {
     const values = {};
     for (let i = 0; i < this.#inputs.length; i++) {
@@ -119,6 +161,9 @@ export default class InputView extends View {
     return values;
   }
 
+  // Validiert einen Input mit allen daran hängenden Validatoren und
+  // erzeugt dann den finalen Wert durch Aufruf des Parsers.
+  // Zeigt außerdem die Fehlermeldung an falls der Input invalid ist.
   #inputValidate(input) {
     const { value } = input.elm;
 
@@ -152,6 +197,7 @@ export default class InputView extends View {
     return valid;
   }
 
+  // Validiert alle Inputs und gibt logisches UND der Ergebnisse zurück
   validate() {
     let valid = true;
     this.#inputs.forEach((input) => {
