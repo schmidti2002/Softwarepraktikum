@@ -13,13 +13,6 @@ from flask import make_response, jsonify
 from datetime import datetime
 import Endpoints_util
 
-app = Flask(__name__)
-CORS(app)
-api = Api(app)
-
-database = Endpoints_util.db_connect()
-cursor = database.cursor()
-
 class list_algo(Resource):
     def get(self):
         user_uuid = Endpoints_util.getUserUUID(request, database)
