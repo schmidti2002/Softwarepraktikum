@@ -176,9 +176,4 @@ class useres(Resource):
         for i in range(len(result)):
             response_dic.append({"id":result[i-1][0],"username": result[i-1][1], "admin": result[i-1][2], "email": result[i-1][3]})
         return jsonify(response_dic)
-     
 
-api.add_resource(login, '/login')
-api.add_resource(user, '/user') 
-api.add_resource(user_edit, '/user/edit/<string:edit_userid>')
-api.add_resource(useres, '/useres')
