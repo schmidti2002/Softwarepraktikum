@@ -2,7 +2,7 @@ import {
   expect, describe, test, jest, beforeEach,
 } from '@jest/globals';
 import Middleware from '../src/Middleware';
-import { mockReload } from './testUtils';
+import { mockReload } from './testUtils.test';
 
 describe('Middleware.js', () => {
   const errorFn = jest.fn();
