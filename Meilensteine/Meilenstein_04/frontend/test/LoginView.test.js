@@ -3,13 +3,13 @@ import {
 } from '@jest/globals';
 import LoginView from '../src/LoginView';
 import InputView from '../src/InputView';
-import { UserApi } from '../api/apis/UserApi.ts';
+import { UserApi } from '../src/api/apis/UserApi.ts';
 import SingletonManager from '../src/SingletonManager';
 import { awaitAllAsync, delay, mockFetchHtml, mockReload } from './testUtils.test.js';
-import { ResponseError } from '../api/runtime.ts';
+import { ResponseError } from '../src/api/runtime.ts';
 
 jest.mock('../src/InputView');
-jest.mock('../api/apis/UserApi.ts');
+jest.mock('../src/api/apis/UserApi.ts');
 
 describe('LoginView.js', () => {
   const brockenUsername = '\'); DROP TABLE *;';

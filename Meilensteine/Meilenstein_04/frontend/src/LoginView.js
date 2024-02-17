@@ -1,5 +1,5 @@
-import { UserApi } from '../api/apis/UserApi.ts';
-import { Configuration, ResponseError } from '../api/runtime.ts';
+import { UserApi } from './api/apis/UserApi.ts';
+import { Configuration, ResponseError } from './api/runtime.ts';
 import InputView from './InputView';
 import { notEmpty } from './inputValidators';
 import View from './View';
@@ -52,7 +52,7 @@ export default class LoginView extends View {
       this.inputView.getValues(),
     ));
 
-    // TODO change with API version 1.0.0 to /apitoken POST
+    // TODO change with API version 1.0.0 t./apitoken POST
     userApi.userLoginGet()
       .then(() => {
         window.location.reload();
