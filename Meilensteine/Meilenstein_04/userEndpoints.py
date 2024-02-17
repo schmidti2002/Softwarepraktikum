@@ -54,7 +54,21 @@ class login(Resource):
             response = make_response('login successfull')
             response.set_cookie('apiKey', apikey)  # Cookie setzen, um den Session-Token zu speichern
             return response
+
+class logout(Resource):
+    def get(self):
+
+        # Daten aus dem Request holen
+        apikey = request.cookies.get('apiKey')
+        # SQL-Abfrage
+
+        cursor.execute("""UPDATE public."ApiKey" SET created = %s WHERE key = %s;""", (apikey, "2000-01-01 00:00:00+00"))
+        database.commit()
         
+        return jsonify("logout successfull")
+
+
+      
 class user(Resource):   
     def get(self):
 
