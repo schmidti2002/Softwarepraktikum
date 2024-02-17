@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: install FE dependencies
-        run: yarn
+        run: yarn && yarn prepare-api
         working-directory: ./Meilensteine/Meilenstein_04/frontend
       - name: run FE tests & linter
         run: yarn sonar || echo Done
