@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: install openapi generator dependencies
-        run: apt update && apt install -y default-jre
+        run: sudo apt update && sudo apt install -y default-jre
       - name: install FE dependencies
         run: yarn && yarn api-prepare
         working-directory: ./Meilensteine/Meilenstein_04/frontend
