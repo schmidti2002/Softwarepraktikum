@@ -34,8 +34,8 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           args: >
-            -Dsonar.python.coverage.reportPaths=./Meilensteine/Meilenstein_04/coverage.xml  
-            -Dsonar.sonar.coverage.jacoco.xmlReportPaths=./Meilensteine/Meilenstein_04/coverage.xml
+            -Dsonar.coverageReportPaths=./Meilenstein/Meilenstein_04/coverage.xml
+            -Dsonar.python.coverage.reportPaths=./Meilenstein/Meilenstein_04/coverage.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
