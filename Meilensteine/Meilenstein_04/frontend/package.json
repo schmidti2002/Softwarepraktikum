@@ -2,7 +2,6 @@
   "name": "Frontend_SWP",
   "version": "1.0.0",
   "main": " ",
-  "type": "module",
   "license": "AGPLv3",
   "private": true,
   "devDependencies": {
@@ -31,7 +30,7 @@
     "sonar": "yarn test --coverage; yarn lint -f json -o ./coverage/eslint.json",
     "watch": "webpack --watch",
     "build": "webpack",
-    "package": "yarn run api-prepare && webpack --prod --minify",
+    "package": "yarn run api-prepare && yarn build --mode=production --no-devtool",
     "start": "webpack serve --open --host 0.0.0.0"
   },
   "dependencies": {
