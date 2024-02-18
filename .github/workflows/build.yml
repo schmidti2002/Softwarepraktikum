@@ -23,8 +23,10 @@ jobs:
         run: pip install pytest
       - name: Install dependencies
         run: pip install -r requirements.txt
+        working-directory: ./Meilensteine/Meilenstein_04/Backend
       - name: Run tests with pytest
         run: pytest
+        working-directory: ./Meilensteine/Meilenstein_04/Backend
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
