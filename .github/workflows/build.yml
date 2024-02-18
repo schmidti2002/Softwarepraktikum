@@ -27,6 +27,9 @@ jobs:
       - name: Run tests with pytest
         run: pytest --junitxml=pytest-results.xml
         working-directory: ./Meilensteine/Meilenstein_04/
+      - name: patch PyTest result
+        run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' pytest-results.xml
+        working-directory: ./Meilensteine/Meilenstein_04/coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
