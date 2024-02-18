@@ -6,9 +6,9 @@ info:
   license:
     name: AGPL V3.0
     url: https://www.gnu.org/licenses/agpl-3.0.en.html#license-text
-  version: "0.0.1"
+  version: "1.0.0"
 servers:
-  - url: swp.dczlabs.xyz:3130
+  - url: swp.dczlabs.xyz:3130/api
   - url: localhost:3130
 paths:
   /user:
@@ -31,7 +31,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/UserCreate"
       responses:
         "200":
           description: user successfully created
@@ -48,7 +48,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserPartial"
+              $ref: "#/components/schemas/UserUpdatePartial"
       responses:
         "200":
           description: user got updated
@@ -112,8 +112,16 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         "403":
           $ref: "#/components/responses/ForbiddenError"
-  /user/login:
+  /user/apitoken:
     get:
+      tags:
+        - user
+      responses:
+        "200":
+          description: apitoken valid
+        "401":
+          description: apitoken not valid
+    post:
       tags:
         - user
       security:
@@ -123,6 +131,14 @@ paths:
           description: login successfull. apiKey-cookie set.
         "401":
           description: login not successfull
+    delete:
+      tags:
+        - user
+      responses:
+        "200":
+          description: apitoken delted
+        "401":
+          description: apitoken not found or user not logged in
 
   /list/algo:
     get:
@@ -588,7 +604,16 @@ components:
         email:
           type: string
           example: admin@example.org
-    UserPartial:
+    UserCreate:
+      allOf:
+        - $ref: "#/components/schemas/User"
+        - type: object
+          required:
+            - passwd
+          properties:
+            passwd:
+              type: string
+    UserUpdatePartial:
       type: object
       required:
         - id
@@ -603,6 +628,8 @@ components:
         email:
           type: string
           example: admin@example.org
+        passwd:
+          type: string
     Favorite:
       type: object
       required:
@@ -694,6 +721,11 @@ components:
                 format: uuid
     HistoryEntry:
       type: object
+      required:
+        - id
+        - time
+        - data
+        - algo
       properties:
         id:
           type: string
@@ -767,6 +799,9 @@ components:
       type: array
       items:
         type: object
+        required:
+          - id
+          - name
         properties:
           id:
             type: string
