@@ -11,13 +11,15 @@ describe('BubbleSort', () => {
   describe('helper functions', () => {
     // "Dumme" Nutzereingaben
     let bubble;
+    let mockStateChangeCallback;
     beforeEach(() => {
       // Set up our document body
       document.body.innerHTML = bubblesortHtml;
+      mockStateChangeCallback = jest.fn();
       bubble = new BubbleSort();
     });
 
-    //GenerateRandomNumbers() Test
+    // GenerateRandomNumbers() Test
     test.each([
       [0, 0],
       [-1, 0],
@@ -44,7 +46,7 @@ describe('BubbleSort', () => {
       });
     });
 
-    //editArray() Test
+    // editArray() Test
     test.each([
       [[1], [1]],
       [[true], []],
@@ -66,19 +68,21 @@ describe('BubbleSort', () => {
       });
     });
 
-    //showOutput() Test
-    //////////////////////////////////////////////////////////////////////////////////
-    //Ich verstehe das #stateChangeCallback leider nicht
-    test.each(
-      ['input', 'solution'],
-      ['input','solution'])('showOutput', (input, solution) => {
-      document.getElementById('userInput').value = input;
+    // showOutput() Test
+    test('showOutput calls stateChangeCallback with correct parameters', () => {
+      // Setze den Zustand des BubbleSort-Objekts
+      bubble.exec.state.vars.arr = [1, 2, 3];
+      bubble.exec.state.vars.currentLine = 5;
+      bubble.exec.state.running = true;
+      // Rufe die showOutput Methode auf
       bubble.showOutput();
-      expect(bubble.exec.state.vars.arr.length).toBe(solution);
-      bubble.exec.state.vars.arr.forEach((element) => {
-        expect(Number.isInteger(element)).toBeTruthy();
-        expect(element).toBeGreaterThanOrEqual(0);
-      });
+      // Überprüfe, ob der Callback mit den richtigen Parametern aufgerufen wurde
+      expect(mockStateChangeCallback).toHaveBeenCalledWith(
+        [1, 2, 3], // Erwartetes Array
+        bubble.exec.state.vars, // Erwartete Variablen
+        5, // Erwartete aktuelle Zeile
+        true, // Erwarteter Laufzustand
+      );
     });
   });
 });
