@@ -26,7 +26,7 @@ def getUserUUID(request, database):
         result = util_cursor.fetchone()
         time_diff = datetime.strptime(timestamp, DESIRED_FORMAT) - datetime.strptime(str(result[1]), DESIRED_FORMAT)
         util_cursor.close()
-        if time_diff.total_seconds() <= MAX_APIKEY_AGE_MIN * 60:
+        if time_diff.total_seconds() >= MAX_APIKEY_AGE_MIN * 60:
             return abort(401, message="API key is missing or invalid")
         return result[0] # User-UUID zurückgeben
     except :

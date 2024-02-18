@@ -60,9 +60,11 @@ class logout(Resource):
 
         # Daten aus dem Request holen
         apikey = request.cookies.get('apiKey')
-        # SQL-Abfrage
+        if apikey == None:
+            return abort(401, message="API key is missing or invalid")
 
-        cursor.execute("""UPDATE public."ApiKey" SET created = %s WHERE key = %s;""", (apikey, "2000-01-01 00:00:00+00"))
+        # SQL-Abfrage
+        cursor.execute("""UPDATE public."ApiKey" SET created = %s WHERE key = %s;""", ('2000-01-01 00:00:00+00', apikey))
         database.commit()
         
         return jsonify("logout successfull")
@@ -95,7 +97,7 @@ class user(Resource):
             passwd= request.form.get("passwd")
             email = request.form.get("email")
             admin = bool(request.form.get("admin"))
-        except :
+        except:
             return abort(409, message="Send data conflicts with existing entry")
         
         # SQL-Abfrage
@@ -105,7 +107,8 @@ class user(Resource):
             apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
             cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s,%s)""", (id, apikey, "2000-01-01 00:00:00+00"))
             database.commit()
-        except :
+        except psycopg2.Error:
+            database.rollback()
             return abort(409, message="Send data conflicts with existing entry")
 
         return jsonify("user successfully created")
@@ -132,7 +135,8 @@ class user(Resource):
         try:
             cursor.execute("""UPDATE public."User" SET name = %s, passwd = %s, email = %s, rights = %s WHERE id = %s """, (name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin, id))
             database.commit()
-        except psycopg2.errors:
+        except psycopg2.Error:
+            database.rollback()
             return abort(404, message="User not found")
         
         return jsonify("User got updated")
@@ -150,7 +154,8 @@ class user_edit(Resource):
         try:
             cursor.execute("""DELETE FROM public."User" WHERE id = %s""", (edit_userid,))
             database.commit()
-        except psycopg2.errors:
+        except psycopg2.Error:
+            database.rollback()
             return abort(404, message="User not found")
 
         return jsonify("user got deleted")
@@ -168,7 +173,8 @@ class user_edit(Resource):
             result = cursor.fetchall()
             if len(result) == 0:
                 return abort(404, message="User not found")
-        except psycopg2.errors:
+        except psycopg2.Error:
+            database.rollback()
             return abort(404, message="User not found")
 
         # SQL Anfrage Auswertung
@@ -190,4 +196,10 @@ class useres(Resource):
         for i in range(len(result)):
             response_dic.append({"id":result[i-1][0],"username": result[i-1][1], "admin": result[i-1][2], "email": result[i-1][3]})
         return jsonify(response_dic)
+
+api.add_resource(login, '/login')
+api.add_resource(logout, '/logout')
+api.add_resource(user, '/user')
+api.add_resource(user_edit, '/user_edit/<edit_userid>')
+api.add_resource(useres, '/useres')
 
