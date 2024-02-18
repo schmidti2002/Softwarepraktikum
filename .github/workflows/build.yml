@@ -27,13 +27,13 @@ jobs:
         working-directory: ./Meilensteine/Meilenstein_04/
       - name: Run tests with coverage
         run: |
-          pytest --cov=./ --cov-report=html
+          pytest --cov=./ --cov-report=xml --junitxml=pytest-results.xml
         working-directory: ./Meilensteine/Meilenstein_04/
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
           args: >
-            -Dsonar.coverageReportPaths=Meilensteine/Meilenstein_04/coverage.html
+            -Dsonar.coverageReportPaths=Meilensteine/Meilenstein_04/coverage.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
