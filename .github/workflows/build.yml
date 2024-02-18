@@ -1,4 +1,5 @@
 name: Build
+
 on:
   push:
     branches:
@@ -25,16 +26,15 @@ jobs:
         run: pip install -r requirements.txt
         working-directory: ./Meilensteine/Meilenstein_04/
       - name: Run tests with coverage
-        run: pytest --cov=./ --cov-report=xml
+        run: |
+          pytest --cov=./ --cov-report=xml
+          mv coverage.xml ./Meilensteine/Meilenstein_04/
         working-directory: ./Meilensteine/Meilenstein_04/
-      #- name: Generate SonarQube report
-      #  run: pytest --cov-report xml --cov-report sonar --sonar-project-key=<your_project_key> --sonar-url=https://sonarcloud.io --sonar-token=$SONAR_TOKEN
-      #  working-directory: ./Meilensteine/Meilenstein_04/
-      #- name: patch PyTest result
-      #  run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' pytest-results.xml
-      #  working-directory: ./Meilensteine/Meilenstein_04/
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.coverageReportPaths=Meilensteine/Meilenstein_04/coverage.xml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
