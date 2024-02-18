@@ -1,4 +1,5 @@
 import pytest
+import uuid
 from datetime import datetime, timedelta
 from unittest.mock import Mock
 from Endpoints_util import getUserUUID, verify_admin
@@ -12,7 +13,8 @@ def test_check_api_key_valid():
     DESIRED_FORMAT = "%Y-%m-%d %H:%M:%S+00:00"
     timestamp = datetime.now().strftime(DESIRED_FORMAT)
     mock_cursor = Mock()
-    mock_cursor.fetchone.return_value = (1, timestamp)
+    user_uuid = uuid.uuid4()
+    mock_cursor.fetchone.return_value = (user_uuid, timestamp)
 
     # Mocking database connection
     mock_database = Mock()
@@ -20,7 +22,7 @@ def test_check_api_key_valid():
 
     # Testing with valid API key
     result = getUserUUID(mock_request, mock_database)
-    assert result == 1
+    assert result == user_uuid
 
 
 def test_check_api_key_invalid():
@@ -32,7 +34,8 @@ def test_check_api_key_invalid():
     DESIRED_FORMAT = "%Y-%m-%d %H:%M:%S+00:00"
     timestamp = (datetime.now() - timedelta(minutes=30)).strftime(DESIRED_FORMAT)
     mock_cursor = Mock()
-    mock_cursor.fetchone.return_value = (1, timestamp)
+    user_uuid = uuid.uuid4()
+    mock_cursor.fetchone.return_value = (user_uuid, timestamp)
 
     # Mocking database connection
     mock_database = Mock()
