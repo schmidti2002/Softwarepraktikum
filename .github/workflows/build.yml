@@ -34,7 +34,7 @@ jobs:
         working-directory: ./Meilensteine/Meilenstein_04/
       - name: patch PyTest result
         run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' coverage.xml
-        working-directory: ./Meilensteine/Meilenstein_04/Backend
+        working-directory: ./Meilensteine/Meilenstein_04/
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
