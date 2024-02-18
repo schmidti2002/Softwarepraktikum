@@ -1,5 +1,5 @@
 typing
-flask import 
+flask 
 flask_restful
 flask_cors 
 hashlib 
