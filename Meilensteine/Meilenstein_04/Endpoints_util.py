@@ -25,9 +25,13 @@ def getUserUUID(request, database):
         util_cursor.execute("""SELECT "user", created FROM public."ApiKey" WHERE key = %s;""",(apikey,))
         result = util_cursor.fetchone()
         time_diff = datetime.strptime(timestamp, DESIRED_FORMAT) - datetime.strptime(str(result[1]), DESIRED_FORMAT)
-        util_cursor.close()
         if time_diff.total_seconds() >= MAX_APIKEY_AGE_MIN * 60:
             return abort(401, message="API key is missing or invalid")
+        
+        # User-TimeStamp aktualisieren
+        util_cursor.execute("""UPDATE public."ApiKey" SET created = %s WHERE "key" = %s;""", (timestamp, apikey))
+        database.commit()
+        util_cursor.close()
         return result[0] # User-UUID zurückgeben
     except :
         return abort(401, message="API key is missing or invalid ")
