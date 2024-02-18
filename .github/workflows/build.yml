@@ -1,4 +1,4 @@
-name: Build
+name: Build and Test
 
 on:
   push:
@@ -9,27 +9,30 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Install Python and dependencies
+
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Install pytest
+
+      - name: Install dependencies
         run: |
           pip install pytest pytest-cov
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+          pip install -r requirements.txt
         working-directory: ./Meilensteine/Meilenstein_04/
+
       - name: Run tests with coverage
         run: |
-          pytest --cov=./ --cov-report=xml 
+          pytest --cov=./ --cov-report=xml
         working-directory: ./Meilensteine/Meilenstein_04/
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
