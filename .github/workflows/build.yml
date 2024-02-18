@@ -20,12 +20,12 @@ jobs:
         with:
           python-version: 3.9
       - name: Install pytest
-        run: pip install pytest pytest-cov pytest-sonar
+        run: pip install pytest pytest-cov
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./Meilensteine/Meilenstein_04/
       - name: Run tests with coverage
-        run: pytest --cov=your_package tests/
+        run: pytest --cov=Backend tests/
         working-directory: ./Meilensteine/Meilenstein_04/
       #- name: Generate SonarQube report
       #  run: pytest --cov-report xml --cov-report sonar --sonar-project-key=<your_project_key> --sonar-url=https://sonarcloud.io --sonar-token=$SONAR_TOKEN
