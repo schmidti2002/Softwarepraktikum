@@ -21,7 +21,9 @@ jobs:
         with:
           python-version: 3.9
       - name: Install pytest
-        run: pip install pytest pytest-cov
+        run: |
+          pip install pytest pytest-cov
+          pip install coverage==5.*
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./Meilensteine/Meilenstein_04/
