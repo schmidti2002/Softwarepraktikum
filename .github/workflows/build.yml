@@ -23,7 +23,6 @@ jobs:
       - name: Install pytest
         run: |
           pip install pytest pytest-cov
-          pip install coverage==5.*
       - name: Install dependencies
         run: pip install -r requirements.txt
         working-directory: ./Meilensteine/Meilenstein_04/
@@ -35,7 +34,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           args: >
-            -Dsonar.coverageReportPaths=Meilensteine/Meilenstein_04/coverage.xml
+            sonar-scanner -Dsonar.coverageReportPaths=Meilensteine/Meilenstein_04/coverage.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
