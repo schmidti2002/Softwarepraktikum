@@ -1,12 +1,12 @@
-import fs from 'fs';
-import path from 'path';
+// import fs from 'fs';
+// import path from 'path';
 import {
-  expect, describe, test, beforeEach,
+  expect, describe, test, beforeEach, jest,
 } from '@jest/globals';
 import BubbleSort from '../src/BubbleSortLogic';
 
-const bubblesortHtml = fs.readFileSync(path.resolve(__dirname, '../src/BubbleSort.html'), 'utf8');
-
+// const bubblesortHtml = fs.readFileSync
+// (path.resolve(__dirname, '../src/BubbleSort.html'), 'utf8');
 describe('BubbleSort', () => {
   describe('helper functions', () => {
     // "Dumme" Nutzereingaben
@@ -14,7 +14,7 @@ describe('BubbleSort', () => {
     let mockStateChangeCallback;
     beforeEach(() => {
       // Set up our document body
-      document.body.innerHTML = bubblesortHtml;
+      // document.body.innerHTML = bubblesortHtml;
       mockStateChangeCallback = jest.fn();
       bubble = new BubbleSort();
     });
