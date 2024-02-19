@@ -8,6 +8,6 @@ api = Api(app)
 
 class brew_coffee(Resource):
     def get(self):
-        return jsonify("Coffee is brewing", 418)
+        return ("Coffee is brewing", 418)
 
 api.add_resource(brew_coffee, '/brew_coffee')
