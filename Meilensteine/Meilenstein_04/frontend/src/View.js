@@ -14,6 +14,9 @@ export default class View {
         // eslint-disable-next-line no-param-reassign
         parentNode.innerHTML = data;
         parentNode.addEventListener('click', (e) => this.#checkClickListeners(e));
+      })
+      .catch(() => {
+        eventReporter.fatal(`could not init view of type ${name}. Could not load ${name}.html!`);
       });
   }
 
