@@ -50,7 +50,7 @@ class userapitoken(Resource):
                 
         # Wenn ein Ergebnis zurückgegeben wird, ist der Login erfolgreich
         # 64 stelligen SessionToken generieren
-        apikey = secrets.token_urlsafe(40)
+        apikey = secrets.token_urlsafe(64)
         #apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
         # Zeitstempel generieren
         timestamp = datetime.now().strftime(DESIRED_FORMAT)
@@ -60,7 +60,7 @@ class userapitoken(Resource):
         database.commit()
         # Token zurückgeben
         response = make_response('login successfull')
-        response.set_cookie('apiKey', apikey, secure=True)  # Cookie setzen, um den Session-Token zu speichern
+        response.set_cookie('apiKey', apikey, secure=True, httponly=True)  # Cookie setzen, um den Session-Token zu speichern
         return response
 
     def get(self):
@@ -81,7 +81,7 @@ class userapitoken(Resource):
         database.commit()
         
         response = make_response("apitoken delted")
-        response.set_cookie('apiKey', '', expires=0)
+        response.set_cookie('apiKey', '', expires=0, secure=True, httponly=True)
         return response
       
 class user(Resource):   
@@ -117,7 +117,8 @@ class user(Resource):
         try:
             cursor.execute("""INSERT INTO public."User" (id, name, passwd, email, rights) VALUES (%s,%s, %s, %s, %s)""", (id, name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin))
             database.commit()
-            apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
+            apikey = secrets.token_urlsafe(64)
+            #apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
             cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s,%s)""", (id, apikey, "2000-01-01 00:00:00+00"))
             database.commit()
         except psycopg2.Error:
