@@ -13,7 +13,7 @@ import SingletonManager from './SingletonManager';
 import UserEventReporter from './UserEventReporter';
 import Middleware from './Middleware';
 
-(() => {
+export default async function entry() {
   const overlayContainer = document.getElementById('overlay-container');
   const userEventReporter = new UserEventReporter(overlayContainer);
   try {
@@ -33,8 +33,12 @@ import Middleware from './Middleware';
     singletonManager.registerConstructor('UserApi', () => new UserApi(config));
 
     const contentRoot = document.getElementById('content-root');
-    /* TODO API call so bald API da
-    singletonManager.get('UserApi').userGet()/ */Promise.resolve()/* */
+
+    // Für den Check ob der Nutzer eingeloggt ist würde die Middleware eine Endlosschleife erzeugen.
+    // const loginCheckApi = new UserApi();
+
+    /* TODO API call so bald API da*
+    await loginCheckApi.userGet()/ */Promise.resolve()/* */
       .then(() => new MainView(contentRoot, singletonManager))
       .catch((err) => {
         if (err instanceof ResponseError && err.response && err.response.status === 401) {
@@ -52,4 +56,4 @@ import Middleware from './Middleware';
       + 'Dieser Fehler kann nicht automatisch behoben werden. Bitte lade die Seite neu.');
     throw error;
   }
-})();
+}

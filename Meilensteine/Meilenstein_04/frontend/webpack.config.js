@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/WebApplication.js',
+  entry: './src/entry.js',
   devtool: 'inline-source-map',
   devServer: {
     static: './src',
