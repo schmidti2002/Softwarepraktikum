@@ -4,11 +4,9 @@ from flask import Flask, request
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
-from flask_wtf.csrf import CSRFProtect
 import random
 import string
 import secrets
-import os
 
 # wichtige 
 from hashlib import sha256
@@ -19,8 +17,6 @@ import Endpoints_util
 
 app = Flask(__name__)
 api = Api(app)
-csrf = CSRFProtect(app)
-app.config['SECRET_KEY']=os.environ.get('SECRET_KEY')
 
 
 auth = HTTPBasicAuth()
