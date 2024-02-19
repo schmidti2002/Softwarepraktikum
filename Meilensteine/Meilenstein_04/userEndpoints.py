@@ -3,6 +3,7 @@ from typing import Any
 from flask import Flask, request
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
+from flask_httpauth import HTTPBasicAuth
 import random
 import string
 
@@ -17,17 +18,17 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
+
+auth = HTTPBasicAuth()
+
 database = Endpoints_util.db_connect()
 cursor = database.cursor()
 DESIRED_FORMAT = "%Y-%m-%d %H:%M:%S+00:00"
 MAX_APIKEY_AGE_MIN = 20
 
-class login(Resource):
-    def get(self):
-
-        # Daten aus dem Request holen
-        username = request.form.get("username")
-        password = request.form.get("password")
+class userapitoken(Resource):
+    @auth.verify_password
+    def verify_password(username, password):
         # SQL-Abfrage
         cursor.execute("""SELECT passwd FROM public."User" WHERE name = %s;""",(username,))
         # Ergebnis der Abfrage
@@ -39,25 +40,36 @@ class login(Resource):
         
         if result[0] != sha256(password.encode('utf-8')).hexdigest():
             return abort(401, message="login not successfull")
+        return True
+
+    @auth.login_required
+    def post(self):
         
+        # Daten aus dem Request holen
+        username = request.authorization.username
+                
         # Wenn ein Ergebnis zurückgegeben wird, ist der Login erfolgreich
-        else:
-            # 64 stelligen SessionToken generieren
-            apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
-            # Zeitstempel generieren
-            timestamp = datetime.now().strftime(DESIRED_FORMAT)
+        # 64 stelligen SessionToken generieren
+        apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
+        # Zeitstempel generieren
+        timestamp = datetime.now().strftime(DESIRED_FORMAT)
 
-            # SQL-Abfrage
-            cursor.execute("""UPDATE public."ApiKey" SET key = %s, created = %s WHERE "user" = (SELECT id FROM public."User" WHERE name = %s);""", (apikey, timestamp, username))
-            database.commit()
-            # Token zurückgeben
-            response = make_response('login successfull')
-            response.set_cookie('apiKey', apikey)  # Cookie setzen, um den Session-Token zu speichern
-            return response
+        # SQL-Abfrage
+        cursor.execute("""UPDATE public."ApiKey" SET key = %s, created = %s WHERE "user" = (SELECT id FROM public."User" WHERE name = %s);""", (apikey, timestamp, username))
+        database.commit()
+        # Token zurückgeben
+        response = make_response('login successfull')
+        response.set_cookie('apiKey', apikey)  # Cookie setzen, um den Session-Token zu speichern
+        return response
 
-class logout(Resource):
     def get(self):
+        apikey = request.cookies.get('apiKey')
+        if apikey == None:
+            return abort(401, message="apitoken not valid")
+        return jsonify("apitoken valid")
 
+
+    def delete(self):
         # Daten aus dem Request holen
         apikey = request.cookies.get('apiKey')
         if apikey == None:
@@ -67,9 +79,9 @@ class logout(Resource):
         cursor.execute("""UPDATE public."ApiKey" SET created = %s WHERE key = %s;""", ('2000-01-01 00:00:00+00', apikey))
         database.commit()
         
-        return jsonify("logout successfull")
-
-
+        response = make_response("apitoken delted")
+        response.set_cookie('apiKey', '', expires=0)
+        return response
       
 class user(Resource):   
     def get(self):
@@ -197,9 +209,11 @@ class useres(Resource):
             response_dic.append({"id":result[i-1][0],"username": result[i-1][1], "admin": result[i-1][2], "email": result[i-1][3]})
         return jsonify(response_dic)
 
-api.add_resource(login, '/login')
-api.add_resource(logout, '/logout')
 api.add_resource(user, '/user')
 api.add_resource(user_edit, '/user_edit/<edit_userid>')
 api.add_resource(useres, '/useres')
+api.add_resource(userapitoken,'/user/apitoken')
 
+if __name__ == "__main__":
+
+    app.run(debug=True)
