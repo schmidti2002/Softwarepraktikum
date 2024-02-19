@@ -43,11 +43,11 @@ def test_user_creation(client):
     response = client.post('/user', data=data)
     assert response.status_code == 409
     #Fehlerhfte Anfragen an die Datenbank
-    data = dict(id="uuid.uuid4()", username='new_user', passwd='new_password', email='new_user@example.com', admin=True)
+    data = dict(id="uuid.uuid4()", username='new_user', passwd='new_password', email='new_user@example.com', admin=False)
     response = client.post('/user', data=data)
     assert response.status_code == 409
     #User erstellen
-    data = dict(id=uuid.uuid4(), username='new_user', passwd='new_password', email='new_user@example.com', admin=True)
+    data = dict(id=uuid.uuid4(), username='new_user', passwd='new_password', email='new_user@example.com', admin=False)
     response = client.post('/user', data=data)
     assert response.status_code == 200
     assert b'user successfully created' in response.data
@@ -87,7 +87,7 @@ def test_user_deletion(client):
 
     #user erstellen der gelöscht werden soll
     userid = uuid.uuid4()
-    data = dict(id=userid, username='new_user', passwd='new_password', email='new_user@example.com', admin=True)
+    data = dict(id=userid, username='new_user', passwd='new_password', email='new_user@example.com', admin=False)
     response = client.post('/user', data=data)
     assert response.status_code == 200
     #user löschen
