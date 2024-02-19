@@ -4,8 +4,10 @@ from flask import Flask, request
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
+from flask_wtf.csrf import CSRFProtect
 import random
 import string
+import secrets
 
 # wichtige 
 from hashlib import sha256
@@ -15,8 +17,8 @@ from datetime import datetime
 import Endpoints_util 
 
 app = Flask(__name__)
-CORS(app)
 api = Api(app)
+csrf = CSRFProtect(app)
 
 
 auth = HTTPBasicAuth()
@@ -50,7 +52,8 @@ class userapitoken(Resource):
                 
         # Wenn ein Ergebnis zurückgegeben wird, ist der Login erfolgreich
         # 64 stelligen SessionToken generieren
-        apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
+        apikey = secrets.token_urlsafe(40)
+        #apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
         # Zeitstempel generieren
         timestamp = datetime.now().strftime(DESIRED_FORMAT)
 
@@ -59,7 +62,7 @@ class userapitoken(Resource):
         database.commit()
         # Token zurückgeben
         response = make_response('login successfull')
-        response.set_cookie('apiKey', apikey)  # Cookie setzen, um den Session-Token zu speichern
+        response.set_cookie('apiKey', apikey, secure=True)  # Cookie setzen, um den Session-Token zu speichern
         return response
 
     def get(self):
@@ -213,7 +216,3 @@ api.add_resource(user, '/user')
 api.add_resource(user_edit, '/user_edit/<edit_userid>')
 api.add_resource(useres, '/useres')
 api.add_resource(userapitoken,'/user/apitoken')
-
-if __name__ == "__main__":
-
-    app.run(debug=True)
