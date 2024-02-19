@@ -4,10 +4,10 @@ from flask import Flask
 from flask.testing import FlaskClient
 from userEndpoints import app
 
-LOGINDATEN={'username':'Florian', 'password':'florian'}
+LOGINDATEN=('Florian', 'florian')
 
 def login(client: FlaskClient):
-    response = client.get('/login', data=dict(username=LOGINDATEN['username'], password=LOGINDATEN['password']))
+    response = client.post('/user/apitoken',auth=LOGINDATEN)
     assert response.status_code == 200
     return client
 
@@ -18,18 +18,17 @@ def client():
         yield client
 
 def test_login(client):
-    response = client.get('/login', data=dict(username='test_user', password='test_password'))
+    response = client.post('/user/apitoken', auth=('test_user','test_password'))
     assert response.status_code == 401
-    response = client.get('/login', data=dict(username='Florian', password='florian'))
+    response = client.post('/user/apitoken', auth=('Florian', 'florian'))
     assert response.status_code == 200
     assert b'login successfull' == response.data
 
 def test_user_creation(client):
     # Anmelden und API-Key generieren
     # client = login(client)
-    response = client.get('/login', data=dict(username=LOGINDATEN['username'], password=LOGINDATEN['password']))
-    assert response.status_code == 200
-
+    login(client)
+    
     #Tests
     data = dict(id=uuid.uuid4(), username='new_user', passwd='new_password', email='new_user@example.com', admin=True)
     response = client.post('/user', data=data)
@@ -80,6 +79,6 @@ def test_logout(client):
     # Anmelden und API-Key generieren
     client = login(client)
     # Simulieren einer vorherigen erfolgreichen Anmeldung
-    response = client.get('/logout')
+    response = client.delete('/user/apitoken')
     assert response.status_code == 200
-    assert b'logout successfull' in response.data
+    assert b'apitoken delted' in response.data
