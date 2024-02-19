@@ -9,6 +9,7 @@ import MainView from '../src/MainView';
 import { UserApi } from '../src/api/apis/UserApi.ts';
 import { ResponseError } from '../src/api/runtime.ts';
 import entry from '../src/WebApplication';
+import SingletonManager from '../src/SingletonManager';
 
 jest.mock('../src/Middleware');
 jest.mock('../src/UserEventReporter');
@@ -65,6 +66,7 @@ describe('WebApplication.js', () => {
     await entry();
 
     const singletonManager = mainViewConstrMock.mock.calls[0][1];
+    expect(singletonManager).toBeInstanceOf(SingletonManager);
 
     const apisIndex = fs.readFileSync(path.resolve(__dirname, '../src/api/apis/index.ts'), 'utf8');
     const foundApis = [...apisIndex.matchAll(/'.\/(.*Api)'/g)];
