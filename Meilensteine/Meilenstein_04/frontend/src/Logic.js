@@ -6,10 +6,10 @@ export default class Logic {
   constructor(eventReporter, stateChangeCallback) {
     this.eventReporter = eventReporter;
     this.exec = new Executer(eventReporter);
-    this.#stateChangeCallback = stateChangeCallback;
+    this.stateChangeCallback = stateChangeCallback;
   }
 
-  #stateChangeCallback = () => {}; // data, variables, line
+  stateChangeCallback = () => {}; // data, variables, line
 
   play() {
     this.exec.play();

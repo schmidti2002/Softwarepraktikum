@@ -5,8 +5,6 @@ import { arrayEveryEntry, minMax, notEmpty } from './inputValidators';
 
 // Klasse für den BubbleSort
 export default class BubbleSort extends Logic {
-  #stateChangeCallback;
-
   // Konstruktor
   constructor(eventReporter, stateChangeCallback) {
     super(eventReporter, stateChangeCallback);
@@ -184,7 +182,7 @@ export default class BubbleSort extends Logic {
 
   // Funktion, um das Array auszugeben
   showOutput() {
-    this.#stateChangeCallback(
+    this.stateChangeCallback(
       this.exec.state.vars.arr,
       this.exec.state.vars,
       this.exec.state.currentLine,
