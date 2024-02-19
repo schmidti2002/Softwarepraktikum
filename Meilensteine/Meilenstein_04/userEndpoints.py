@@ -110,6 +110,8 @@ class user(Resource):
             passwd= request.form.get("passwd")
             email = request.form.get("email")
             admin = bool(request.form.get("admin"))
+            if id is None or name is None or passwd is None or email is None or admin is None:
+                return abort(409, message="Send data conflicts with existing entry")
         except:
             return abort(409, message="Send data conflicts with existing entry")
         
@@ -142,16 +144,24 @@ class user(Resource):
             passwd= request.form.get("passwd")
             email = request.form.get("email")
             admin = request.form.get("admin")
+            if id is None or name is None or passwd is None or email is None or admin is None:
+                return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
-
+        
+        
         # SQL-Abfrage
         try:
+            cursor.execute("""SELECT id FROM public."User" WHERE id = %s""", (id,))
+            result = cursor.fetchall()
+            if len(result) == 0:
+                return abort(404, message="User not found")
+        
             cursor.execute("""UPDATE public."User" SET name = %s, passwd = %s, email = %s, rights = %s WHERE id = %s """, (name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin, id))
             database.commit()
         except psycopg2.Error:
             database.rollback()
-            return abort(404, message="User not found")
+            return abort(409, message="Send data conflicts with existing entry")
         
         return jsonify("User got updated")
     
@@ -166,8 +176,13 @@ class user_edit(Resource):
         
         # Daten des zu löschenden Users überprüfen
         try:
-            cursor.execute("""DELETE FROM public."User" WHERE id = %s""", (edit_userid,))
-            database.commit()
+            cursor.execute("""SELECT id FROM public."User" WHERE id = %s""", (edit_userid,))
+            result = cursor.fetchall()
+            if len(result) == 0:
+                return abort(404, message="User not found")
+            else:
+                cursor.execute("""DELETE FROM public."User" WHERE id = %s""", (edit_userid,))
+                database.commit()
         except psycopg2.Error:
             database.rollback()
             return abort(404, message="User not found")
