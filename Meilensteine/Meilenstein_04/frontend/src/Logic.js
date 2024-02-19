@@ -3,12 +3,13 @@ import { Executer } from './AlgoExecuter';
 export default class Logic {
   algos = [];
 
-  constructor(eventReporter) {
+  constructor(eventReporter, stateChangeCallback) {
     this.eventReporter = eventReporter;
     this.exec = new Executer(eventReporter);
+    this.#stateChangeCallback = stateChangeCallback;
   }
 
-  stateChangeCallback = () => {}; // data, variables, line
+  #stateChangeCallback = () => {}; // data, variables, line
 
   play() {
     this.exec.play();
