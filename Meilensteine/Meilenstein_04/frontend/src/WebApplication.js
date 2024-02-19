@@ -37,8 +37,7 @@ export default async function entry() {
     // Für den Check ob der Nutzer eingeloggt ist würde die Middleware eine Endlosschleife erzeugen.
     // const loginCheckApi = new UserApi();
 
-    /* TODO API call so bald API da*
-    await loginCheckApi.userGet()/ */Promise.resolve()/* */
+    return /* TODO API call so bald API da* await loginCheckApi.userGet()/ */Promise.resolve()/* */
       .then(() => new MainView(contentRoot, singletonManager))
       .catch((err) => {
         if (err instanceof ResponseError && err.response && err.response.status === 401) {
