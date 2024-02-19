@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 api = Api(app)
-
+app.config['SECRET_KEY'] = "12456789"
 
 class brew_coffee(Resource):
     def get(self):
