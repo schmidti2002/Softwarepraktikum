@@ -3,8 +3,6 @@ from typing import Any
 from flask import Flask, request
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
-import random
-import string
 
 # wichtige 
 from hashlib import sha256
@@ -14,7 +12,6 @@ from datetime import datetime
 import Endpoints_util
 
 app = Flask(__name__)
-CORS(app)
 api = Api(app)
 
 database = Endpoints_util.db_connect()
@@ -159,3 +156,8 @@ class graph_data_id(Resource):
         
         response_dic = {"id":graph_id, "nodes": node_array, "edges": edge_array}
         return (response_dic,200)
+    
+api.add_resource(graph_algo, '/graph/algo')
+api.add_resource(graph_favorite, '/graph/favorite/<favorite_id>')
+api.add_resource(graph_data, '/graph/data')
+api.add_resource(graph_data_id, '/graph/data/<graph_id>')
