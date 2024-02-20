@@ -33,7 +33,7 @@ def test_get_graph_favorite(client, mock_getUserUUID):
         assert response.status_code == 401
 
         # Mockt die Rückgabewert der getUserUUID-Funktion für random User
-        mock_getUserUUID.return_value = uuid.uuid4()
+        mock_getUserUUID.return_value = str(uuid.uuid4())
         response = client.get("/graph/favorite/")
         assert response.status_code == 200
         assert isinstance(response.json, list)

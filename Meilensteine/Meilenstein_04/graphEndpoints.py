@@ -36,7 +36,6 @@ class graph_favorite(Resource):
         user_uuid = Endpoints_util.getUserUUID(request, database)
         if user_uuid == None:
             return abort(401, message="API key is missing or invalid")
-        
         cursor = database.cursor()
         cursor.execute("""SELECT public."GraphFavorite".id, name, data, state FROM public."GraphFavorite" JOIN public."Graph" ON public."Graph".id = public."GraphFavorite".data WHERE public."Graph".owner = %s;""", (user_uuid,))
         result = cursor.fetchall()
