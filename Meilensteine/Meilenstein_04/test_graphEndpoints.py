@@ -28,18 +28,19 @@ def test_get_graph_algo(client, mock_getUserUUID):
 
 def test_get_graph_favorite(client, mock_getUserUUID):
         # Test mit nicht angemeldetem User
+        mock_getUserUUID.return_value = None
         response = client.get("/graph/favorite/")
         assert response.status_code == 401
 
         # Mockt die Rückgabewert der getUserUUID-Funktion für random User
         mock_getUserUUID.return_value = uuid.uuid4()
-        response = client.get("/graph/favorite")
+        response = client.get("/graph/favorite/")
         assert response.status_code == 200
         assert isinstance(response.json, list)
 
         # Mockt die Rückgabewert der getUserUUID-Funktion für Test User
         mock_getUserUUID.return_value = LOGINDATEN
-        response = client.get("/graph/favorite")
+        response = client.get("/graph/favorite/")
         assert response.status_code == 200
         assert isinstance(response.json, list)
 

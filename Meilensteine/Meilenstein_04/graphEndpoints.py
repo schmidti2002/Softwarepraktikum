@@ -33,9 +33,7 @@ class graph_algo(Resource):
 
 class graph_favorite(Resource):
     def get(self):
-        print("test")
         user_uuid = Endpoints_util.getUserUUID(request, database)
-        print(user_uuid)
         if user_uuid == None:
             return abort(401, message="API key is missing or invalid")
         
