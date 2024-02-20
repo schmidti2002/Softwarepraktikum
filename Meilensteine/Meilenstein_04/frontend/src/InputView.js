@@ -23,7 +23,7 @@ export default class InputView extends View {
 
   // Parser für die verschiedenen Inputtypen
   // value(string)
-  // return({error: string|{value: T})
+  // return({error: string}|{value: T})
   static parseInt(value) {
     const wsRemoved = value.trim();
     if (!/^[+-]?\d+$/.test(wsRemoved)) {

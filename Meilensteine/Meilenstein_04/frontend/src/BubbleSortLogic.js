@@ -103,7 +103,7 @@ export default class BubbleSort extends Logic {
           type: 'integer',
           validators: [{
             func: minMax,
-            param: { min: 0 },
+            param: { min: 0, max: 200 },
           },
           {
             func: notEmpty,
