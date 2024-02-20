@@ -33,13 +33,14 @@ class graph_algo(Resource):
 
 class graph_favorite(Resource):
     def get(self):
+        print("test")
         user_uuid = Endpoints_util.getUserUUID(request, database)
-        
+        print(user_uuid)
         if user_uuid == None:
             return abort(401, message="API key is missing or invalid")
         
         cursor = database.cursor()
-        cursor.execute("""SELECT id, name, data, state FROM public."GraphFavorite" JOIN public."Graph" ON public."Graph".id = public."GraphFavorite".data WHERE public."Graph".owner = %s;""", (user_uuid,))
+        cursor.execute("""SELECT public."GraphFavorite".id, name, data, state FROM public."GraphFavorite" JOIN public."Graph" ON public."Graph".id = public."GraphFavorite".data WHERE public."Graph".owner = %s;""", (user_uuid,))
         result = cursor.fetchall()
         response_dic = []
         for i in range(len(result)):
@@ -68,6 +69,7 @@ class graph_favorite(Resource):
         
         return jsonify("new favorite created")
     
+class graph_favorite_favorite_id(Resource):
     def delete(self, favorite_id):
         user_uuid = Endpoints_util.getUserUUID(request, database)
         
@@ -158,6 +160,7 @@ class graph_data_id(Resource):
         return (response_dic,200)
     
 api.add_resource(graph_algo, '/graph/algo')
-api.add_resource(graph_favorite, '/graph/favorite/<favorite_id>')
+api.add_resource(graph_favorite, '/graph/favorite/')
+api.add_resource(graph_favorite_favorite_id, '/graph/favorite/<favorite_id>')
 api.add_resource(graph_data, '/graph/data')
 api.add_resource(graph_data_id, '/graph/data/<graph_id>')
