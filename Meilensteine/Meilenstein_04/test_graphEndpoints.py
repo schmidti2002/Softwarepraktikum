@@ -19,7 +19,7 @@ def client():
         yield client
 
 def test_get_graph_algo(client, mock_getUserUUID):
-        # Mocken Sie die Rückgabewert der getUserUUID-Funktion
+        # Mocken die Rückgabewert der getUserUUID-Funktion
         mock_getUserUUID.return_value = LOGINDATEN
 
         response = client.get("/graph/algo")
@@ -28,4 +28,5 @@ def test_get_graph_algo(client, mock_getUserUUID):
         assert isinstance(response.json, list)
 
 def test_get_graph_favorite(client, mock_getUserUUID):
-     pass
+        # Mocken die Rückgabewert der getUserUUID-Funktion
+        mock_getUserUUID.return_value = LOGINDATEN
