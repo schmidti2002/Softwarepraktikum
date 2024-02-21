@@ -98,7 +98,7 @@ class graph_data(Resource):
         if user_uuid == None:
             return abort(401, message="API key is missing or invalid")
         
-        cursor.execute("""SELECT id, values FROM public."Graph" WHERE owner = %s;""", (user_uuid,))
+        cursor.execute("""SELECT id, owner FROM public."Graph" WHERE owner = %s;""", (user_uuid,))
         result = cursor.fetchall()
         response_dic = []
         for i in range(len(result)):
@@ -115,6 +115,8 @@ class graph_data(Resource):
             graph_id = request.form.get("id")
             nodes = request.form.get("nodes")
             edges = request.form.get("edges")
+            if graph_id == None or nodes == None or edges == None or len(nodes) == 0 or len(edges) == 0:
+                return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
         
