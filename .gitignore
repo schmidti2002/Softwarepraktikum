@@ -51,4 +51,4 @@ m4/lt~obsolete.m4
 # (which is called by configure script))
 Makefile
 
-__pycache__/   # Python 3.3+ byte-compiled files
+/__pycache__   # Python 3.3+ byte-compiled files

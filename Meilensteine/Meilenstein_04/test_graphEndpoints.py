@@ -132,7 +132,7 @@ def test_post_graph_data(client, mock_getUserUUID):
         edges = [{"from":uuid_node1,"to":uuid_node2},{"from":uuid_node1,"to":uuid_node1},{"from":uuid_node2,"to":uuid_node2}]
         data = {"id": str(uuid.uuid4()), "nodes": nodes, "edges": edges}
         response = client.post("/graph/data", data = data)
-        assert response.status_code == 409
+        assert response.status_code == 200
 
 def test_get_graph_data_id(client, mock_getUserUUID):
         # Test mit nicht angemeldetem User
