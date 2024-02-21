@@ -55,6 +55,8 @@ class graph_favorite(Resource):
             name = request.form.get("name")
             data= request.form.get("data")
             state = request.form.get("state")
+            if id == None or name == None or data == None or state == None:
+                return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
         
@@ -62,6 +64,7 @@ class graph_favorite(Resource):
             cursor.execute("""INSERT INTO public."GraphFavorite" (id, name, data, state) VALUES (%s, %s, %s, %s)""", (id, name, data, state))
             database.commit()
         except :
+            database.rollback()
             return abort(409, message="Send data conflicts with existing entry")
         
         return jsonify("new favorite created")
@@ -120,9 +123,10 @@ class graph_data(Resource):
                 cursor.execute("""INSERT INTO public."GraphNode" (id, graph, value) VALUES (%s, %s, %s)""", (node['id'], graph_id, node['value']))
                 database.commit()
             for edge in edges:
-                cursor.execute("""INSERT INTO public."GraphEdge" (from, to) VALUES (%s, %s)""", (edge['from'], edge['to']))
+                cursor.execute("""INSERT INTO public."GraphEdge" ("from", "to") VALUES (%s, %s)""", (edge['from'], edge['to']))
                 database.commit()
         except :
+            database.rollback()
             return abort(409, message="Send data conflicts with existing entry")
         
         return jsonify("data entry created")
@@ -148,7 +152,7 @@ class graph_data_id(Resource):
         
         edge_array=[]
         for  i in range(len(node_array)):
-            cursor.execute("""SELECT from, to FROM public."GraphEdge" WHERE from = %s;""", (node_array[i-1]['id'],))
+            cursor.execute("""SELECT "from", "to" FROM public."GraphEdge" WHERE "from" = %s;""", (node_array[i-1]['id'],))
             result = cursor.fetchall()
             for i in range(len(result)):
                 edge_array.append({"from":result[i-1][0],"to": result[i-1][1]})

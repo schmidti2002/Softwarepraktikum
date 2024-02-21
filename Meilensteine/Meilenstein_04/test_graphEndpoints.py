@@ -45,3 +45,16 @@ def test_get_graph_favorite(client, mock_getUserUUID):
         assert response.status_code == 200
         assert isinstance(response.json, list)
 
+def test_post_graph_favorite(client, mock_getUserUUID):
+        # Test mit nicht angemeldetem User
+        mock_getUserUUID.return_value = None
+        response = client.post("/graph/favorite/")
+        assert response.status_code == 401
+
+        # Mockt die Rückgabewert der getUserUUID-Funktion für Test User
+        mock_getUserUUID.return_value = LOGINDATEN
+        response = client.post("/graph/favorite/",data= {"id": "123", "name": "test", "data": "test"})
+        assert response.status_code == 409
+
+        response = client.post("/graph/favorite/", data = {"id": str(uuid.uuid4()), "name": "favorite", "data": "e7877cd5-ccfd-4525-a563-d9bb793074e6", "state": "4e65d197-d0d6-11ee-a5bb-d03957a7be94"})
+        assert response.status_code == 200
