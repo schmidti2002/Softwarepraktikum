@@ -4,6 +4,9 @@ import {
 import SingletonManager from '../src/SingletonManager';
 import { awaitAllAsync, delay, mockFetchHtml, mockReload } from './testUtils.test.js';
 import InputView from '../src/InputView';
+import { arrayEveryEntry, minMax, notEmpty } from '../src/inputValidators'
+import * as _ from 'lodash';
+import { initial } from 'lodash';
 
 describe('InputView.js', () => {
     const callback = jest.fn();
@@ -60,4 +63,30 @@ describe('InputView.js', () => {
     ])('parseString()', async (input, solution) => {
         expect(InputView.parseString(input)).toStrictEqual(solution);
     });
+
+    test.each([
+        [[
+            {
+              name: 'Werte',
+              field: 'arr',
+              type: 'integer[]',
+              prefill: () => _.join([0,1,2]),
+              validators: [ /*{
+                func: arrayEveryEntry(minMax),
+                param: { min: 0 },
+              },*/
+              {
+                func: arrayEveryEntry(notEmpty),
+              },
+            ],
+            },
+          ],{arr: [0,1,2]}]
+    ])('getValues()', async (inputs, solution) => {
+        const inputView = new InputView(document.body, singletonManager, callback)
+        await inputView.initPromise;
+        inputView.loadConfig(inputs);
+        expect(inputView.getValues()).toStrictEqual(solution);
+    });
 });
+
+// für Disable: document.getElementsByTagName
