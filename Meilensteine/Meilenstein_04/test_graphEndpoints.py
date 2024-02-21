@@ -125,11 +125,30 @@ def test_post_graph_data(client, mock_getUserUUID):
         assert b'Send data conflicts with existing entry' in response.data
 
         # Korrekte Anfrage
+        """Das Muss leider noch überarbeite werden, da die Datenstruktur nicht stimmt."""
         uuid_node1 = str(uuid.uuid4())
         uuid_node2 = str(uuid.uuid4())
         nodes = [{"id":uuid_node1,"value":"41"},{"id":uuid_node2,"value":"42"}]
         edges = [{"from":uuid_node1,"to":uuid_node2},{"from":uuid_node1,"to":uuid_node1},{"from":uuid_node2,"to":uuid_node2}]
-        data = json.dumps({"id": str(uuid.uuid4()), "nodes": nodes, "edges": edges})
+        data = {"id": str(uuid.uuid4()), "nodes": nodes, "edges": edges}
         response = client.post("/graph/data", data = data)
+        assert response.status_code == 409
+
+def test_get_graph_data_id(client, mock_getUserUUID):
+        # Test mit nicht angemeldetem User
+        mock_getUserUUID.return_value = None
+        response = client.get("/graph/data/123")
+        assert response.status_code == 401
+
+        # Teste auf einen nicht existierenden Graphen
+        mock_getUserUUID.return_value = str(uuid.uuid4())
+        response = client.get("/graph/data/e7877cd5-ccfd-4525-a563-d935793074e6")
+        assert response.status_code == 404
+        assert b'graph not found' in response.data
+
+        # Teste auf vorhandenen Graphen
+        mock_getUserUUID.return_value = LOGINDATEN
+        response = client.get("/graph/data/e7877cd5-ccfd-4525-a563-d9bb793074e6")
         assert response.status_code == 200
+        assert isinstance(response.json, dict)
 

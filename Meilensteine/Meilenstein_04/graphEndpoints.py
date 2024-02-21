@@ -142,9 +142,11 @@ class graph_data_id(Resource):
         
         try:
             cursor.execute("""SELECT id FROM public."Graph" WHERE id = %s;""", (graph_id,))
+            result = cursor.fetchall()
+            if len(result) == 0:
+                return abort(404, message="graph not found")
         except :
             return abort(404, message="graph not found")
-        result = cursor.fetchall()
 
         node_array=[]
         cursor.execute("""SELECT id, value FROM public."GraphNode" WHERE graph = %s;""", (graph_id,))
