@@ -53,6 +53,8 @@ class list_favorite(Resource):
             name = request.form.get("name")
             data= request.form.get("data")
             state = request.form.get("state")
+            if id == None or name == None or data == None or state == None:
+                return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
         
@@ -105,6 +107,9 @@ class list_data(Resource):
         try:
             id = request.form.get("id")
             values = request.form.get("values")
+            values = psycopg2.extras.Json([values])
+            if id == None or values == None:
+                return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
         
