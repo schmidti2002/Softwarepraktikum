@@ -13,6 +13,11 @@ from flask import make_response, jsonify
 from datetime import datetime
 import Endpoints_util
 
+app = Flask(__name__)
+api = Api(app)
+
+database = Endpoints_util.db_connect()
+cursor = database.cursor()
 class history(Resource):
     def get(self, type):
         user_uuid = Endpoints_util.getUserUUID(request, database)
@@ -21,23 +26,31 @@ class history(Resource):
         
         try:
             offset = request.args.get("offset")
+            if offset == None:
+                offset = 0
+            else:
+                offset = int(offset)
             limit = request.args.get("limit")
+            if limit == None:
+                limit = 10
+            else:
+                limit = int(limit)
         except :
             offset = 0
             limit = 10
 
 
         if type == "sort":
-            cursor.execute("""SELECT id, time, data, algo, name FROM public."SortHistory" JOIN public."SortAlgo" ON public."SortHistory".algo = public."SortAlgo".id WHERE user = %s;""", (user_uuid,))
+            cursor.execute("""SELECT public."SortHistory".id, time, data, algo, name FROM public."SortHistory" JOIN public."SortAlgo" ON public."SortHistory".algo = public."SortAlgo".id WHERE "user" = %s;""", (user_uuid,))
         elif type == "list":
-            cursor.execute("""SELECT id, time, data, algo, name FROM public."ListHistory" JOIN public."ListAlgo" ON public."ListHistory".algo = public."ListAlgo".id WHERE user = %s;""", (user_uuid,))
+            cursor.execute("""SELECT public."ListHistory".id, time, data, algo, name FROM public."ListHistory" JOIN public."ListAlgo" ON public."ListHistory".algo = public."ListAlgo".id WHERE "user" = %s;""", (user_uuid,))
         elif type == "graph":
-            cursor.execute("""SELECT id, time, data, algo, name FROM public."GraphHistory" JOIN public."GraphAlgo" ON public."GraphHistory".algo = public."GraphAlgo".id WHERE user = %s;""", (user_uuid,))
+            cursor.execute("""SELECT public."GraphHistory".id, time, data, algo, name FROM public."GraphHistory" JOIN public."GraphAlgo" ON public."GraphHistory".algo = public."GraphAlgo".id WHERE "user" = %s;""", (user_uuid,))
         elif type == "all":
             cursor.execute("""
-                           SELECT id, time, data, algo, name FROM public."SortHistory" JOIN public."SortAlgo" ON public."SortHistory".algo = public."SortAlgo".id WHERE user = %s
-                           UNION SELECT id, time, data, algo, name FROM public."ListHistory" JOIN public."ListAlgo" ON public."ListHistory".algo = public."ListAlgo".id WHERE user = %s
-                           UNION SELECT id, time, data, algo, name FROM public."GraphHistory" JOIN public."GraphAlgo" ON public."GraphHistory".algo = public."GraphAlgo".id WHERE user = %s;
+                           SELECT public."SortHistory".id, time, data, algo, name FROM public."SortHistory" JOIN public."SortAlgo" ON public."SortHistory".algo = public."SortAlgo".id WHERE "user" = %s
+                           UNION SELECT public."ListHistory".id, time, data, algo, name FROM public."ListHistory" JOIN public."ListAlgo" ON public."ListHistory".algo = public."ListAlgo".id WHERE "user" = %s
+                           UNION SELECT public."GraphHistory".id, time, data, algo, name FROM public."GraphHistory" JOIN public."GraphAlgo" ON public."GraphHistory".algo = public."GraphAlgo".id WHERE "user" = %s;
                            """, (user_uuid, user_uuid, user_uuid))
         else:
             return abort(404, message="Type not found")
@@ -56,22 +69,26 @@ class history(Resource):
         
         try:
             id = request.form.get("id")
-            time = request.form.get("name")
+            time = request.form.get("time")
             data = request.form.get("data")
             algo = request.form.get("algo")
+            if id == None or time == None or data == None or algo == None:
+                return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
         try:
             if type == "sort":
-                cursor.execute("""INSERT INTO public."SortHistory" (id, time, data, algo, user) VALUES (%s, %s, %s, %s, %s);""", (id, time, data, algo, user_uuid))
+                cursor.execute("""INSERT INTO public."SortHistory" (id, time, data, algo, "user") VALUES (%s, %s, %s, %s, %s);""", (id, time, data, algo, user_uuid))
             elif type == "list":
-                cursor.execute("""INSERT INTO public."ListHistory" (id, time, data, algo, user) VALUES (%s, %s, %s, %s, %s);""", (id, time, data, algo, user_uuid))
+                cursor.execute("""INSERT INTO public."ListHistory" (id, time, data, algo, "user") VALUES (%s, %s, %s, %s, %s);""", (id, time, data, algo, user_uuid))
             elif type == "graph":
-                cursor.execute("""INSERT INTO public."GraphHistory" (id, time, data, algo, user) VALUES (%s, %s, %s, %s, %s);""", (id, time, data, algo, user_uuid))
+                cursor.execute("""INSERT INTO public."GraphHistory" (id, time, data, algo, "user") VALUES (%s, %s, %s, %s, %s);""", (id, time, data, algo, user_uuid))
             else:
-                return abort(404, message="Type not found")
+                return ("Type not found", 404)
             database.commit()
         except :
+            database.rollback()
             return abort(409, message="Send data conflicts with existing entry")
         return make_response("history entry created", 200)
 
+api.add_resource(history, "/history/<string:type>")
