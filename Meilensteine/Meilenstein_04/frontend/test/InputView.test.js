@@ -10,13 +10,12 @@ import { initial } from 'lodash';
 
 describe('InputView.js', () => {
     const callback = jest.fn();
+    const fatalFnMock = jest.fn();
     const singletonManager = new SingletonManager();
 
     beforeAll(() => {
         singletonManager.registerConstructor('EventReporter', () => ({
-          info: infoFnMock,
-          warn: warnFnMock,
-          error: errorFnMock,
+            fatal: fatalFnMock,
         }));
 
         mockFetchHtml('../src/InputView.html');
@@ -24,6 +23,7 @@ describe('InputView.js', () => {
 
     beforeEach(() => {
         callback.mockClear();
+        fatalFnMock.mockClear();
     });
 
     test.each([
@@ -86,6 +86,52 @@ describe('InputView.js', () => {
         await inputView.initPromise;
         inputView.loadConfig(inputs);
         expect(inputView.getValues()).toStrictEqual(solution);
+    });
+
+    test.each([
+        [[
+            {
+              name: 'Werte',
+              field: 'arr',
+              type: 'Intätschor[]',
+              prefill: () => _.join([0,1,2]),
+              validators: [
+              {
+                func: arrayEveryEntry(notEmpty),
+              },
+            ],
+            },
+          ]]
+    ])('klappt nicht', async (inputs) => {
+        const inputView = new InputView(document.body, singletonManager, callback)
+        await inputView.initPromise;
+        inputView.loadConfig(inputs);
+        expect(fatalFnMock).toBeCalledTimes(1);
+    });
+
+    test.each([
+        [[
+            {
+              name: 'Werte',
+              field: 'arr',
+              type: 'integer[]',
+              prefill: () => _.join([0,1,2]),
+              validators: [ /*{
+                func: arrayEveryEntry(minMax),
+                param: { min: 0 },
+              },*/
+              {
+                func: arrayEveryEntry(notEmpty),
+              },
+            ],
+            },
+          ],{arr: [0,1,2]}]
+    ])('setDisabled()', async (inputs, solution) => {
+        const inputView = new InputView(document.body, singletonManager, callback)
+        await inputView.initPromise;
+        inputView.loadConfig(inputs);
+        inputView.setDisabled('Werte')
+        document.getElementsByTagName(inputs)[0].elm.disabled.toBe('Werte')
     });
 });
 
