@@ -9,6 +9,7 @@ import psycopg2
 from flask import make_response, jsonify
 from datetime import datetime
 import Endpoints_util
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -111,9 +112,9 @@ class list_data(Resource):
             return abort(401, message="API key is missing or invalid")
         
         try:
-            id = request.form.get("id")
-            values = request.form.get("values")
-            print(id, values)
+            data_resquest= json.loads(request.get_json())
+            id = data_resquest["id"]
+            values = data_resquest["values"]
             if id == None or values == None:
                 return abort(409, message="Send data conflicts with existing entry")
         except :

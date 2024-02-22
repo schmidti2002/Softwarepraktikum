@@ -136,11 +136,11 @@ def test_post_list_data(client, mock_getUserUUID):
         test_list_data_uuid = str(uuid.uuid4())
         values = ["1", "2", "3", "4", "5"]
         data = json.dumps({"id": test_list_data_uuid, "values": values})
-        response = client.post("/list/data", data = data)
+        response = client.post("/list/data", json = data)
         assert response.status_code == 200
 
         # Test auf doppelte Anfrage
-        response = client.post("/list/data", data = data)
+        response = client.post("/list/data", json = data)
         assert response.status_code == 409
         assert b'Send data conflicts with existing entry' in response.data
 
