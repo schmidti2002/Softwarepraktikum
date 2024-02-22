@@ -10,6 +10,7 @@ import psycopg2
 from flask import make_response, jsonify
 from datetime import datetime
 import Endpoints_util
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -112,9 +113,10 @@ class graph_data(Resource):
             return abort(401, message="API key is missing or invalid")
         
         try:
-            graph_id = request.form.get("id")
-            nodes = request.form.get("nodes")
-            edges = request.form.get("edges")
+            data_resquest= json.loads(request.get_json())
+            graph_id = data_resquest['id']
+            nodes = data_resquest['nodes']
+            edges = data_resquest['edges']
             if graph_id == None or nodes == None or edges == None or len(nodes) == 0 or len(edges) == 0:
                 return abort(409, message="Send data conflicts with existing entry")
         except :

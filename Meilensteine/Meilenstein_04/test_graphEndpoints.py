@@ -130,9 +130,13 @@ def test_post_graph_data(client, mock_getUserUUID):
         uuid_node2 = str(uuid.uuid4())
         nodes = [{"id":uuid_node1,"value":"41"},{"id":uuid_node2,"value":"42"}]
         edges = [{"from":uuid_node1,"to":uuid_node2},{"from":uuid_node1,"to":uuid_node1},{"from":uuid_node2,"to":uuid_node2}]
-        data = {"id": str(uuid.uuid4()), "nodes": nodes, "edges": edges}
-        response = client.post("/graph/data", data = data)
+        data = json.dumps({"id": "e7877cd5-ccfd-4525-a563-d9bb793074e6", "nodes": nodes, "edges": edges})
+        response = client.post("/graph/data", json = data)
         assert response.status_code == 200
+
+        # Doppelte Anfrage
+        response = client.post("/graph/data", json = data)
+        assert response.status_code == 409
 
 def test_get_graph_data_id(client, mock_getUserUUID):
         # Test mit nicht angemeldetem User
