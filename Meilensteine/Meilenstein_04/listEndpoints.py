@@ -2,9 +2,6 @@
 from typing import Any
 from flask import Flask, request
 from flask_restful import Api, Resource, abort
-from flask_cors import CORS
-import random
-import string
 
 # wichtige 
 from hashlib import sha256
@@ -13,6 +10,11 @@ from flask import make_response, jsonify
 from datetime import datetime
 import Endpoints_util
 
+app = Flask(__name__)
+api = Api(app)
+
+database = Endpoints_util.db_connect()
+cursor = database.cursor()
 class list_algo(Resource):
     def get(self):
         user_uuid = Endpoints_util.getUserUUID(request, database)
@@ -35,7 +37,7 @@ class list_favorite(Resource):
             return abort(401, message="API key is missing or invalid")
         
         cursor = database.cursor()
-        cursor.execute("""SELECT id, name, data, state FROM public."ListFavorite" JOIN public."List" ON public."List".id = public."ListFavorite".data WHERE public."List".owner = %s;""", (user_uuid,))
+        cursor.execute("""SELECT public."ListFavorite".id, name, data, state FROM public."ListFavorite" JOIN public."List" ON public."List".id = public."ListFavorite".data WHERE public."List".owner = %s;""", (user_uuid,))
         result = cursor.fetchall()
         response_dic = []
         for i in range(len(result)):
@@ -54,15 +56,19 @@ class list_favorite(Resource):
             data= request.form.get("data")
             state = request.form.get("state")
             if id == None or name == None or data == None or state == None:
-                return abort(409, message="Send data conflicts with existing entry")
+                return ("Send data conflicts with existing entry", 409)
         except :
             return abort(409, message="Send data conflicts with existing entry")
+        try:
+            cursor.execute("""INSERT INTO public."ListFavorite" (id, name, data, state) VALUES (%s, %s, %s, %s)""", (id, name, data, state))
+            database.commit()
+        except:
+            database.rollback()
+            return abort(409, message="Send data conflicts with existing entry")
         
-        cursor.execute("""INSERT INTO public."ListFavorite" (id, name, data, state) VALUES (%s, %s, %s, %s)""", (id, name, data, state))
-        database.commit()
-
         return jsonify("new favorite created")
     
+class list_favorite_id(Resource):
     def delete(self, favorite_id):
         user_uuid = Endpoints_util.getUserUUID(request, database)
         
@@ -107,16 +113,16 @@ class list_data(Resource):
         try:
             id = request.form.get("id")
             values = request.form.get("values")
-            values = psycopg2.extras.Json([values])
+            print(id, values)
             if id == None or values == None:
                 return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
-        
         try:
             cursor.execute("""INSERT INTO public."List" (id, values, owner) VALUES (%s, %s, %s)""", (id, values, user_uuid))
             database.commit()
         except :
+            database.rollback()
             return abort(409, message="Send data conflicts with existing entry")
         
         return jsonify("data entry created")
@@ -130,9 +136,18 @@ class list_data_id(Resource):
         
         try:
             cursor.execute("""SELECT id, values FROM public."List" WHERE id = %s;""", (list_id,))
+            result = cursor.fetchall()
+            if len(result) == 0:
+                return ("list not found", 404)
         except :
             return abort(404, message="list not found")
-        result = cursor.fetchall()
-        response_dic = {"id":result[0],"values": result[1]}
+        response_dic = {"id":result[0][0],"values": result[0][1]}
         
         return (response_dic,200)
+    
+
+api.add_resource(list_algo, "/list/algo")
+api.add_resource(list_favorite, "/list/favorite")
+api.add_resource(list_favorite_id, "/list/favorite/<string:favorite_id>")
+api.add_resource(list_data, "/list/data")
+api.add_resource(list_data_id, "/list/data/<string:list_id>")
