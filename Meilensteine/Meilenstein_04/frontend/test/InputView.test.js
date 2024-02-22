@@ -102,8 +102,8 @@ describe('InputView.js', () => {
             ],
             },
           ]]
-    ])('klappt nicht', async (inputs) => {
-        const inputView = new InputView(document.body, singletonManager, callback)
+    ])('Wrong input type', async (inputs) => {
+        const inputView = new InputView(document.body, {fatal: fatalFnMock}, callback)
         await inputView.initPromise;
         inputView.loadConfig(inputs);
         expect(fatalFnMock).toBeCalledTimes(1);
@@ -130,8 +130,15 @@ describe('InputView.js', () => {
         const inputView = new InputView(document.body, singletonManager, callback)
         await inputView.initPromise;
         inputView.loadConfig(inputs);
-        inputView.setDisabled('Werte')
-        document.getElementsByTagName(inputs)[0].elm.disabled.toBe('Werte')
+        inputView.setDisabled(true)
+        const savedInputs = document.getElementsByTagName("input")
+        for (let i = 0; i < savedInputs.length; i++){
+          expect(savedInputs[i].disabled).toBe(true)
+        } 
+        inputView.setDisabled(false);
+        for (let i = 0; i < savedInputs.length; i++){
+          expect(savedInputs[i].disabled).toBe(false) //Hi
+        }
     });
 });
 
