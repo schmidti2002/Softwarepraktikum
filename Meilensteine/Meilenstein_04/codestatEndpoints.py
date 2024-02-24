@@ -14,7 +14,6 @@ from datetime import datetime
 import Endpoints_util 
 
 app = Flask(__name__)
-CORS(app)
 api = Api(app)
 
 database = Endpoints_util.db_connect()
@@ -44,7 +43,7 @@ class code_state(Resource):
             return jsonify("State created")
         except:
             return abort(409, message="State not created")
-        
+class code_state_id(Resource):        
     def get(self,stateId):
         # Login überprüfen
         user_uuid = Endpoints_util.getUserUUID(request, database)
@@ -74,3 +73,6 @@ class code_state(Resource):
             return jsonify("State deleted")
         except:
             return abort(404, message="State not found")
+        
+api.add_resource(code_state, "/code-state")
+api.add_resource(code_state_id, "/code-state/<string:stateId>")
