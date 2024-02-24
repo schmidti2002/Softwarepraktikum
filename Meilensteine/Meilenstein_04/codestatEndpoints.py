@@ -39,10 +39,11 @@ class code_state(Resource):
         # SQL-Abfrage und Ergebnis zurückgeben
         try:
             cursor.execute("""INSERT INTO public."CodeState" (id, state, snippet) VALUES (%s, %s, %s)""", (id, state, snippet))
-            result = cursor.fetchall()
-            return jsonify("State created")
+            database.commit()
         except:
             return abort(409, message="State not created")
+        
+        return jsonify("State created")
 class code_state_id(Resource):        
     def get(self,stateId):
         # Login überprüfen
@@ -54,9 +55,11 @@ class code_state_id(Resource):
         try:
             cursor.execute("""SELECT id, state, snippet FROM public."CodeState" WHERE id = %s;""", (stateId, ))
             result = cursor.fetchall()
-            return jsonify({"id":result[0][0],"state": result[0][1], "snippet": result[0][2]})
+            if len(result) == 0:
+                return abort(404, message="State not found")
         except:
-            return abort(409, message="State not found")
+            return abort(404, message="State not found")
+        return jsonify({"id":result[0][0],"state": result[0][1], "snippet": result[0][2]})
         
     def delete(self,stateId):
         # Login überprüfen

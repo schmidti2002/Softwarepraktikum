@@ -24,26 +24,32 @@ def client():
 def test_post(client, mock_getUserUUID):
     # Test nicht angemeldet
     mock_getUserUUID.return_value = None
-    response = client.post()
+    response = client.post("/code-state")	
     assert response.status_code == 401
 
     # Mock der Anmeldung
-    mock_getUserUUID = LOGINDATEN
+    mock_getUserUUID.return_value = LOGINDATEN
 
-    response = client.post()
+    response = client.post("/code-state")
     assert response.status_code == 200
 
 def test_get (client, mock_getUserUUID):
     # Test nicht angemeldet
     mock_getUserUUID.return_value = None
-    response = client.get("/code-state/" + LOGINDATEN)
+    response = client.get("/code-state/123" )
     assert response.status_code == 401
 
     # Mock der Anmeldung
-    mock_getUserUUID = LOGINDATEN
+    mock_getUserUUID.return_value = LOGINDATEN
 
-    response = client.get("/code-state/" + LOGINDATEN)
+    # Zufalls-ID
+    response = client.get("/code-state/"+ str(uuid.uuid4()))
+    assert response.status_code == 404
+
+    # Valider Key
+    response = client.get("/code-state/4e65d197-d0d6-11ee-a5bb-d03957a7be94")
     assert response.status_code == 200
+    assert isinstance(response.json, dict)
 
 def test_delete (client, mock_getUserUUID):
     # Test nicht angemeldet
