@@ -27,11 +27,15 @@ def test_post(client, mock_getUserUUID):
     response = client.post("/code-state")	
     assert response.status_code == 401
 
-    # Mock der Anmeldung
+    # Mock der Anmeldung und gültige Daten
     mock_getUserUUID.return_value = LOGINDATEN
-
-    response = client.post("/code-state")
+    data = json.dumps({"id": str(uuid.uuid4()), "state": {"additionalProp1": {}}, "snippet": "d300c83b-d0d0-11ee-9232-d03957a7be94"})
+    response = client.post("/code-state", json=data)
     assert response.status_code == 200
+
+    # Doppelte Daten
+    response = client.post("/code-state", json=data)
+    assert response.status_code == 409
 
 def test_get (client, mock_getUserUUID):
     # Test nicht angemeldet
@@ -51,17 +55,30 @@ def test_get (client, mock_getUserUUID):
     assert response.status_code == 200
     assert isinstance(response.json, dict)
 
-def test_delete (client, mock_getUserUUID):
+def test_delete (client, mock_getUserUUID, mock_cursor_fetchall):
     # Test nicht angemeldet
     mock_getUserUUID.return_value = None
-    response = client.delete("/code-state/" + LOGINDATEN)
+    response = client.delete("/code-state/123")
     assert response.status_code == 401
 
     # Mock der Anmeldung
-    mock_getUserUUID = LOGINDATEN
+    mock_getUserUUID.return_value = LOGINDATEN
 
-    response = client.delete("/code-state/")
+    response = client.delete("/code-state/"+ str(uuid.uuid4()))
     assert response.status_code == 404
 
-    response = client.delete("/code-state/" + LOGINDATEN)
+    #gültige Anfrage
+    test_uuid = str(uuid.uuid4())
+    data = json.dumps({"id": test_uuid, "state": {"additionalProp1": {}}, "snippet": "d300c83b-d0d0-11ee-9232-d03957a7be94"})
+    response = client.post("/code-state", json=data)
+    assert response.status_code == 200
+    
+    #Löschen ohne Rechte
+    mock_getUserUUID.return_value = str(uuid.uuid4())
+    response = client.delete("/code-state/" + test_uuid)
+    assert response.status_code == 403
+
+    #erfolgreiches Löschen
+    mock_getUserUUID.return_value = LOGINDATEN
+    response = client.delete("/code-state/" + test_uuid)
     assert response.status_code == 200

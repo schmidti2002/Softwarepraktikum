@@ -3,6 +3,7 @@ from typing import Any
 from flask import Flask, request
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
+import json
 import random
 import string
 
@@ -30,18 +31,21 @@ class code_state(Resource):
         
         # Daten aus dem Request holen und überprüfen
         try:
-            id = request.form.get("id")
-            state = request.form.get("state")
-            snippet= request.form.get("snippet")
+            data_resquest= json.loads(request.get_json())
+            id = data_resquest["id"]
+            state = json.dumps(data_resquest["state"])
+            snippet= data_resquest["snippet"]
+            if id == None or state == None or snippet == None:
+                return abort(409, message="Send data conflicts with existing entry")
         except :
             return abort(409, message="Send data conflicts with existing entry")
-
         # SQL-Abfrage und Ergebnis zurückgeben
         try:
             cursor.execute("""INSERT INTO public."CodeState" (id, state, snippet) VALUES (%s, %s, %s)""", (id, state, snippet))
             database.commit()
         except:
-            return abort(409, message="State not created")
+            database.rollback()
+            return abort(409, message="Send data conflicts with existing entry")
         
         return jsonify("State created")
 class code_state_id(Resource):        
@@ -66,15 +70,32 @@ class code_state_id(Resource):
         user_uuid = Endpoints_util.getUserUUID(request, database)
         if user_uuid == None:
             return abort(401, message="API key is missing or invalid")
-        # Auf Adminrechte überprüfen
-        Endpoints_util.verify_admin(user_uuid, database)
+        # Auf Rechte überprüfen
+        try:
+            cursor.execute("""SELECT owner FROM public."Graph" 
+                              join public."GraphFavorite" ON public."GraphFavorite".data = public."Graph".id
+                              where state = %s
+                              group by owner""", (stateId, ))
+            result = cursor.fetchall()
+
+            if len(result) == 0:
+                return ("State not found", 404)
+            for i in range(len(result)):
+                print(result[i][0])
+                if result[i][0] == user_uuid:
+                    break
+                if i == len(result)-1:
+                    return ("You are not allowed to delete this state", 403)
+        except:
+            return ("You are not allowed to delete this state", 403)
         
         # SQL-Abfrage und Ergebnis zurückgeben
         try:
             cursor.execute("""DELETE FROM public."CodeState" WHERE id = %s;""", (stateId, ))
-            result = cursor.fetchall()
+            database.commit()
             return jsonify("State deleted")
         except:
+            database.rollback()
             return abort(404, message="State not found")
         
 api.add_resource(code_state, "/code-state")
