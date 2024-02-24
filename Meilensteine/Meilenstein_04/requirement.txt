@@ -1,9 +1,0 @@
-Erfordliche PIP Biblioteken: 
-
-    typing
-    flask import 
-    flask_restful
-    flask_cors 
-    hashlib 
-    psycopg2
-    datetime
