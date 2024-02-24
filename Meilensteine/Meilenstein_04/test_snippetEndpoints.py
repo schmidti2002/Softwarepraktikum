@@ -2,7 +2,7 @@ import pytest
 import uuid
 from flask import Flask
 from flask.testing import FlaskClient
-from listEndpoints import app
+from snippetEndpoints import app
 from unittest.mock import patch
 import psycopg2
 
@@ -24,16 +24,17 @@ def client():
 def test_get(client, mock_getUserUUID):
     # Test nicht angemeldet
     mock_getUserUUID.return_value = None
-    response = client.get(LOGINDATEN)
+    response = client.get("/snippet/123")
     assert response.status_code == 401
 
     # Mock der Anmeldung
-    mock_getUserUUID = LOGINDATEN
+    mock_getUserUUID.return_value = LOGINDATEN
 
-    # Test nicht-vergebener Key
-    response = client.get("")
+    # Test von zufälligem Snippet
+    response = client.get("/snippet/"+str(uuid.uuid4()))
     assert response.status_code == 404
 
     # Test vergebener Key
-    response = client.get(LOGINDATEN)
+    response = client.get("/snippet/d300c83b-d0d0-11ee-9232-d03957a7be94")
     assert response.status_code == 200
+    assert isinstance(response.json, dict)

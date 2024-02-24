@@ -14,7 +14,6 @@ from datetime import datetime
 import Endpoints_util 
 
 app = Flask(__name__)
-CORS(app)
 api = Api(app)
 
 database = Endpoints_util.db_connect()
@@ -29,8 +28,12 @@ class snippet(Resource):
         
         # SQL-Abfrage und Ergebnis zurückgeben
         try:
-            cursor.execute("""SELECT id, code, js FROM public."CodeState" WHERE id = %s;""", (snippetId, ))
+            cursor.execute("""SELECT id, code, js FROM public."CodeSnippet" WHERE id = %s;""", (snippetId, ))
             result = cursor.fetchall()
-            return jsonify({"id":result[0][0],"code": result[0][1], "js": result[0][2]})
+            if len(result) == 0:
+                return abort(404, message="Snippet not found")
         except:
             return abort(404, message="Snippet not found")
+        
+        return jsonify({"id":result[0][0],"code": result[0][1], "js": result[0][2]})
+api.add_resource(snippet, "/snippet/<string:snippetId>")
