@@ -26,6 +26,6 @@ describe('SortVisualizerView.test.js', () => {
   ])('renderData test', async (data) => {
     sortVisualizerView.renderData(data);
     await awaitAllAsync();
-    expect(sortVisualizerView.container.innerHTML).toMatchSnapshot();
+    expect(sortVisualizerView.container.parentElement.innerHTML).toMatchSnapshot();
   });
 });
