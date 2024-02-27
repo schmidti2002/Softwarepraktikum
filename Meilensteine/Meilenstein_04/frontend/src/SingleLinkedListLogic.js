@@ -506,7 +506,7 @@ export default class SingleLinkedList {
     while (currentNode !== null) {
       const nodeElement = document.createElement('div');
       nodeElement.classList.add('node');
-      nodeElement.innerText = currentNode.getData();
+      nodeElement.textContent = currentNode.getData();
 
       // Setze die Position des Knotens basierend auf der Position
       // Abstand zwischen den Knoten: 60px, Start bei 50px:

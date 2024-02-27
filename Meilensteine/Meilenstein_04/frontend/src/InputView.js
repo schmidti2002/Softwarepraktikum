@@ -118,7 +118,7 @@ export default class InputView extends View {
 
       const label = document.createElement('label');
       label.setAttribute('for', id);
-      label.innerText = input.name;
+      label.textContent = input.name;
 
       const errorElm = document.createElement('div');
       errorElm.classList.add('invalid-feedback');
@@ -185,7 +185,7 @@ export default class InputView extends View {
     }
 
     // eslint-disable-next-line no-param-reassign
-    input.errorElm.innerText = error;
+    input.errorElm.textContent = error;
     if (valid) {
       input.elm.classList.add('is-valid');
       input.elm.classList.remove('is-invalid');

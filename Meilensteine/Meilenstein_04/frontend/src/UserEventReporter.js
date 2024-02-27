@@ -42,7 +42,7 @@ export default class UserEventReporter {
     </div>
   </div>`;
     const toastElm = this.#strToHtmlElm(toastHTML);
-    toastElm.getElementsByClassName('toast-body')[0].innerText = msg;
+    toastElm.getElementsByClassName('toast-body')[0].textContent = msg;
     this.#toastContainer.appendChild(toastElm);
     const toast = new Toast(toastElm, { autohide });
     toastElm.addEventListener('hidden.bs.toast', () => {
@@ -86,7 +86,7 @@ export default class UserEventReporter {
   </div>`;
     this.#modalContainer.innerHTML = modalHTML;
     const modalElm = this.#modalContainer.firstChild;
-    modalElm.getElementsByClassName('modal-body')[0].innerText = msg;
+    modalElm.getElementsByClassName('modal-body')[0].textContent = msg;
     const modal = new Modal(modalElm);
     modal.show();
     window.stop();

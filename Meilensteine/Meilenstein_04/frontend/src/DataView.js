@@ -26,14 +26,14 @@ export default class DataView extends View {
           if (data[key] !== undefined) {
             const innerDiv = document.createElement('div');
             innerDiv.classList.add('d-flex');
-            innerDiv.innerText = `${key}:`;
+            innerDiv.textContent = `${key}:`;
             this.#renderData(innerDiv, data[key]);
             div.appendChild(innerDiv);
           }
         });
         break;
       default:
-        div.innerText = String(data);
+        div.textContent = String(data);
     }
     div.classList.add(`dataview-type-${typeof data}`);
     parentNode.appendChild(div);

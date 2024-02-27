@@ -25,10 +25,10 @@ export default class CodeView extends View {
     lines.forEach((line, lineNr) => {
       const tr = document.createElement('tr');
       const lineNrTd = document.createElement('td');
-      lineNrTd.innerText = lineNr;
+      lineNrTd.textContent = lineNr;
       tr.appendChild(lineNrTd);
       const lineTd = document.createElement('td');
-      lineTd.innerText = line;
+      lineTd.textContent = line;
       tr.appendChild(lineTd);
       table.appendChild(tr);
     });
