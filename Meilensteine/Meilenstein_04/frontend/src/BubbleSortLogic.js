@@ -168,7 +168,7 @@ export default class BubbleSort extends Logic {
   generateRandomNumbers(count) {
     // Zufallszahlen initialisieren und anzeigen
     this.exec.state.vars.arr = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < Math.min(count, 200); i++) {
       const randomNumber = Math.floor(Math.random() * 50) + 1; // Zufallszahlen zwischen 1 und 50
       this.exec.state.vars.arr.push(randomNumber);
     }
