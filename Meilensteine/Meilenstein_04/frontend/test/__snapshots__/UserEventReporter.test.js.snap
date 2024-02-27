@@ -16,7 +16,7 @@ exports[`UserEventReporter.js #spawnToast using functions fatal() creates fatal-
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Schwerwiegender Fehler</h5>
         </div>
-        <div class="modal-body"></div>
+        <div class="modal-body">TestNachricht</div>
         <div class="modal-footer">
           <a href="." class="btn btn-primary">Neu laden</a>
         </div>
