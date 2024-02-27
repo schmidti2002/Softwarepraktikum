@@ -30,7 +30,7 @@ describe('WebApplication.js', () => {
   beforeEach(() => {
     fatalFnMock.mockClear();
 
-    document.body.parentElement.innerHTML = html.replaceAll(/<.*html.*>/gi, '');
+    document.documentElement.innerHTML = html.replaceAll(/<.*html.*>/gi, '');
   });
 
   const mockUserGetApi = (userGet) => UserApi.mockImplementation(
