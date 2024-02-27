@@ -10,13 +10,13 @@ import BubbleSort from '../src/BubbleSortLogic';
 describe('BubbleSort', () => {
   describe('helper functions', () => {
     let mockStateChangeCallback = jest.fn();
-    let bubble = new BubbleSort(jest.fn(), mockStateChangeCallback);
+    let bubble = new BubbleSort({}, mockStateChangeCallback);
 
     beforeEach(() => {
       // Set up our document body
       // document.body.innerHTML = bubblesortHtml;
       mockStateChangeCallback = jest.fn();
-      bubble = new BubbleSort(jest.fn(), mockStateChangeCallback);
+      bubble = new BubbleSort({}, mockStateChangeCallback);
     });
 
     // GenerateRandomNumbers() & showOutput() Test
