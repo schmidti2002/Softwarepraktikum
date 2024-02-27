@@ -120,7 +120,7 @@ export default class AuDView extends View {
 
       this.logic.algos.forEach((algo, i) => {
         const opt = document.createElement('option');
-        opt.innerText = algo.func ? `⚡${algo.name}` : algo.name;
+        opt.textContent = algo.func ? `⚡${algo.name}` : algo.name;
         opt.value = i;
         this.dropdown.appendChild(opt);
       });
