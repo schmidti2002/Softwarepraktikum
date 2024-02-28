@@ -31,101 +31,85 @@ describe('AuDView.js', () => {
   const showEmptyCodeViewMock = jest.fn();
   const showEmptyDataViewMock = jest.fn();
 
-  const bubbleSortConstructorMock = jest.fn(() => ({ algos: [{
-    name: 'Werte',
-    field: 'arr',
-    type: 'integer[]',
-    prefill: () => _.join([0, 1, 2]),
-    validators: [ /* {
-            func: arrayEveryEntry(minMax),
-            param: { min: 0 },
-          }, */
+  const bubbleSortConstructorMock = jest.fn(() => ({
+    algos: [
       {
-        func: arrayEveryEntry(notEmpty),
-      },
-    ],
-  },
-  {
-    name: 'Sortieren',
-    algo: {
-      code: [],
-      lines: [],
-      breakpoints: [],
-    },
-    inputs: [
-      {
-        name: 'Werte',
-        field: 'arr',
-        type: 'integer[]',
-        prefill: () => _.join([0, 1, 2]),
-        validators: [{
-          func: arrayEveryEntry(minMax),
-          param: { min: 0 },
+        name: 'Sortieren',
+        algo: {
+          code: [],
+          lines: [],
+          breakpoints: [],
         },
-        {
-          func: arrayEveryEntry(notEmpty),
-        },
+        inputs: [
+          {
+            name: 'Werte',
+            field: 'arr',
+            type: 'integer[]',
+            prefill: () => _.join([0, 1, 2]),
+            validators: [{
+              func: arrayEveryEntry(minMax),
+              param: { min: 0 },
+            },
+            {
+              func: arrayEveryEntry(notEmpty),
+            },
+            ],
+          },
         ],
       },
-    ],
-  },
-  {
-    name: 'Neue Werte',
-    func: (inputs) => {},
-    inputs: [
       {
-        name: 'Anzahl',
-        field: 'count',
-        type: 'integer',
-        validators: [{
-          func: minMax,
-          param: { min: 0, max: 200 },
-        },
-        {
-          func: notEmpty,
-        },
+        name: 'Neue Werte',
+        func: () => {},
+        inputs: [
+          {
+            name: 'Anzahl',
+            field: 'count',
+            type: 'integer',
+            validators: [{
+              func: minMax,
+              param: { min: 0, max: 200 },
+            },
+            {
+              func: notEmpty,
+            },
+            ],
+          },
         ],
+      }, { name: 'empty' }],
+    loadAlgoByIndex: () => {},
+  }));
+
+  beforeAll(() => {
+    InputView.mockImplementation(
+      (parent, reporter, callback) => {
+        expect(parent).toBeInstanceOf(Element);
+        expect(reporter).toBeTruthy();
+        expect(typeof callback).toBe('function');
+        return {
+          initPromise: delay(100),
+          loadConfig: () => {},
+          getValues: () => ({}),
+          validate: true,
+        };
       },
-    ],
-  },], 
-  loadAlgoByIndex: ()=>{},
-}));
+    );
 
-  const prepareInputViewMock = (username, password) => InputView.mockImplementation(
-    (parent, reporter, callback) => {
-      expect(parent).toBeInstanceOf(Element);
-      expect(reporter).toBeTruthy();
-      expect(typeof callback).toBe('function');
-      return {
-        initPromise: delay(100),
-        loadConfig: () => {},
-        getValues: () => ({ username, password }),
-        validate: () => username.length > 0 && password.length > 0,
-      };
-    },
-  );
-
-  const prepareCodeViewMock = () => CodeView.mockImplementation(
-    (parent, reporter) => {
-      return {
+    CodeView.mockImplementation(
+      (parent, reporter) => ({
         initPromise: delay(100),
         renderCode: renderCodeMock,
         renderBreakpoints: renderBreakpointsMock,
         showEmpty: showEmptyCodeViewMock,
-      };
-    },
-  );
+      }),
+    );
 
-  const prepareDataViewMock = () => DataView.mockImplementation(
-    (parent, reporter) => {
-      return {
+    DataView.mockImplementation(
+      (parent, reporter) => ({
         initPromise: delay(100),
         showEmpty: showEmptyDataViewMock,
-      };
-    },
-  );
+      }),
+    );
 
-  beforeAll(() => {
     singletonManager.registerConstructor('EventReporter', () => ({
       info: infoFnMock,
       warn: warnFnMock,
@@ -134,12 +118,10 @@ describe('AuDView.js', () => {
     }));
 
     mockFetchHtml('../src/AuDView.html');
-    //fetch(src/AuDView.html);
 
-    BubbleSortLogic.mockImplementation(bubbleSortConstructorMock);   
-    
-    SortVisualizerView.mockImplementation(()=>({initPromise: delay(100), renderData: () => {},}));   
+    BubbleSortLogic.mockImplementation(bubbleSortConstructorMock);
 
+    SortVisualizerView.mockImplementation(() => ({ initPromise: delay(100), renderData: () => {} }));
   });
 
   beforeEach(() => {
@@ -171,24 +153,34 @@ describe('AuDView.js', () => {
   });
 
   test('loadAlgoByIndex()', async () => {
-    prepareCodeViewMock();
-    prepareDataViewMock();
+    const audView = new AuDView(document.body, singletonManager);
+    await audView.initPromise;
+    audView.loadAuD('BubbleSort');
+    await audView.visualizerView.initPromise;
+    audView.loadAlgoByIndex(0);
+    await awaitAllAsync();
+    expect(renderCodeMock).toBeCalledTimes(1);
+    expect(renderBreakpointsMock).toBeCalledTimes(1);
+    expect(showEmptyCodeViewMock).toBeCalledTimes(0);
+    expect(showEmptyDataViewMock).toBeCalledTimes(0);
+    expect(fatalFnMock).toBeCalledTimes(0);
+  });
+
+  test('loadAlgoByIndex()', async () => {
     const audView = new AuDView(document.body, singletonManager);
     await audView.initPromise;
     audView.loadAuD('BubbleSort');
     await audView.visualizerView.initPromise;
     audView.loadAlgoByIndex(1);
     await awaitAllAsync();
-    expect(renderCodeMock).toBeCalledTimes(1);
-    expect(renderBreakpointsMock).toBeCalledTimes(1);
-    expect(showEmptyCodeViewMock).toBeCalledTimes(0);
-    expect(showEmptyDataViewMock).toBeCalledTimes(0);    
+    expect(renderCodeMock).toBeCalledTimes(0);
+    expect(renderBreakpointsMock).toBeCalledTimes(0);
+    expect(showEmptyCodeViewMock).toBeCalledTimes(1);
+    expect(showEmptyDataViewMock).toBeCalledTimes(1);
     expect(fatalFnMock).toBeCalledTimes(0);
   });
 
   test('loadAlgoByIndex()', async () => {
-    prepareCodeViewMock();
-    prepareDataViewMock();
     const audView = new AuDView(document.body, singletonManager);
     await audView.initPromise;
     audView.loadAuD('BubbleSort');
@@ -197,24 +189,8 @@ describe('AuDView.js', () => {
     await awaitAllAsync();
     expect(renderCodeMock).toBeCalledTimes(0);
     expect(renderBreakpointsMock).toBeCalledTimes(0);
-    expect(showEmptyCodeViewMock).toBeCalledTimes(1);
-    expect(showEmptyDataViewMock).toBeCalledTimes(1);    
-    expect(fatalFnMock).toBeCalledTimes(0);
-  });
-
-  test('loadAlgoByIndex()', async () => {
-    prepareCodeViewMock();
-    prepareDataViewMock();
-    const audView = new AuDView(document.body, singletonManager);
-    await audView.initPromise;
-    audView.loadAuD('BubbleSort');
-    await audView.visualizerView.initPromise;
-    audView.loadAlgoByIndex(0);
-    await awaitAllAsync();
-    expect(renderCodeMock).toBeCalledTimes(0);
-    expect(renderBreakpointsMock).toBeCalledTimes(0);
     expect(showEmptyCodeViewMock).toBeCalledTimes(0);
-    expect(showEmptyDataViewMock).toBeCalledTimes(0);    
+    expect(showEmptyDataViewMock).toBeCalledTimes(0);
     expect(fatalFnMock).toBeCalledTimes(1);
   });
 });
