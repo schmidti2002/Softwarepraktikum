@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DataView Snapshot Tests snapshot with array data 1`] = `"<div><div class="dataview-type-object"><div class="d-flex"><div class="dataview-type-object"><div class="d-flex"><div class="dataview-type-string"></div></div></div></div></div></div>"`;
+exports[`DataView Snapshot Tests snapshot with array data 1`] = `"<div><div class="dataview-type-object"><div class="d-flex">0:<div class="dataview-type-string">one</div></div><div class="d-flex">1:<div class="dataview-type-string">two</div></div><div class="d-flex">2:<div class="dataview-type-string">three</div></div></div></div>"`;
 
-exports[`DataView Snapshot Tests snapshot with nested data object 1`] = `"<div><div class="dataview-type-object"><div class="d-flex"><div class="dataview-type-string"></div></div></div></div>"`;
+exports[`DataView Snapshot Tests snapshot with nested data object 1`] = `"<div><div class="dataview-type-object"><div class="d-flex">parent:<div class="dataview-type-object"><div class="d-flex">child:<div class="dataview-type-string">value</div></div></div></div></div></div>"`;
 
-exports[`DataView Snapshot Tests snapshot with simple data object 1`] = `"<div><div class="dataview-type-string"></div></div>"`;
+exports[`DataView Snapshot Tests snapshot with simple data object 1`] = `"<div><div class="dataview-type-object"><div class="d-flex">key:<div class="dataview-type-string">value</div></div></div></div>"`;

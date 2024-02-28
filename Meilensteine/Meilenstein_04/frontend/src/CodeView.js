@@ -8,6 +8,9 @@ export default class CodeView extends View {
     this.initPromise
       .then(() => {
         this.#container = document.getElementById('codeview-container');
+        if (!this.#container) {
+          eventReporter.fatal('elemnent with id "codeview-container" not found!');
+        }
       });
   }
 
@@ -17,7 +20,7 @@ export default class CodeView extends View {
   }
 
   renderCode(lines) {
-    if (!lines) {
+    if (!lines || !lines.length) {
       this.showEmpty();
       return;
     }

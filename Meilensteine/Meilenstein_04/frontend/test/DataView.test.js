@@ -1,4 +1,6 @@
-import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';
+import {
+  describe, test, expect, jest, beforeEach, afterEach,
+} from '@jest/globals';
 import DataView from '../src/DataView';
 import { mockFetchHtml } from './testUtils.test';
 
@@ -9,14 +11,14 @@ describe('DataView', () => {
 
   beforeEach(async () => {
     mockFetchHtml('../src/DataView.html');
-    
+
     mockEventReporter = {
       fatal: jest.fn(),
     };
 
     dataView = new DataView(document.body, mockEventReporter);
+    await dataView.initPromise;
     mockContainer = document.getElementById('dataview-container');
-    await dataView.initPromise; 
 
     jest.spyOn(document, 'getElementById');
   });
@@ -28,7 +30,7 @@ describe('DataView', () => {
   describe('constructor', () => {
     test('initializes with provided parentNode and mockEventReporter', async () => {
       expect(dataView).toBeDefined();
-      expect(mockContainer).toBeDefined(); 
+      expect(mockContainer).toBeDefined();
     });
   });
 
@@ -37,7 +39,7 @@ describe('DataView', () => {
       document.getElementById.mockReturnValueOnce(null);
       const localDataView = new DataView(document.body, mockEventReporter);
       await localDataView.initPromise;
-      expect(mockEventReporter.fatal).toHaveBeenCalled(); 
+      expect(mockEventReporter.fatal).toHaveBeenCalled();
     });
   });
 
@@ -90,9 +92,9 @@ describe('DataView', () => {
     const testDataTypes = [
       { type: 'object', data: { key: 'value' }, expectedClass: '.dataview-type-object' },
       { type: 'number', data: 123, expectedClass: '.dataview-type-number' },
-      { type: 'string', data: "Hello", expectedClass: '.dataview-type-string' },
+      { type: 'string', data: 'Hello', expectedClass: '.dataview-type-string' },
     ];
-  
+
     testDataTypes.forEach(({ type, data, expectedClass }) => {
       test(`applies correct class for ${type} type`, async () => {
         dataView.renderData(data);
@@ -100,7 +102,7 @@ describe('DataView', () => {
         expect(renderedElements.length).toBeGreaterThan(0);
       });
     });
-  })
+  });
 
   describe('Snapshot Tests', () => {
     test('snapshot with simple data object', () => {

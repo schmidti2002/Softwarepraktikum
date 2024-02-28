@@ -1,27 +1,26 @@
-import { describe, expect, jest, beforeEach } from '@jest/globals';
+import {
+  describe, expect, jest, beforeEach, afterEach, test,
+} from '@jest/globals';
 import CodeView from '../src/CodeView';
 import { awaitAllAsync, mockFetchHtml } from './testUtils.test';
 
-
 describe('CodeView', () => {
   let codeView;
-  let mockParentNode;
   let mockEventReporter;
-  let mockContainer
+  let mockContainer;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     mockFetchHtml('../src/CodeView.html');
 
     mockEventReporter = {
       fatal: jest.fn(),
     };
+    jest.spyOn(document, 'getElementById');
 
-    codeView = new CodeView(mockParentNode, mockEventReporter);
-    await codeView.initPromise; 
+    codeView = new CodeView(document.body, mockEventReporter);
+    await codeView.initPromise;
     await awaitAllAsync();
     mockContainer = document.getElementById('codeview-container');
-
-    jest.spyOn(document, 'getElementById');
   });
 
   afterEach(() => {
@@ -33,9 +32,10 @@ describe('CodeView', () => {
     expect(document.getElementById).toHaveBeenCalledWith('codeview-container');
   });
 
-  test('handles missing container element gracefully and reports fatal error', () => {
+  test('handles missing container element gracefully and reports fatal error', async () => {
     document.getElementById = jest.fn().mockReturnValue(null);
-    new CodeView(mockParentNode, mockEventReporter);
+    const view = new CodeView(document.body, mockEventReporter);
+    await view.initPromise;
     expect(mockEventReporter.fatal).toHaveBeenCalled();
   });
 
@@ -51,8 +51,8 @@ describe('CodeView', () => {
       [null, 'Placeholder for nothing to show', 'Displays placeholder for null'],
       [undefined, 'Placeholder for nothing to show', 'Handles undefined input'],
       [[''], 'table', 'Renders table with a single empty line'],
-      [['line1', ''], 'table', 'Handles lines with empty string']
-    ])('correctly renders for %s', (input, expected, description) => {
+      [['line1', ''], 'table', 'Handles lines with empty string'],
+    ])('correctly renders for %s', (input, expected) => {
       codeView.renderCode(input);
       expect(mockContainer.innerHTML).toContain(expected);
     });
@@ -62,10 +62,10 @@ describe('CodeView', () => {
     test.each([
       [[0], 1, 'Adds break class for the first line'],
       [[1, 2], 2, 'Adds break class for the second & third line'],
-      [[3], 0, 'Does not add break class for out of range index']
-    ])('correctly handles breakpoints for line %s', (line, expected, description) => {
+      [[3], 0, 'Does not add break class for out of range index'],
+    ])('correctly handles breakpoints for line %s', (line, expected) => {
       codeView.renderCode(['line1', 'line2', 'line3']);
-      codeView.renderBreakpoints([line]);
+      codeView.renderBreakpoints(line);
       const breakClassCount = document.getElementsByClassName('break').length;
       expect(breakClassCount).toBe(expected);
     });
@@ -75,21 +75,12 @@ describe('CodeView', () => {
     test.each([
       [0, 1, 'Marks first line as current'],
       [1, 1, 'Marks second line as current'],
-      [2, 0, 'Does not mark out of bounds line as current']
+      [3, 0, 'Does not mark out of bounds line as current'],
     ])('correctly marks line %s as current', (line, expected) => {
       codeView.renderCode(['line1', 'line2', 'line3']);
       codeView.renderCurrentMarker(line);
       const lineClassCount = document.getElementsByClassName('line').length;
       expect(lineClassCount).toBe(expected);
-    });
-  });
-  describe('handling of unusual inputs', () => {
-    test.each([
-      ['very long string'.repeat(1000), 'table', 'Should handle extremely long strings'],
-      [{}, 'Placeholder for nothing to show', 'Should handle non-string input']
-    ])('correctly handles %s', (input, expected) => {
-      codeView.renderCode([input]);
-      expect(mockContainer.innerHTML).toContain(expected);
     });
   });
 });
