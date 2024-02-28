@@ -1,7 +1,9 @@
 import {
   beforeEach, describe, test, jest, expect,
 } from '@jest/globals';
+import * as _ from 'lodash';
 import Logic from '../src/Logic';
+import { arrayEveryEntry, minMax, notEmpty } from '../src/inputValidators';
 
 // Create the mock functions outside of the mock factory
 const mockPlay = jest.fn();
@@ -70,18 +72,26 @@ describe('Logic.test.js', () => {
 
   test('loadAlgoByIndex should load an Algo when the index points at a part of the algo', () => {
     logic.algos = [{
-      lines: 42,
-      breakpoints: 42,
+      algo: {
+        breakpoints: 42,
+        lines: 42,
+      },
     }];
     logic.loadAlgoByIndex(0, 42);
     expect(mockChangeAlgo).toHaveBeenCalled();
   });
 
   test('loadAlgoByIndex should not load an Algo when the index is too big', () => {
-    logic.algos = [{
-      lines: 42,
-      breakpoints: 42,
-    }];
+    logic.algos = [
+      {
+        algo: {
+          breakpoints: 42,
+          lines: 42,
+        },
+      },
+      {
+        notAlgo: 42,
+      }];
     logic.loadAlgoByIndex(1, 42);
     expect(mockFatal).toHaveBeenCalled();
   });
