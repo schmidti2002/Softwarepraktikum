@@ -5,7 +5,9 @@ import LoginView from '../src/LoginView';
 import InputView from '../src/InputView';
 import { UserApi } from '../src/api/apis/UserApi.ts';
 import SingletonManager from '../src/SingletonManager';
-import { awaitAllAsync, delay, mockFetchHtml, mockReload } from './testUtils.test.js';
+import {
+  awaitAllAsync, delay, mockFetchHtml, mockReload,
+} from './testUtils.test.js';
 import { ResponseError } from '../src/api/runtime.ts';
 
 jest.mock('../src/InputView');

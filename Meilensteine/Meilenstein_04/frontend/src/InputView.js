@@ -23,7 +23,7 @@ export default class InputView extends View {
 
   // Parser für die verschiedenen Inputtypen
   // value(string)
-  // return({error: string|{value: T})
+  // return({error: string}|{value: T})
   static parseInt(value) {
     const wsRemoved = value.trim();
     if (!/^[+-]?\d+$/.test(wsRemoved)) {
@@ -92,54 +92,62 @@ export default class InputView extends View {
   */
   loadConfig(inputs) {
     const div = document.createElement('div');
+    const errorMissingType = 'Missing type';
 
-    this.#inputs = inputs.map((input) => {
-      if (this.#types[input.type] === undefined) {
-        this.eventReporter.fatal(`input type ${input.type} not implemented!`);
+    try {
+      this.#inputs = inputs.map((input) => {
+        if (this.#types[input.type] === undefined) {
+          this.eventReporter.fatal(`input type ${input.type} not implemented!`);
+          throw new Error(errorMissingType);
+        }
+        const inputDiv = document.createElement('div');
+        inputDiv.classList.add('form-floating');
+        inputDiv.classList.add('mb-2');
+
+        const inputElm = document.createElement('input');
+        inputElm.classList.add('form-control');
+        const id = `inputview-field-${input.field}`;
+        inputElm.id = id;
+        inputElm.placeholder = input.name;
+        inputElm.type = this.#types[input.type].html;
+        if (input.prefill) {
+          inputElm.value = input.prefill();
+        }
+
+        inputElm.oninput = () => {
+          const valid = this.validate();
+          this.callback(valid, valid ? this.getValues() : {});
+        };
+
+        const label = document.createElement('label');
+        label.setAttribute('for', id);
+        label.textContent = input.name;
+
+        const errorElm = document.createElement('div');
+        errorElm.classList.add('invalid-feedback');
+
+        inputDiv.appendChild(inputElm);
+        inputDiv.appendChild(label);
+        inputDiv.appendChild(errorElm);
+        div.appendChild(inputDiv);
+
+        return {
+          elm: inputElm,
+          errorElm,
+          validators: input.validators,
+          field: input.field,
+          parser: this.#types[input.type].parser,
+        };
+      });
+
+      this.container.innerHTML = '';
+      this.container.appendChild(div);
+      this.callback(this.validate(), this.getValues());
+    } catch (error) {
+      if (error.message !== errorMissingType) {
+        throw error;
       }
-      const inputDiv = document.createElement('div');
-      inputDiv.classList.add('form-floating');
-      inputDiv.classList.add('mb-2');
-
-      const inputElm = document.createElement('input');
-      inputElm.classList.add('form-control');
-      const id = `inputview-field-${input.field}`;
-      inputElm.id = id;
-      inputElm.placeholder = input.name;
-      inputElm.type = this.#types[input.type].html;
-      if (input.prefill) {
-        inputElm.value = input.prefill();
-      }
-
-      inputElm.oninput = () => {
-        const valid = this.validate();
-        this.callback(valid, valid ? this.getValues() : {});
-      };
-
-      const label = document.createElement('label');
-      label.setAttribute('for', id);
-      label.textContent = input.name;
-
-      const errorElm = document.createElement('div');
-      errorElm.classList.add('invalid-feedback');
-
-      inputDiv.appendChild(inputElm);
-      inputDiv.appendChild(label);
-      inputDiv.appendChild(errorElm);
-      div.appendChild(inputDiv);
-
-      return {
-        elm: inputElm,
-        errorElm,
-        validators: input.validators,
-        field: input.field,
-        parser: this.#types[input.type].parser,
-      };
-    });
-
-    this.container.innerHTML = '';
-    this.container.appendChild(div);
-    this.callback(this.validate(), this.getValues());
+    }
   }
 
   // (de)aktiviert alle Inputs
