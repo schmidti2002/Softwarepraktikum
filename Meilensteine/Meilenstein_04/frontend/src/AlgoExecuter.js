@@ -21,12 +21,15 @@ exec.outputFunction = () => showOutput(); // oder eine andere Funktion
 exec.play(false, () => console.log(JSON.stringify(exec.state.vars.arr)));
 */
 
+// Hilfsfunktion; Speichert aktuell existente Variablen in varsStack
 function execStartBlock(oldState) {
   const state = _.cloneDeep(oldState);
   state.varsStack.push(Object.keys(state.vars).filter((n) => state.vars[n] !== undefined));
   return state;
 }
 
+// Hilfsfunktion; Löscht alle Variablen die seit dem
+// letzten Aufruf von execStartBlock erstellt wurden
 function execEndBlock(oldState) {
   const state = _.cloneDeep(oldState);
   const existingVars = state.varsStack.pop();
@@ -38,6 +41,8 @@ function execEndBlock(oldState) {
   return state;
 }
 
+// Hilfsfunktion; lokale Variablen existieren nur innerhalb der
+// Zeilen die der Funktion übergeben wurden
 export function execBlock(lines) {
   return [
     {
@@ -55,6 +60,11 @@ export function execBlock(lines) {
   ];
 }
 
+// Hilfsfunktion; entspricht einer for-Schleife
+// counter(string): Name der Zählvariable
+// start(state => number): Startwert
+// condition(state => bool): Schleifenbedingung
+// step(number | state => number): Inkrement pro Durchlauf
 export function execFor(counter, start, condition, step, lines) {
   return [
     {
@@ -94,6 +104,7 @@ export function execFor(counter, start, condition, step, lines) {
   ];
 }
 
+// Hilfsfunktion; entspricht einer while-Schleife
 export function execWhile(condition, lines) {
   return [
     {
@@ -118,6 +129,7 @@ export function execWhile(condition, lines) {
   ];
 }
 
+// Hilfsfunktion; entspricht einem if-(else-)Konstrukt
 export function execIfElse(condition, lines, elsLines = []) {
   return [
     {
@@ -158,29 +170,28 @@ export class Executer {
   outputFunction = function () { }; // Funktion, um den AoD zu visualisieren
 
   state = {
-    currentLine: -1, // Zeile, die der Algo gerade bearbeitet
-    varsStack: [],
+    currentLine: 0, // Zeile, die der Algo gerade bearbeitet
+    varsStack: [], // Wird für die Simulation von Variablenlebenszeiten verwendet
     vars: {},
   };
 
   OldState = {
-    currentLine: -1,
+    currentLine: 0,
     varsStack: [],
     vars: {},
   };
 
-  intervalId;
+  intervalId; // Speichert die ID des Intervals für Autoplay
 
   // Konstruktor
-  constructor() {
-    this.state.currentLine = -1;
+  constructor(eventReporter) {
+    this.eventReporter = eventReporter;
   }
 
   // private; Führt eine line aus
-  step() {
-    // Abfrage vielleicht nicht nötig
-    if (this.state.currentLine === this.lines.length || this.state.currentLine === -1) {
-      this.stop();
+  #step() {
+    if (this.state.currentLine === this.lines.length) {
+      this.#stop();
       return;
     }
     const oldLine = this.state.currentLine;
@@ -200,61 +211,57 @@ export class Executer {
     }
   }
 
+  step() {
+    this.#step();
+    this.outputFunction();
+  }
+
   // private; Ruft step() bis zum nächsten Breakpoint auf
-  nextBreakpoint() {
+  #nextBreakpoint() {
     let stepsCounter = 0;
     do {
-      if (this.state.currentLine === this.lines.length || this.state.currentLine === -1) {
-        this.stop();
+      if (this.state.currentLine === this.lines.length) {
+        this.#stop();
         return;
       }
-      this.step();
+      this.#step();
     } while (!this.breakpoints.includes(this.state.currentLine) && stepsCounter++ < 1000);
   }
 
   // Ändern des Algorithmus; stellt sicher, dass zurzeit kein Algorithmus läuft
-  changeAlgo(lines, breakpoints, timeout) {
-    if (this.state.currentLine === -1) {
+  changeAlgo(lines, breakpoints, timeout, vars) {
+    if (!this.isRunning()) {
       this.lines = lines;
       this.breakpoints = breakpoints;
       this.timeout = timeout;
+      this.state = {
+        currentLine: 0,
+        varsStack: [],
+        vars,
+      };
+      this.OldState = _.cloneDeep(this.state);
       return true;
     }
-    console.log('Algorithmus ist noch nicht beendet');
+    this.eventReporter.warn('Algorithmus ist noch nicht beendet');
     return false;
   }
 
-  // Führt einen Algorithmus zwangsweise aus
-  // Nur im Konstruktor einer Klasse zum Initialisieren der Datenstruktur verwenden.
-  forcePlay(lines) {
-    this.lines = lines;
-    this.breakpoints = [];
-    this.start();
-    this.nextBreakpoint();
-  }
-
-  // private; initialisiert den Algo, falls er noch nicht läuft
-  start() {
-    if (this.state.currentLine === -1) {
-      this.OldState = JSON.parse(JSON.stringify(this.state));
-      this.state.currentLine = 0;
-    }
+  isRunning() {
+    return this.intervalId !== undefined;
   }
 
   // private; stoppt den Algo
-  stop() {
+  #stop() {
     this.pause();
-    this.state.currentLine = -1;
     this.outputFunction();
   }
 
   // Button Play
   play() {
-    this.start();
-    if (typeof intervalId === 'undefined') { // Prüft, das play() noch nicht läuft
+    if (!this.isRunning()) { // Prüft, das play() noch nicht läuft
       const self = this;
       this.intervalId = setInterval(() => {
-        self.nextBreakpoint();
+        self.#nextBreakpoint();
         self.outputFunction();
       }, this.timeout);
     }
@@ -263,26 +270,21 @@ export class Executer {
   // Button Pause
   pause() {
     clearInterval(this.intervalId);
-    this.intervalId = 'undefined';
+    this.intervalId = undefined;
     this.outputFunction();
   }
 
   // Button Nächster Schritt
   next() {
-    this.start();
     this.pause();
-    this.nextBreakpoint();
+    this.#nextBreakpoint();
     this.outputFunction();
   }
 
   // Button Reset
   reset() {
-    console.log('1');
-    this.stop();
-    console.log('2');
-    this.state = JSON.parse(JSON.stringify(this.OldState));
-    console.log('3');
+    this.#stop();
+    this.state = _.cloneDeep(this.OldState);
     this.outputFunction();
-    console.log('4');
   }
 }

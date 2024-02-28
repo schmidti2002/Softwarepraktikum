@@ -14,15 +14,17 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: install openapi generator dependencies
+        run: sudo apt update && sudo apt install -y default-jre
       - name: install FE dependencies
-        run: yarn
-        working-directory: ./Meilensteine/Meilenstein_04
+        run: yarn && yarn api-prepare
+        working-directory: ./Meilensteine/Meilenstein_04/frontend
       - name: run FE tests & linter
         run: yarn sonar || echo Done
-        working-directory: ./Meilensteine/Meilenstein_04
+        working-directory: ./Meilensteine/Meilenstein_04/frontend
       - name: patch ESLint result
         run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' eslint.json
-        working-directory: ./Meilensteine/Meilenstein_04/coverage
+        working-directory: ./Meilensteine/Meilenstein_04/frontend/coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
