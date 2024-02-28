@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SortVisualizerView.test.js renderData test 1`] = `"<div id="sortview-container"><div class="bar" style="width: 20px; height: 10px;"><span>0</span></div><div class="bar" style="width: 20px; height: 20px;"><span>1</span></div><div class="bar" style="width: 20px; height: 30px;"><span>2</span></div><div class="bar" style="width: 20px; height: 40px;"><span>3</span></div><div class="bar" style="width: 20px; height: 50px;"><span>4</span></div><div class="bar" style="width: 20px; height: 60px;"><span>5</span></div></div>"`;
+
+exports[`SortVisualizerView.test.js renderData test 2`] = `"<div id="sortview-container"><div class="bar" style="width: 20px; height: 510px;"><span>50</span></div><div class="bar" style="width: 20px; height: 110px;"><span>10</span></div><div class="bar" style="width: 20px; height: 430px;"><span>42</span></div></div>"`;
+
+exports[`SortVisualizerView.test.js renderData test 3`] = `"<div id="sortview-container"><div class="bar" style="width: 20px; height: 20px;"><span>1</span></div><div class="bar" style="width: 20px; height: 60px;"><span>5</span></div><div class="bar" style="width: 20px; height: 140px;"><span>13</span></div><div class="bar" style="width: 20px; height: 210px;"><span>20</span></div></div>"`;

@@ -3,20 +3,24 @@ import View from './View';
 export default class CodeView extends View {
   #container;
 
-  constructor(parentNode, errorReporter) {
-    super('CodeView', parentNode, errorReporter);
+  constructor(parentNode, eventReporter) {
+    super('CodeView', parentNode, eventReporter);
     this.initPromise
       .then(() => {
         this.#container = document.getElementById('codeview-container');
+        if (!this.#container) {
+          eventReporter.fatal('elemnent with id "codeview-container" not found!');
+        }
       });
   }
 
   showEmpty() {
+    // TODO good placeholder
     this.#container.innerHTML = 'Placeholder for nothing to show';
   }
 
   renderCode(lines) {
-    if (!lines) {
+    if (!lines || !lines.length) {
       this.showEmpty();
       return;
     }
@@ -24,10 +28,10 @@ export default class CodeView extends View {
     lines.forEach((line, lineNr) => {
       const tr = document.createElement('tr');
       const lineNrTd = document.createElement('td');
-      lineNrTd.innerText = lineNr;
+      lineNrTd.textContent = lineNr;
       tr.appendChild(lineNrTd);
       const lineTd = document.createElement('td');
-      lineTd.innerText = line;
+      lineTd.textContent = line;
       tr.appendChild(lineTd);
       table.appendChild(tr);
     });
@@ -36,7 +40,6 @@ export default class CodeView extends View {
   }
 
   renderBreakpoints(breakpoints) {
-    console.log(this.#container);
     this.#container.firstChild.childNodes.forEach((child, lineNr) => {
       if (breakpoints.includes(lineNr)) {
         child.classList.add('break');

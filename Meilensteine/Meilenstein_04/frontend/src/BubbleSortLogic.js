@@ -5,12 +5,9 @@ import { arrayEveryEntry, minMax, notEmpty } from './inputValidators';
 
 // Klasse für den BubbleSort
 export default class BubbleSort extends Logic {
-  #stateChangeCallback;
-
   // Konstruktor
-  constructor(errorReporter, stateChangeCallback) {
-    super(errorReporter);
-    this.#stateChangeCallback = stateChangeCallback;
+  constructor(eventReporter, stateChangeCallback) {
+    super(eventReporter, stateChangeCallback);
     this.exec.changeAlgo(
       this.linesForBubbleSort,
       [8],
@@ -18,14 +15,9 @@ export default class BubbleSort extends Logic {
       { arr: [50, 35, 40, 15, 30, 45, 5, 20, 25, 10] },
     );
     this.exec.outputFunction = () => {
-      this.#stateChangeCallback(
-        this.exec.state.vars.arr,
-        this.exec.state.vars,
-        this.exec.state.currentLine,
-        this.exec.isRunning(),
-      );
+      this.showOutput();
     };
-    this.exec.outputFunction();
+    this.showOutput();
   }
 
   // Algorithmus, der schrittweise ausgeführt wird
@@ -111,7 +103,7 @@ export default class BubbleSort extends Logic {
           type: 'integer',
           validators: [{
             func: minMax,
-            param: { min: 0 },
+            param: { min: 0, max: 200 },
           },
           {
             func: notEmpty,
@@ -168,7 +160,7 @@ export default class BubbleSort extends Logic {
   generateRandomNumbers(count) {
     // Zufallszahlen initialisieren und anzeigen
     this.exec.state.vars.arr = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < Math.min(count, 200); i++) {
       const randomNumber = Math.floor(Math.random() * 50) + 1; // Zufallszahlen zwischen 1 und 50
       this.exec.state.vars.arr.push(randomNumber);
     }
@@ -178,7 +170,7 @@ export default class BubbleSort extends Logic {
   // Funktion zum Einlesen der eigenen Werte
   editArray(integerArray) {
     this.exec.state.vars.arr = integerArray;
-    this.exec.outputFunction();
+    this.showOutput();
   }
 
   // Funktion, die Array leert
@@ -190,7 +182,7 @@ export default class BubbleSort extends Logic {
 
   // Funktion, um das Array auszugeben
   showOutput() {
-    this.#stateChangeCallback(
+    this.stateChangeCallback(
       this.exec.state.vars.arr,
       this.exec.state.vars,
       this.exec.state.currentLine,

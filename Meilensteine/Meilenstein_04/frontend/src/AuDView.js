@@ -4,52 +4,40 @@ import CodeView from './CodeView';
 import DataView from './DataView';
 import InputView from './InputView';
 import SortVisualizerView from './SortVisualizerView';
-import UserErrorReporter from './UserErrorReporter';
 import View from './View';
 
-export default class AuD extends View {
+export default class AuDView extends View {
   visualizerView;
 
-  #clickListeners = {
-    'aud-algoCtrlPlay': () => this.logic.play(),
-    'aud-algoCtrlPause': () => this.logic.pause(),
-    'aud-algoCtrlNextBreak': () => this.logic.nextBreak(),
-    'aud-algoCtrlStep': () => this.logic.step(),
-    'aud-algoCtrlReset': () => this.logic.reset(),
-    'aud-algoStart': () => this.loadAlgoByIndex(this.dropdown.value),
-  };
+  constructor(parentNode, singletonManager) {
+    const eventReporter = singletonManager.get('EventReporter');
+    super('AuDView', parentNode, eventReporter);
 
-  constructor(parentNode) {
-    super('AuD', parentNode, new UserErrorReporter());
     this.initPromise = this.initPromise.then(async () => {
       this.inputView = new InputView(
-        document.getElementById('aud-input'),
-        this.errorReporter,
+        document.getElementById('audview-input'),
+        this.eventReporter,
         () => { this.#onFormValidChanged(); },
       );
 
       this.codeView = new CodeView(
-        document.getElementById('aud-code'),
-        this.errorReporter,
+        document.getElementById('audview-code'),
+        this.eventReporter,
       );
 
       this.dataView = new DataView(
-        document.getElementById('aud-data'),
-        this.errorReporter,
+        document.getElementById('audview-data'),
+        this.eventReporter,
       );
 
-      this.dropdown = document.getElementById('aud-algoDropdown');
+      this.dropdown = document.getElementById('audview-algoDropdown');
       if (!this.dropdown) {
-        this.errorReporter.error('could not find id=algoDropdown!');
+        this.eventReporter.fatal('audview-could not find id=algoDropdown!');
       }
       this.dropdown.onchange = (ev) => this.#selectedAlgoChanged(ev);
 
-      Object.entries(this.#clickListeners).forEach(
-        ([id, f]) => { document.getElementById(id).onclick = f; },
-      );
-
-      this.algoControls = document.getElementById('aud-algoControls');
-      this.algoStart = document.getElementById('aud-algoStart');
+      this.algoControls = document.getElementById('audview-algoControls');
+      this.algoStart = document.getElementById('audview-algoStart');
 
       await Promise.all([
         this.inputView.initPromise,
@@ -58,6 +46,18 @@ export default class AuD extends View {
       ]);
     });
   }
+
+  onClickCtrlPlay = () => this.logic.play();
+
+  onClickCtrlPause = () => this.logic.pause();
+
+  onClickCtrlNextBreak = () => this.logic.nextBreak();
+
+  onClickCtrlStep = () => this.logic.step();
+
+  onClickCtrlReset = () => this.logic.reset();
+
+  onClickStart = () => this.loadAlgoByIndex(this.dropdown.value);
 
   #selectedAlgoChanged(ev) {
     const algo = this.logic.algos[ev.target.value];
@@ -71,6 +71,9 @@ export default class AuD extends View {
 
   loadAlgoByIndex(index) {
     const algo = this.logic.algos[index];
+    if (!algo) {
+      return;
+    }
     this.algoControls.style.visibility = algo.algo ? 'visible' : 'hidden';
     if (algo.algo) {
       this.codeView.renderCode(algo.algo.code);
@@ -81,7 +84,7 @@ export default class AuD extends View {
       this.dataView.showEmpty();
       algo.func(this.inputView.getValues());
     } else {
-      this.errorReporter.error('Not a valid algorithm config!');
+      this.eventReporter.fatal('Not a valid algorithm config!');
     }
   }
 
@@ -97,10 +100,10 @@ export default class AuD extends View {
     new Promise((resolve) => {
       switch (type) {
         case 'BubbleSort':
-          this.visualizerView = new SortVisualizerView(document.getElementById('aud-visu'), this.errorReporter);
+          this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
           this.visualizerView.initPromise.then(() => {
             this.logic = new BubbleSort(
-              this.errorReporter,
+              this.eventReporter,
               (data, variables, line, running) => {
                 this.#onLogicStateChange(data, variables, line, running);
               },
@@ -109,7 +112,7 @@ export default class AuD extends View {
           });
           break;
         default:
-          this.errorReporter.error('Datenstruktur/Algo nicht gefunden!');
+          this.eventReporter.fatal('Datenstruktur/Algo nicht gefunden!');
           break;
       }
     }).then(() => {
@@ -117,7 +120,7 @@ export default class AuD extends View {
 
       this.logic.algos.forEach((algo, i) => {
         const opt = document.createElement('option');
-        opt.innerText = algo.func ? `⚡${algo.name}` : algo.name;
+        opt.textContent = algo.func ? `⚡${algo.name}` : algo.name;
         opt.value = i;
         this.dropdown.appendChild(opt);
       });
