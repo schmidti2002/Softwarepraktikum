@@ -9,7 +9,7 @@ export default class DataView extends View {
       .then(() => {
         this.#container = document.getElementById('dataview-container');
         if (!this.#container) {
-          eventReporter.fatal('elemnent with id "dataview-container" not found!');
+          eventReporter.fatal('element with id "dataview-container" not found!');
         }
       });
   }

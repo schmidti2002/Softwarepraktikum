@@ -6,6 +6,7 @@ export default class View {
     this.parentNode = parentNode;
     if (!parentNode) {
       eventReporter.fatal(`could not init view of type ${name}. No parent node!`);
+      return;
     }
     this.eventReporter = eventReporter;
     this.initPromise = fetch(`${name}.html`)
