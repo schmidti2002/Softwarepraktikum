@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataView Snapshot Tests snapshot with array data 1`] = `"<div><div class="dataview-type-object"><div class="d-flex"><div class="dataview-type-object"><div class="d-flex"><div class="dataview-type-string"></div></div></div></div></div></div>"`;
+
+exports[`DataView Snapshot Tests snapshot with nested data object 1`] = `"<div><div class="dataview-type-object"><div class="d-flex"><div class="dataview-type-string"></div></div></div></div>"`;
+
+exports[`DataView Snapshot Tests snapshot with simple data object 1`] = `"<div><div class="dataview-type-string"></div></div>"`;

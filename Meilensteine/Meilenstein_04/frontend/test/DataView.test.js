@@ -1,25 +1,24 @@
 import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';
 import DataView from '../src/DataView';
+import { mockFetchHtml } from './testUtils.test';
 
 describe('DataView', () => {
   let dataView;
   let mockContainer;
-  let eventReporter;
+  let mockEventReporter;
 
   beforeEach(async () => {
-    jest.spyOn(global, 'fetch').mockImplementation(mockFetchHtml);
-
-    await mockFetchHtml('inputView.html');
-    mockContainer = document.getElementById('dataview-container');
+    mockFetchHtml('../src/DataView.html');
     
-    eventReporter = {
-      warn: jest.fn(),
-      error: jest.fn(),
+    mockEventReporter = {
       fatal: jest.fn(),
     };
 
-    dataView = new DataView(document.body, eventReporter);
+    dataView = new DataView(document.body, mockEventReporter);
+    mockContainer = document.getElementById('dataview-container');
     await dataView.initPromise; 
+
+    jest.spyOn(document, 'getElementById');
   });
 
   afterEach(() => {
@@ -27,7 +26,7 @@ describe('DataView', () => {
   });
 
   describe('constructor', () => {
-    test('initializes with provided parentNode and eventReporter', async () => {
+    test('initializes with provided parentNode and mockEventReporter', async () => {
       expect(dataView).toBeDefined();
       expect(mockContainer).toBeDefined(); 
     });
@@ -36,10 +35,9 @@ describe('DataView', () => {
   describe('error handling', () => {
     test('handles missing container element gracefully', async () => {
       document.getElementById.mockReturnValueOnce(null);
-      const localDataView = new DataView(document.body, eventReporter);
+      const localDataView = new DataView(document.body, mockEventReporter);
       await localDataView.initPromise;
-      expect(() => new DataView(document.body, eventReporter)).not.toThrow();
-      expect(eventReporter.fatal).toHaveBeenCalled(); 
+      expect(mockEventReporter.fatal).toHaveBeenCalled(); 
     });
   });
 
@@ -89,27 +87,20 @@ describe('DataView', () => {
   });
 
   describe('Styling of rendered data based on data type', () => {
-    test('applies correct class for object type', async () => {
-      const objectData = { key: 'value' };
-      dataView.renderData(objectData);
-      const renderedObjects = mockContainer.querySelectorAll('.dataview-type-object');
-      expect(renderedObjects.length).toBeGreaterThan(0);
+    const testDataTypes = [
+      { type: 'object', data: { key: 'value' }, expectedClass: '.dataview-type-object' },
+      { type: 'number', data: 123, expectedClass: '.dataview-type-number' },
+      { type: 'string', data: "Hello", expectedClass: '.dataview-type-string' },
+    ];
+  
+    testDataTypes.forEach(({ type, data, expectedClass }) => {
+      test(`applies correct class for ${type} type`, async () => {
+        dataView.renderData(data);
+        const renderedElements = mockContainer.querySelectorAll(expectedClass);
+        expect(renderedElements.length).toBeGreaterThan(0);
+      });
     });
-
-    test('applies correct class for number type', async () => {
-      const numberData = 123;
-      dataView.renderData(numberData);
-      const renderedNumbers = mockContainer.querySelectorAll('.dataview-type-number');
-      expect(renderedNumbers.length).toBeGreaterThan(0);
-    });
-
-    test('applies correct class for string type', async () => {
-      const stringData = "Hello";
-      dataView.renderData(stringData);
-      const renderedStrings = mockContainer.querySelectorAll('.dataview-type-string');
-      expect(renderedStrings.length).toBeGreaterThan(0);
-    });
-  });
+  })
 
   describe('Snapshot Tests', () => {
     test('snapshot with simple data object', () => {
