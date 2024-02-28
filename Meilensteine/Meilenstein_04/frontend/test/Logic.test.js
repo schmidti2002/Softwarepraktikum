@@ -2,8 +2,6 @@ import {
   beforeEach, describe, test, jest, expect,
 } from '@jest/globals';
 import Logic from '../src/Logic';
-import SingletonManager from '../src/SingletonManager';
-import UserEventReporter from '../src/UserEventReporter';
 
 // Create the mock functions outside of the mock factory
 const mockPlay = jest.fn();
@@ -26,9 +24,6 @@ jest.mock('../src/AlgoExecuter', () => ({
   })),
 }));
 describe('Logic.test.js', () => {
-  const userEventReporter = new UserEventReporter(document.body);
-  const singletonManager = new SingletonManager();
-  singletonManager.registerConstructor('EventReporter', () => userEventReporter);
   let logic;
 
   beforeEach(() => {
@@ -42,7 +37,10 @@ describe('Logic.test.js', () => {
     mockFatal.mockClear();
 
     // Create a new instance of Logic before each test
-    logic = new Logic(singletonManager.get('EventReporter'));
+    const eventReporter = ({
+      fatal: mockFatal,
+    });
+    logic = new Logic(eventReporter);
   });
 
   test('play should call the play method from the executer', () => {
