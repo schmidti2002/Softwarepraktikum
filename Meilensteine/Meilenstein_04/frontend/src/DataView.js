@@ -8,10 +8,17 @@ export default class DataView extends View {
     this.initPromise
       .then(() => {
         this.#container = document.getElementById('dataview-container');
+        if (!this.#container) {
+          eventReporter.fatal('elemnent with id "dataview-container" not found!');
+        }
       });
   }
 
   renderData(data) {
+    if (data === null || data === undefined) {
+      this.showEmpty();
+      return;
+    }
     const div = document.createElement('div');
     this.#renderData(div, data);
     this.#container.innerHTML = '';
@@ -22,6 +29,9 @@ export default class DataView extends View {
     const div = document.createElement('div');
     switch (typeof data) {
       case 'object':
+        if (!data) {
+          div.innerText = String(data);
+        }
         Object.keys(data).forEach((key) => {
           if (data[key] !== undefined) {
             const innerDiv = document.createElement('div');
