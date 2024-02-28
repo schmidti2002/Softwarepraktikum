@@ -59,9 +59,8 @@ export default class AuDView extends View {
 
   onClickStart = () => this.loadAlgoByIndex(this.dropdown.value);
 
-  // e war mal ev
-  #selectedAlgoChanged(e) {
-    const algo = this.logic.algos[e.target.value];
+  #selectedAlgoChanged(ev) {
+    const algo = this.logic.algos[ev.target.value];
     this.inputView.loadConfig(algo.inputs);
   }
 
