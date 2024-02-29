@@ -21,7 +21,8 @@ export default class MainView extends View {
 
   // eslint-disable-next-line class-methods-use-this
   setLastLoad(value) {
-    localStorage.setItem('lastLoad', value);
+    // zum Debuggen geändert
+    localStorage.setItem('lastLoad', 'loadStartpage');
   }
 
   // Startseite fetchen
@@ -37,12 +38,15 @@ export default class MainView extends View {
   // SingleLinkedList fetchen und Standardbeispiel laden
   loadSingleLinkedList() {
     this.setLastLoad('loadSingleLinkedList');
-    fetch('SingleLinkedList.html')
-      .then((response) => response.text())
-      .then((data) => {
-        this.content.innerHTML = data;
-        window.SLL = new SingleLinkedList();
-      });
+
+    // Einbinden der AuD-Logik
+    const container = document.getElementById('mainContainer');
+    const mainContainer = new AuDView(container, this.singletonManager);
+    mainContainer.initPromise.then(
+      () => {
+        mainContainer.loadAuD('SingleLinkedList');
+      },
+    );
   }
 
   // DirectedUnweightedGraph fetchen und Standardbeispiel laden

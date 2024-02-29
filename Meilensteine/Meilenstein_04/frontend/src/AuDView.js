@@ -1,9 +1,11 @@
 import * as _ from 'lodash';
 import BubbleSort from './BubbleSortLogic';
+import SingleLinkedList from './SingleLinkedListLogic';
 import CodeView from './CodeView';
 import DataView from './DataView';
 import InputView from './InputView';
 import SortVisualizerView from './SortVisualizerView';
+import ListVisualizerView from './ListVisualizerView';
 import View from './View';
 
 export default class AuDView extends View {
@@ -103,6 +105,18 @@ export default class AuDView extends View {
           this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
           this.visualizerView.initPromise.then(() => {
             this.logic = new BubbleSort(
+              this.eventReporter,
+              (data, variables, line, running) => {
+                this.#onLogicStateChange(data, variables, line, running);
+              },
+            );
+            resolve();
+          });
+          break;
+        case 'SingleLinkedList':
+          this.visualizerView = new ListVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+          this.visualizerView.initPromise.then(() => {
+            this.logic = new SingleLinkedList(
               this.eventReporter,
               (data, variables, line, running) => {
                 this.#onLogicStateChange(data, variables, line, running);
