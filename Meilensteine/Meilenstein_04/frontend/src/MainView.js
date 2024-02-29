@@ -72,11 +72,15 @@ export default class MainView extends View {
   // MergeSort fetchen und Standardbeispiel laden
   loadMergeSort() {
     this.setLastLoad('loadMergeSort');
-    fetch('MergeSort.html')
-      .then((response) => response.text())
-      .then((data) => {
-        this.content.innerHTML = data;
-      });
+
+    // Einbinden der AuD-Logik
+    const container = document.getElementById('mainContainer');
+    const mainContainer = new AuDView(container, this.singletonManager);
+    mainContainer.initPromise.then(
+      () => {
+        mainContainer.loadAuD('MergeSort');
+      },
+    );
   }
 
   // ToDo: Größe des Containers für das Benutzerprofil anpassen,
