@@ -1,5 +1,10 @@
 import * as _ from 'lodash';
+import { toInteger } from 'lodash';
+import Logic from './Logic';
 import { execFor, execIfElse, Executer } from './AlgoExecuter';
+import { inputLength, minMax } from './inputValidators';
+
+const lengthOfData = 20
 
 // Node-Klasse
 class Node {
@@ -29,112 +34,115 @@ class Node {
 }
 
 // Klasse der SingleLinkedList
-export default class SingleLinkedList {
+export default class SingleLinkedList extends Logic {
   // Konstruktor um SingleLinkedList mit Standardwerten zu laden
-  constructor() {
-    this.exec = new Executer();
-    this.exec.state.vars.front = null;
-    this.exec.outputFunction = () => this.showOutput();
-    this.addDataAtPositionDirectly(0, 'A');
-    this.addDataAtPositionDirectly(1, 'B');
-    this.addDataAtPositionDirectly(2, 'C');
-    this.addDataAtPositionDirectly(3, 'D');
-    this.showOutput();
+  constructor(eventReporter, stateChangeCallback) {
+    super(eventReporter, stateChangeCallback);
+    //this.exec.state.vars.front = null;
+    this.exec.changeAlgo(
+      this.linesForAddDataAtPosition,
+      [],
+      0,
+      {data: "A", position: 0}
+    )
+    this.play();
+    //this.visualizeList();
   }
 
-  // Container 'ContainerAddDataAtPosition' öffnen/schließen
-  ContainerAddDataAtPosition() {
-    if (document.getElementById('ContainerAddDataAtPosition').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('ContainerAddDataAtPosition').style.display = 'block';
-      document.getElementById('ContainerGetDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetPositionOfData').style.display = 'none';
-      document.getElementById('ContainerRemoveDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerInvertList').style.display = 'none';
-      document.getElementById('ContainerdeleteList').style.display = 'none';
+  algos = [
+    {
+      name: 'Daten an Position hinzufügen',
+      algo: {
+        code: [],
+        lines: this.linesForAddDataAtPosition,
+        breakpoints: [],
+      },
+      inputs: [
+        {
+          name: 'Daten',
+          field: 'data',
+          type: 'string',
+          validators: [{
+            func: inputLength,
+            param: {min: 1, max: lengthOfData}
+          }]
+        },{
+          name: 'Position',
+          field: 'position',
+          type: 'integer',
+          validators: [{
+            func: minMax,
+            param: {min: 0},
+          }]
+        }
+      ]
+    },
+    {
+      name: 'Daten von Position zurückgeben',
+      algo: {
+        code: [],
+        lines: this.linesForGetDataAtPosition,
+        breakpoints: [],
+      },
+      inputs: [{
+        name: 'Position',
+          field: 'position',
+          type: 'integer',
+          validators: [{
+            func: minMax,
+            param: {min: 0},
+          }]
+      }]
+    },{
+      name: 'Position von Datan zurückgeben',
+      algo: {
+        code: [],
+        lines: this.linesForGetPositionOfData,
+        breakpoints: [],
+      },
+      inputs: [{
+        name: 'Daten',
+          field: 'data',
+          type: 'string',
+          validators: [{
+            func: inputLength,
+            param: {min: 1, max: lengthOfData}
+          }]
+      }]
+    },{
+      name: 'Daten an Position löschen',
+      algo: {
+        code: [],
+        lines: this.linesForRemoveDataAtPosition,
+        breakpoints: [],
+      },
+      inputs: [{
+        name: 'Daten',
+          field: 'data',
+          type: 'string',
+          validators: [{
+            func: inputLength,
+            param: {min: 1, max: lengthOfData}
+          }]
+      }]
+    },{
+      name: 'Liste invertieren',
+      algo: {
+        code: [],
+        lines: this.linesForInvertList,
+        breakpoints: [],
+      },
+      inputs: []
+    },{
+      name: 'Liste löschen',
+      algo: {
+        code: [],
+        lines: this.linesForDeleteList,
+        breakpoints: [],
+      },
+      inputs: []
     }
-  }
-
-  // Container 'ContainerGetDataAtPosition' öffnen/schließen
-  ContainerGetDataAtPosition() {
-    if (document.getElementById('ContainerGetDataAtPosition').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('ContainerAddDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetDataAtPosition').style.display = 'block';
-      document.getElementById('ContainerGetPositionOfData').style.display = 'none';
-      document.getElementById('ContainerRemoveDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerInvertList').style.display = 'none';
-      document.getElementById('ContainerdeleteList').style.display = 'none';
-    }
-  }
-
-  // Container 'ContainerGetPositionOfData' öffnen/schließen
-  ContainerGetPositionOfData() {
-    if (document.getElementById('ContainerGetPositionOfData').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('ContainerAddDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetPositionOfData').style.display = 'block';
-      document.getElementById('ContainerRemoveDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerInvertList').style.display = 'none';
-      document.getElementById('ContainerdeleteList').style.display = 'none';
-    }
-  }
-
-  // Container 'ContainerRemoveDataAtPosition' öffnen/schließen
-  ContainerRemoveDataAtPosition() {
-    if (document.getElementById('ContainerRemoveDataAtPosition').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('ContainerAddDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetPositionOfData').style.display = 'none';
-      document.getElementById('ContainerRemoveDataAtPosition').style.display = 'block';
-      document.getElementById('ContainerInvertList').style.display = 'none';
-      document.getElementById('ContainerdeleteList').style.display = 'none';
-    }
-  }
-
-  // Container 'ContainerInvertList' öffnen/schließen
-  ContainerInvertList() {
-    if (document.getElementById('ContainerInvertList').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('ContainerAddDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetPositionOfData').style.display = 'none';
-      document.getElementById('ContainerRemoveDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerInvertList').style.display = 'block';
-      document.getElementById('ContainerdeleteList').style.display = 'none';
-    }
-  }
-
-  // Container 'ContainerdeleteList' öffnen/schließen
-  ContainerdeleteList() {
-    if (document.getElementById('ContainerdeleteList').style.display === 'block') {
-      this.hide();
-    } else {
-      document.getElementById('ContainerAddDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerGetPositionOfData').style.display = 'none';
-      document.getElementById('ContainerRemoveDataAtPosition').style.display = 'none';
-      document.getElementById('ContainerInvertList').style.display = 'none';
-      document.getElementById('ContainerdeleteList').style.display = 'block';
-    }
-  }
-
-  // Alle Container schließen
-  hide() {
-    document.getElementById('ContainerAddDataAtPosition').style.display = 'none';
-    document.getElementById('ContainerGetDataAtPosition').style.display = 'none';
-    document.getElementById('ContainerGetPositionOfData').style.display = 'none';
-    document.getElementById('ContainerRemoveDataAtPosition').style.display = 'none';
-    document.getElementById('ContainerInvertList').style.display = 'none';
-    document.getElementById('ContainerdeleteList').style.display = 'none';
-  }
+  ]
 
   /* public boolean addDataAtPosition(int position, String data) {
         if (position < 0 || position > getSize()) {
@@ -201,24 +209,6 @@ export default class SingleLinkedList {
     ]),
   ];
 
-  addDataAtPosition() {
-    if (this.exec.changeAlgo(this.linesForAddDataAtPosition, [], 1)) {
-      this.exec.state.vars.position = parseInt(document.getElementById('position0').value, 10);
-      this.exec.state.vars.data = document.getElementById('data0').value;
-      this.exec.outputFunction = () => this.showOutput();
-      this.exec.play();
-    }
-  }
-
-  // Methode sollte nur im Konstruktur dieser Klasse verwendet werden
-  addDataAtPositionDirectly(position, data) {
-    this.exec.state.vars.position = parseInt(position, 10);
-    document.getElementById('data0').value = data;
-    this.exec.state.vars.data = document.getElementById('data0').value;
-    document.getElementById('data0').value = '';
-    this.exec.forcePlay(this.linesForAddDataAtPosition);
-  }
-
   /* public String getDataAtPosition(int position) {
         if (position < 0 || position >= getSize()) {
             System.err.println(
@@ -253,15 +243,6 @@ export default class SingleLinkedList {
     },
   ];
 
-  getDataAtPosition() {
-    if (this.exec.changeAlgo(this.linesForGetDataAtPosition, [], 1)) {
-      this.exec.state.vars.position = parseInt(document.getElementById('position1').value, 10);
-      this.exec.state.vars.dataFound = '-1';
-      this.exec.outputFunction = () => this.outputData();
-      this.exec.play();
-    }
-  }
-
   /* public int getPositionOfData(String data) {
     if (front === null) {
       System.err.println("Exeption in thread \"main\""
@@ -295,15 +276,6 @@ export default class SingleLinkedList {
       },
     ]),
   ];
-
-  getPositionOfData() {
-    if (this.exec.changeAlgo(this.linesForGetPositionOfData, [], 1)) {
-      this.exec.state.vars.data = document.getElementById('data2').value;
-      this.exec.state.vars.positionFound = -1;
-      this.exec.outputFunction = () => this.outputPosition();
-      this.exec.play();
-    }
-  }
 
   /* public boolean removeDataAtPosition(int position) {
     if (position < 0 || position >= getSize()) {
@@ -348,14 +320,6 @@ export default class SingleLinkedList {
       },
     ]),
   ];
-
-  removeDataAtPosition() {
-    if (this.exec.changeAlgo(this.linesForRemoveDataAtPosition, [], 1)) {
-      this.exec.state.vars.position = parseInt(document.getElementById('position3').value, 10);
-      this.exec.outputFunction = () => this.showOutput();
-      this.exec.play();
-    }
-  }
 
   /* public boolean invertList() {
     if (front === null) {
@@ -424,13 +388,6 @@ export default class SingleLinkedList {
     { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.newFront; return s; } },
   ];
 
-  invertList() {
-    if (this.exec.changeAlgo(this.linesForInvertList, [], 1)) {
-      this.exec.outputFunction = () => this.showOutput();
-      this.exec.play();
-    }
-  }
-
   /* public void deleteList() {
     this.front = null;
   } */
@@ -438,13 +395,6 @@ export default class SingleLinkedList {
   linesForDeleteList = [
     { f(os) { const s = _.cloneDeep(os); s.vars.front = null; return s; } },
   ];
-
-  deleteList() {
-    if (this.exec.changeAlgo(this.linesForDeleteList, [], 1)) {
-      this.exec.outputFunction = () => this.showOutput();
-      this.exec.play();
-    }
-  }
 
   getSize() {
     let size = 0;
@@ -495,48 +445,5 @@ export default class SingleLinkedList {
     document.getElementById('ausgabe').innerHTML = outputString;
   }
 
-  // Ausgabe der Liste in der Visualisierung
-  visualizeList() {
-    const graphContainer = document.getElementById('graph');
-    graphContainer.innerHTML = '';
-
-    let currentNode = this.exec.state.vars.front;
-    let position = 0;
-
-    while (currentNode !== null) {
-      const nodeElement = document.createElement('div');
-      nodeElement.classList.add('node');
-      nodeElement.textContent = currentNode.getData();
-
-      // Setze die Position des Knotens basierend auf der Position
-      // Abstand zwischen den Knoten: 60px, Start bei 50px:
-      nodeElement.style.left = `${(position * 90) + 50}px`;
-      nodeElement.style.top = '50px'; // Abstand vom oberen Rand: 50px
-
-      graphContainer.appendChild(nodeElement);
-
-      // Verbindungspfeile zwischen den Knoten auf der Höhe der Knoten
-      if (position > 0) {
-        const arrowElement = document.createElement('div');
-        arrowElement.classList.add('arrow');
-        // Position der Mitte zwischen den Knoten:
-        arrowElement.style.left = `${(position * 90) + 0}px`;
-        arrowElement.style.top = '70px'; // Setze die Höhe des Pfeils auf 70px (oder nach Bedarf)
-        graphContainer.appendChild(arrowElement);
-
-        // Erstelle das Dreieck (Pfeilspitze)
-        const arrowTipElement = document.createElement('div');
-        arrowTipElement.classList.add('arrow_tip');
-        arrowElement.appendChild(arrowTipElement);
-
-        graphContainer.appendChild(arrowElement);
-      }
-
-      currentNode = currentNode.getNext();
-      position++;
-    }
-
-    // Zeige den Graphen an
-    graphContainer.style.display = 'flex';
-  }
+  
 }
