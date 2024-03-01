@@ -24,6 +24,7 @@ export default class DataView extends View {
   // zeigt die Daten an
   // (unter anderem?) aufgerufen in #onLogicStateChange(data, variables, line, running) in AuDView.js
   renderData(data) {
+    this.showEmpty()
     if (data === null || data === undefined) {
       this.showEmpty();
       return;
