@@ -10,7 +10,7 @@ export default class MergeSort extends Logic {
     super(eventReporter, stateChangeCallback);
     this.exec.changeAlgo(
       this.linesForMergeSort,
-      [18],
+      [21],
       10,
       { arr: [50, 35, 40, 15, 30, 45, 5, 20, 25, 10] },
     );
@@ -21,8 +21,18 @@ export default class MergeSort extends Logic {
   }
 
   linesForMergeSort = [
+    // { f(os) { const s = _.cloneDeep(os); s.vars.arrOld = _.cloneDeep(s.vars.arr); return s; } },
     { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
-    { f(os) { const s = _.cloneDeep(os); s.vars.aux = new Array(s.vars.n); return s; } },
+    {
+      f(os) {
+        const s = _.cloneDeep(os);
+        s.vars.aux = new Array(s.vars.n);
+        for (let i = 0; i < s.vars.n; i++) {
+          s.vars.aux[i] = 0;
+        }
+        return s;
+      },
+    },
     ...execFor(
       'size',
       () => 1,
@@ -62,53 +72,55 @@ export default class MergeSort extends Logic {
               return s;
             },
           },
-          execFor(
+          ...execFor(
             'i',
             (s) => s.vars.leftStart,
             (s) => s.vars.i < s.vars.rightEnd,
             1,
-            // if left < middle && (right >= rightEnd || arr[left] <= arr[right])
-            execIfElse(
-              (s) => s.vars.left < s.vars.middle
-              && (s.vars.right >= s.vars.rightEnd
-              || s.vars.arr[s.vars.left] <= s.vars.arr[s.vars.right]),
-              // then
-              [
-                {
-                  f(os) {
-                    const s = _.cloneDeep(os);
-                    s.vars.aux[s.vars.i] = s.vars.arr[s.vars.left];
-                    return s;
+            [
+              // if left < middle && (right >= rightEnd || arr[left] <= arr[right])
+              ...execIfElse(
+                (s) => s.vars.left < s.vars.middle
+                      && (s.vars.right >= s.vars.rightEnd
+                      || s.vars.arr[s.vars.left] <= s.vars.arr[s.vars.right]),
+                // then
+                [
+                  {
+                    f(os) {
+                      const s = _.cloneDeep(os);
+                      s.vars.aux[s.vars.i] = s.vars.arr[s.vars.left];
+                      return s;
+                    },
                   },
-                },
-                {
-                  f(os) {
-                    const s = _.cloneDeep(os);
-                    s.vars.left++;
-                    return s;
+                  {
+                    f(os) {
+                      const s = _.cloneDeep(os);
+                      s.vars.left++;
+                      return s;
+                    },
                   },
-                },
-              ],
-              // else
-              [
-                {
-                  f(os) {
-                    const s = _.cloneDeep(os);
-                    s.vars.aux[s.vars.i] = s.vars.arr[s.vars.right];
-                    return s;
+                ],
+                // else
+                [
+                  {
+                    f(os) {
+                      const s = _.cloneDeep(os);
+                      s.vars.aux[s.vars.i] = s.vars.arr[s.vars.right];
+                      return s;
+                    },
                   },
-                },
-                {
-                  f(os) {
-                    const s = _.cloneDeep(os);
-                    s.vars.right++;
-                    return s;
+                  {
+                    f(os) {
+                      const s = _.cloneDeep(os);
+                      s.vars.right++;
+                      return s;
+                    },
                   },
-                },
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
-          execFor(
+          ...execFor(
             'i',
             (s) => s.vars.leftStart,
             (s) => s.vars.i < s.vars.rightEnd,
@@ -133,10 +145,12 @@ export default class MergeSort extends Logic {
     'const aux = new Array(n);',
     'for (let size = 1; size < n; size *= 2) {',
     '/**/for (let leftStart = 0; leftStart < n; leftStart += 2 * size) {',
+    '/*____*/console;',
     '/*____*/const middle = Math.min(leftStart + size, n);',
     '/*____*/const rightEnd = Math.min(leftStart + 2 * size, n);',
     '/*____*/let left = leftStart;',
     '/*____*/let right = middle;',
+    '/*____*/console;',
     '/*____*/for (let i = leftStart; i < rightEnd; i++) {',
     '/*________*/if (left < middle && (right >= rightEnd || arr[left] <= arr[right])) {',
     '/*____________*/aux[i] = arr[left];',
@@ -159,7 +173,7 @@ export default class MergeSort extends Logic {
       algo: {
         code: this.jsCodeExampleLines,
         lines: this.linesForMergeSort,
-        breakpoints: [18],
+        breakpoints: [21],
       },
       inputs: [
         {
