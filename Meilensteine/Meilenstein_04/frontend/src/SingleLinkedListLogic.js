@@ -7,7 +7,7 @@ import { inputLength, minMax } from './inputValidators';
 const lengthOfData = 20
 
 // Node-Klasse
-class Node {
+export class Node {
   // Möglicherweise sollte die Möglichkeit bestehen,
   // sich diese Klasse irgendwo anzeigen zu lassen
 
@@ -38,15 +38,21 @@ export default class SingleLinkedList extends Logic {
   // Konstruktor um SingleLinkedList mit Standardwerten zu laden
   constructor(eventReporter, stateChangeCallback) {
     super(eventReporter, stateChangeCallback);
-    //this.exec.state.vars.front = null;
     this.exec.changeAlgo(
       this.linesForAddDataAtPosition,
       [],
       0,
-      {data: "A", position: 0}
+      this.#initList(),
     )
-    this.play();
-    //this.visualizeList();
+    this.showOutput();
+  }
+
+  // Initialisierung der Liste mit Standardwerten
+  #initList() {
+    let node = new Node("A");
+    node.setNext(new Node("B"));
+    node.getNext().setNext(new Node("C"));
+    return {front: node};
   }
 
   algos = [
@@ -423,27 +429,12 @@ export default class SingleLinkedList extends Logic {
       + ` an Position ${this.exec.state.vars.positionFound}`;
   }
 
-  // Funktion zum Ausgeben der Liste
   showOutput() {
-    this.print();
-    this.visualizeList();
+    this.stateChangeCallback(
+      this.exec.state.vars.front,
+      this.exec.state.vars,
+      this.exec.state.currentLine,
+      this.exec.isRunning(),
+    );
   }
-
-  // Ausgabe der Liste zu Debug-Zwecken
-  print() {
-    let position = 0;
-    let currentNode = this.exec.state.vars.front;
-    let outputString = '';
-
-    while (currentNode !== null) {
-      outputString += `Data at position ${position}: ${currentNode.getData()}<br>`;
-      currentNode = currentNode.getNext();
-      position++;
-    }
-
-    // Hier wird die Ausgabe in das HTML-Dokument eingefügt
-    document.getElementById('ausgabe').innerHTML = outputString;
-  }
-
-  
 }

@@ -1,5 +1,4 @@
 import VisualizerView from './VisualizerView';
-import SingleLinkedList from './SingleLinkedListLogic';
 
 // Visualisiert ein Array von Zahlen als Säulendiagram
 export default class ListVisualizerView extends VisualizerView {
@@ -11,18 +10,21 @@ export default class ListVisualizerView extends VisualizerView {
   }
 
   // Ausgabe der Liste in der Visualisierung
-  visualizeList() {
+  // data ist das erste Element des stateChangeCallback() in showOutput() in SingleLinkedListLogic.js
+  renderData(data) {
     //const graphContainer = document.getElementById('graph');
     const graphContainer = this.container;
     graphContainer.innerHTML = '';
 
-    let currentNode = this.exec.state.vars.front;
+    //let currentNode = this.exec.state.vars.front;
+    let currentNode = data;
     let position = 0;
 
     while (currentNode !== null) {
       const nodeElement = document.createElement('div');
       nodeElement.classList.add('node');
       nodeElement.textContent = currentNode.getData();
+      //nodeElement.textContent = ""
 
       // Setze die Position des Knotens basierend auf der Position
       // Abstand zwischen den Knoten: 60px, Start bei 50px:

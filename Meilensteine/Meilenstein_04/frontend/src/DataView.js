@@ -15,14 +15,20 @@ export default class DataView extends View {
   }
 
   renderData(data) {
+    this.showEmpty()
     if (data === null || data === undefined) {
       this.showEmpty();
       return;
     }
+    // SLL bricht die DataView, vielleicht gibt es hier einen schöneren Weg
+    if (data.front !== undefined){
+      this.showEmpty();
+    } else {
     const div = document.createElement('div');
     this.#renderData(div, data);
     this.#container.innerHTML = '';
     this.#container.appendChild(div);
+    }
   }
 
   #renderData(parentNode, data) {
