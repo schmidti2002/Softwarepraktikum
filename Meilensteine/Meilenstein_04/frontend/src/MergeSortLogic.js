@@ -23,7 +23,7 @@ export default class MergeSort extends Logic {
   linesForMergeSort = [
     { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
     { f(os) { const s = _.cloneDeep(os); s.vars.aux = new Array(s.vars.n); return s; } },
-    execFor(
+    ...execFor(
       'size',
       () => 1,
       (s) => s.vars.size < s.vars.n,
