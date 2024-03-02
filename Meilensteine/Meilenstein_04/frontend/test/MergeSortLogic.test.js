@@ -1,9 +1,8 @@
-// import fs from 'fs';
-// import path from 'path';
 import {
-    expect, describe, test, beforeEach, jest,
+    expect, describe, test, jest, beforeEach, beforeAll,
   } from '@jest/globals';
-  import MergeSort from '../src/MergeSortLogic';
+import { Executer } from '../src/AlgoExecuter';
+import MergeSort from '../src/MergeSortLogic';
   
   // const bubblesortHtml = fs.readFileSync
   // (path.resolve(__dirname, '../src/BubbleSort.html'), 'utf8');
@@ -44,6 +43,24 @@ import {
         expect(merge.exec.state.vars.arr).toBe(input);
         expect(mockStateChangeCallback.mock.calls[1][0]).toEqual(input);
       });
+
+      // Dies ist jetzt vielleicht kein Unit-Test mehr
+      test.each([
+        [[1], [1]],
+        [[2,1], [1,2]],
+        [[2,3,1], [1,2,3]],
+        [[4,3,2,1], [1,2,3,4]],
+        [[50, 35, 40, 15, 30, 45, 5, 20, 25, 10], [5,10,15,20,25,30,35,40,45,50]],
+        [[4,3,2,1,0,4,3,2,1,0], [0,0,1,1,2,2,3,3,4,4]],
+        [[4,3,2,1,4,3,2,4,3,4], [1,2,2,3,3,3,4,4,4,4]],
+        [[1000000,100000,10000,1000,100,10,1], [1,10,100,1000,10000,100000,1000000]],
+        ])('sort', (array, solution) => {
+            merge.exec = new Executer({});
+            merge.exec.changeAlgo(merge.linesForMergeSort, [], 0, {arr: array})
+            for(let i = 0; i < 1000; i++){
+                merge.nextBreak()
+            }
+            expect(merge.exec.state.vars.arr).toStrictEqual(solution);
+        });
     });
-  });
-  
+  }); 
