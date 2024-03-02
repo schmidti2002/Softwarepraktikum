@@ -2,7 +2,7 @@ import pytest
 import uuid
 from datetime import datetime, timedelta
 from unittest.mock import Mock
-from Endpoints_util import getUserUUID, verify_admin
+from Backend.Endpoints_util import getUserUUID, verify_admin
 
 def test_check_api_key_valid():
     # Mocking request object with valid API key

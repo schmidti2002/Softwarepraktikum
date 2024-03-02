@@ -12,7 +12,7 @@ from datetime import datetime
 import Endpoints_util
 
 # Import der Endpunkte
-import userEndpoints
+import Meilensteine.Meilenstein_04.Backend.userEndpoints as userEndpoints
 import listEndpoints
 import graphEndpoints
 import sortEndpoints

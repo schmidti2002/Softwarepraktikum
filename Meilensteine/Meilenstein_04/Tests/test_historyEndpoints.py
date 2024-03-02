@@ -2,7 +2,7 @@ import pytest
 import uuid
 from flask import Flask
 from flask.testing import FlaskClient
-from HistoryEndpoints import app
+from Backend.HistoryEndpoints import app
 from unittest.mock import patch
 
 

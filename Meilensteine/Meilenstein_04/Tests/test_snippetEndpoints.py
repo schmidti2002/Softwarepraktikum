@@ -2,7 +2,7 @@ import pytest
 import uuid
 from flask import Flask
 from flask.testing import FlaskClient
-from snippetEndpoints import app
+from Backend.snippetEndpoints import app
 from unittest.mock import patch
 import psycopg2
 
