@@ -1,5 +1,4 @@
 import View from './View';
-import SingleLinkedList from './SingleLinkedListLogic';
 import AuDView from './AuDView';
 
 export default class MainView extends View {

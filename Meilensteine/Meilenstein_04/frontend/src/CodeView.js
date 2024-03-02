@@ -19,11 +19,12 @@ export default class CodeView extends View {
     this.#container.innerHTML = 'Placeholder for nothing to show';
   }
 
+  // Einrückungen in den Lines werden nicht korrekt angezeigt
   renderCode(lines) {
     if (!lines || !lines.length) {
       this.showEmpty();
       return;
-    }
+    }    
     const table = document.createElement('table');
     lines.forEach((line, lineNr) => {
       const tr = document.createElement('tr');
