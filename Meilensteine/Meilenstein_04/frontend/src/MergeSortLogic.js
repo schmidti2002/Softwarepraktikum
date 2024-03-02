@@ -12,7 +12,7 @@ export default class MergeSort extends Logic {
       this.linesForMergeSort,
       [21],
       10,
-      { arr: [50, 35, 40, 15, 30, 45, 5, 20, 25, 10] },
+      { arr: [40, 28, 32, 12, 24, 36, 4, 16, 20, 18, 44, 48, 0, 50, 25, 8] },
     );
     this.exec.outputFunction = () => {
       this.showOutput();
