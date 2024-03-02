@@ -1,5 +1,4 @@
 import View from './View';
-import SingleLinkedList from './SingleLinkedListLogic';
 import AuDView from './AuDView';
 
 // Die MainView lädt alle AoDs

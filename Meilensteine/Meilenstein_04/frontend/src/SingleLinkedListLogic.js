@@ -40,10 +40,10 @@ export default class SingleLinkedList extends Logic {
     super(eventReporter, stateChangeCallback);
     this.exec.changeAlgo(
       this.linesForAddDataAtPosition,
-      [],
-      0,
+      [1],
+      1,
       this.#initList(),
-    )
+    );
     this.showOutput();
   }
 
@@ -59,15 +59,16 @@ export default class SingleLinkedList extends Logic {
     {
       name: 'Daten an Position hinzufügen',
       algo: {
-        code: [],
+        code: this.jsExampleAddDataAtPosition,
         lines: this.linesForAddDataAtPosition,
-        breakpoints: [],
+        breakpoints: [1],
       },
       inputs: [
         {
           name: 'Daten',
           field: 'data',
           type: 'string',
+          prefill: () => _.join("D"),
           validators: [{
             func: inputLength,
             param: {min: 1, max: lengthOfData}
@@ -76,6 +77,7 @@ export default class SingleLinkedList extends Logic {
           name: 'Position',
           field: 'position',
           type: 'integer',
+          prefill: () => _.join("0"),
           validators: [{
             func: minMax,
             param: {min: 0},
@@ -171,6 +173,21 @@ export default class SingleLinkedList extends Logic {
         currentNode.setNext(newNode);
         return true;
   }  */
+
+  jsExampleAddDataAtPosition = [
+    'let newNode = new Node(data);',
+    'if (position === 0) {',
+    '   newNode.setNext(front);',
+    '   front = newNode;',
+    '   return true; //gibt es nicht',
+    'let currentNode = front;',
+    'for (let currentIndex = 1; currentIndex < position; currentIndex++) {',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'newNode.setNext(currentNode.getNext());',
+    'currentNode.setNext(newNode);',
+    'return true; // gibt es auch nicht',
+  ];
 
   linesForAddDataAtPosition = [
     // if (position < 0 || position > this.getSize(this.front)) {
@@ -414,6 +431,7 @@ export default class SingleLinkedList extends Logic {
     return size;
   }
 
+  /*
   // Data und Position im Ausgabebereich ausgeben
   outputData() {
     // console.log(this.exec.state.vars.dataFound);
@@ -428,6 +446,7 @@ export default class SingleLinkedList extends Logic {
       + `Daten ${this.exec.state.vars.data}`
       + ` an Position ${this.exec.state.vars.positionFound}`;
   }
+*/
 
   showOutput() {
     this.stateChangeCallback(
