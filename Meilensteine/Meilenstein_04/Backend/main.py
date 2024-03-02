@@ -12,14 +12,14 @@ from datetime import datetime
 import Endpoints_util
 
 # Import der Endpunkte
-import Backend.userEndpoints as userEndpoints
-import Backend.listEndpoints as listEndpoints
-import Backend.graphEndpoints as graphEndpoints
-import Backend.sortEndpoints as sortEndpoints
-import Backend.codestateEndpoints as codestateEndpoints
-import Backend.HistoryEndpoints as historyEndpoints
-import Backend.snippetEndpoints as snippetEndpoints
-import Backend.easteregg as easteregg
+import Meilensteine.Meilenstein_04.Backend.userEndpoints as userEndpoints
+import Meilensteine.Meilenstein_04.Backend.listEndpoints as listEndpoints
+import Meilensteine.Meilenstein_04.Backend.graphEndpoints as graphEndpoints
+import Meilensteine.Meilenstein_04.Backend.sortEndpoints as sortEndpoints
+import Meilensteine.Meilenstein_04.Backend.codestateEndpoints as codestateEndpoints
+import Meilensteine.Meilenstein_04.Backend.HistoryEndpoints as historyEndpoints
+import Meilensteine.Meilenstein_04.Backend.snippetEndpoints as snippetEndpoints
+import Meilensteine.Meilenstein_04.Backend.easteregg as easteregg
 
 app = Flask(__name__)
 api = Api(app)

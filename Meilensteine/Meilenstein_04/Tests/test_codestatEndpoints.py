@@ -2,7 +2,7 @@ import pytest
 import uuid
 from flask import Flask
 from flask.testing import FlaskClient
-from Backend.codestateEndpoints import app
+from Meilensteine.Meilenstein_04.Backend.codestateEndpoints import app
 from unittest.mock import patch
 import psycopg2
 

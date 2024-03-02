@@ -1,37 +1,41 @@
+# test_paths.py
 import pytest
-from Meilensteine.Meilenstein_04.Backend.main import api
-@pytest.fixture
-def mock_resources():
-    # Erstellen von Mock-Objekten für die Ressourcen
-    resources = {
-        '/code-state': codestateEndpoints.code_state,
-        '/code-state/<string:stateId>': codestateEndpoints.code_state_id,
-        '/user': userEndpoints.user,
-        '/user_edit/<edit_userid>': userEndpoints.user_edit,
-        '/useres': userEndpoints.useres,
-        '/user/apitoken': userEndpoints.userapitoken,
-        '/sort/algo': sortEndpoints.sort_algo,
-        '/sort/favorite': sortEndpoints.sort_favorite,
-        '/sort/favorite/<string:favorite_id>': sortEndpoints.sort_favorite_id,
-        '/sort/data': sortEndpoints.sort_data,
-        '/sort/data/<string:sort_id>': sortEndpoints.sort_data_id,
-        '/snippet/<string:snippetId>': snippetEndpoints.snippet,
-        '/list/algo': listEndpoints.list_algo,
-        '/list/favorite': listEndpoints.list_favorite,
-        '/list/favorite/<string:favorite_id>': listEndpoints.list_favorite_id,
-        '/list/data': listEndpoints.list_data,
-        '/list/data/<string:list_id>': listEndpoints.list_data_id,
-        '/history/<string:type>': historyEndpoints.history,
-        '/graph/algo': graphEndpoints.graph_algo,
-        '/graph/favorite/': graphEndpoints.graph_favorite,
-        '/graph/favorite/<favorite_id>': graphEndpoints.graph_favorite_favorite_id,
-        '/graph/data': graphEndpoints.graph_data,
-        '/graph/data/<graph_id>': graphEndpoints.graph_data_id
-    }
-    return resources
+from Backend.main import app
 
-def test_api_endpoints(mock_resources):
-    # Iterieren über die Pfade und sicherstellen, dass die richtigen Ressourcen zugeordnet sind
-    for path, resource in mock_resources.items():
-        assert path in api.resources, f"Path {path} not found in API resources"
-        assert api.resources[path] == resource, f"Resource mismatch for path {path}"
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
+
+def test_endpoints(client):
+    paths_to_test = [
+        '/',
+        '/code-state',
+        '/code-state/some_state_id',
+        '/user',
+        '/user_edit/some_edit_userid',
+        '/useres',
+        '/user/apitoken',
+        '/sort/algo',
+        '/sort/favorite',
+        '/sort/favorite/some_favorite_id',
+        '/sort/data',
+        '/sort/data/some_sort_id',
+        '/snippet/some_snippet_id',
+        '/list/algo',
+        '/list/favorite',
+        '/list/favorite/some_favorite_id',
+        '/list/data',
+        '/list/data/some_list_id',
+        '/history/some_type',
+        '/graph/algo',
+        '/graph/favorite/',
+        '/graph/favorite/some_favorite_id',
+        '/graph/data',
+        '/graph/data/some_graph_id',
+        '/brew_coffee'
+    ]
+
+    for path in paths_to_test:
+        response = client.get(path)
+        assert response.status_code == 200  # Überprüfen, ob die Antwort erfolgreich ist
