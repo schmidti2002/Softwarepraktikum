@@ -1,5 +1,5 @@
 import pytest
-from Meilensteine.Meilenstein_04.Backend.easteregg import app 
+from easteregg import app 
 
 @pytest.fixture
 def client():

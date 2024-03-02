@@ -2,7 +2,7 @@ import pytest
 import uuid
 from flask import Flask
 from flask.testing import FlaskClient
-from Meilensteine.Meilenstein_04.Backend.userEndpoints import app
+from userEndpoints import app
 
 LOGINDATEN=('Florian', 'florian')
 

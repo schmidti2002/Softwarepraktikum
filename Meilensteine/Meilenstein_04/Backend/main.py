@@ -12,14 +12,14 @@ from datetime import datetime
 import Endpoints_util
 
 # Import der Endpunkte
-import Meilensteine.Meilenstein_04.Backend.userEndpoints as userEndpoints
-import Meilensteine.Meilenstein_04.Backend.listEndpoints as listEndpoints
-import Meilensteine.Meilenstein_04.Backend.graphEndpoints as graphEndpoints
-import Meilensteine.Meilenstein_04.Backend.sortEndpoints as sortEndpoints
-import Meilensteine.Meilenstein_04.Backend.codestateEndpoints as codestateEndpoints
-import Meilensteine.Meilenstein_04.Backend.HistoryEndpoints as historyEndpoints
-import Meilensteine.Meilenstein_04.Backend.snippetEndpoints as snippetEndpoints
-import Meilensteine.Meilenstein_04.Backend.easteregg as easteregg
+import userEndpoints as userEndpoints
+import listEndpoints as listEndpoints
+import graphEndpoints as graphEndpoints
+import sortEndpoints as sortEndpoints
+import codestateEndpoints as codestateEndpoints
+import HistoryEndpoints as historyEndpoints
+import snippetEndpoints as snippetEndpoints
+import easteregg as easteregg
 
 app = Flask(__name__)
 api = Api(app)
@@ -62,7 +62,7 @@ api.add_resource(easteregg.brew_coffee, '/brew_coffee')
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return {"no":f"Bitte einen richtigen Endpunkt treffen. Angeforderter Pfad: /{path}"}
+    return (f"Bitte einen richtigen Endpunkt treffen. Angeforderter Pfad: /{path}", 400)
 
 
 if __name__ == "__main__":

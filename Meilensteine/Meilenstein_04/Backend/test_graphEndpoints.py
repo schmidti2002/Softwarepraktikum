@@ -2,7 +2,7 @@ import pytest
 import uuid
 from flask import Flask
 from flask.testing import FlaskClient
-from Meilensteine.Meilenstein_04.Backend.graphEndpoints import app
+from graphEndpoints import app
 from unittest.mock import patch
 
 import json

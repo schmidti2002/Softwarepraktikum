@@ -37,10 +37,13 @@ def getUserUUID(request, database):
         return abort(401, message="API key is missing or invalid ")
 
 def verify_admin(user_uuid, database):
-    util_cursor = database.cursor()
-    util_cursor.execute("""SELECT rights FROM public."User" WHERE id = %s;""", (user_uuid,))
-    result = util_cursor.fetchone()
-    util_cursor.close()
-    if not result[0]:
+    try:
+        util_cursor = database.cursor()
+        util_cursor.execute("""SELECT rights FROM public."User" WHERE id = %s;""", (user_uuid,))
+        result = util_cursor.fetchone()
+        util_cursor.close()
+        if not result[0]:
+            return abort(403, message="User not allowed to execute this operation")
+        return True # Adminrechte zurückgeben
+    except:
         return abort(403, message="User not allowed to execute this operation")
-    return True # Adminrechte zurückgeben
