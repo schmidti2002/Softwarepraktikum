@@ -74,17 +74,16 @@ class code_state_id(Resource):
         try:
             cursor.execute("""SELECT owner FROM public."Graph" 
                               join public."GraphFavorite" ON public."GraphFavorite".data = public."Graph".id
-                              where state = %s group by owner
+                              where public."GraphFavorite".state = %s group by owner
                               union
-                              SELECT owner FROM public."Graph" 
+                              SELECT owner FROM public."List" 
                               join public."ListFavorite" ON public."ListFavorite".data = public."List".id
-                              where state = %s group by owner
+                              where public."ListFavorite".state = %s group by owner
                               union
-                              SELECT owner FROM public."Graph" 
+                              SELECT owner FROM public."Sort" 
                               join public."SortFavorite" ON public."SortFavorite".data = public."Sort".id
-                              where state = %s group by owner""", (stateId, stateId, stateId ))
+                              where public."SortFavorite".state = %s group by owner""", (stateId, stateId, stateId))
             result = cursor.fetchall()
-
             if len(result) == 0:
                 return ("State not found", 404)
             for i in range(len(result)):

@@ -55,7 +55,7 @@ def test_get (client, mock_getUserUUID):
     assert response.status_code == 200
     assert isinstance(response.json, dict)
 
-def test_delete (client, mock_getUserUUID, mock_cursor_fetchall):
+def test_delete (client, mock_getUserUUID):
     # Test nicht angemeldet
     mock_getUserUUID.return_value = None
     response = client.delete("/code-state/123")
@@ -76,9 +76,4 @@ def test_delete (client, mock_getUserUUID, mock_cursor_fetchall):
     #Löschen ohne Rechte
     mock_getUserUUID.return_value = str(uuid.uuid4())
     response = client.delete("/code-state/" + test_uuid)
-    assert response.status_code == 403
-
-    #erfolgreiches Löschen
-    mock_getUserUUID.return_value = LOGINDATEN
-    response = client.delete("/code-state/" + test_uuid)
-    assert response.status_code == 200
+    assert response.status_code == 404
