@@ -36,4 +36,5 @@ class snippet(Resource):
             return abort(404, message="Snippet not found")
         
         return jsonify({"id":result[0][0],"code": result[0][1], "js": result[0][2]})
+
 api.add_resource(snippet, "/snippet/<string:snippetId>")
