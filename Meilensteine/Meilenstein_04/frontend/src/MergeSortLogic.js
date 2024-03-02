@@ -3,8 +3,6 @@ import { execFor, execIfElse } from './AlgoExecuter';
 import Logic from './Logic';
 import { arrayEveryEntry, minMax, notEmpty } from './inputValidators';
 
-// Kommentar
-
 // Klasse für den MergeSort
 export default class MergeSort extends Logic {
   // Konstruktor
