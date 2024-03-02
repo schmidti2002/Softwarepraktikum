@@ -72,19 +72,19 @@ export default class AuDView extends View {
   }
 
   loadAlgoByIndex(index) {
-    const currentAlgo = this.logic.algos[index];
-    if (!currentAlgo) {
+    const algo = this.logic.algos[index];
+    if (!algo) {
       return;
     }
-    this.algoControls.style.visibility = currentAlgo.algo ? 'visible' : 'hidden';
-    if (currentAlgo.algo) {
-      this.codeView.renderCode(currentAlgo.algo.code);
-      this.codeView.renderBreakpoints(currentAlgo.algo.breakpoints);
+    this.algoControls.style.visibility = algo.algo ? 'visible' : 'hidden';
+    if (algo.algo) {
+      this.codeView.renderCode(algo.algo.code);
+      this.codeView.renderBreakpoints(algo.algo.breakpoints);
       this.logic.loadAlgoByIndex(index, this.inputView.getValues());
-    } else if (currentAlgo.func) {
+    } else if (algo.func) {
       this.codeView.showEmpty();
       this.dataView.showEmpty();
-      currentAlgo.func(this.inputView.getValues());
+      algo.func(this.inputView.getValues());
     } else {
       this.eventReporter.fatal('Not a valid algorithm config!');
     }
