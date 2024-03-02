@@ -1,8 +1,0 @@
-typing
-flask 
-flask_restful
-flask_cors 
-flask_httpauth
-flask_wtf
-psycopg2
-datetime
