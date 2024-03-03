@@ -10,7 +10,7 @@ export default class MergeSort extends Logic {
     super(eventReporter, stateChangeCallback);
     this.exec.changeAlgo(
       this.linesForMergeSort,
-      [21],
+      [17],
       10,
       { arr: [40, 28, 32, 12, 24, 36, 4, 16, 20, 18, 44, 48, 0, 50, 25, 8] },
     );
@@ -28,7 +28,7 @@ export default class MergeSort extends Logic {
         const s = _.cloneDeep(os);
         s.vars.aux = new Array(s.vars.n);
         for (let i = 0; i < s.vars.n; i++) {
-          s.vars.aux[i] = 0;
+          s.vars.aux[i] = s.vars.arr[i];
         }
         return s;
       },
@@ -82,13 +82,13 @@ export default class MergeSort extends Logic {
               ...execIfElse(
                 (s) => s.vars.left < s.vars.middle
                       && (s.vars.right >= s.vars.rightEnd
-                      || s.vars.arr[s.vars.left] <= s.vars.arr[s.vars.right]),
+                      || s.vars.aux[s.vars.left] <= s.vars.aux[s.vars.right]),
                 // then
                 [
                   {
                     f(os) {
                       const s = _.cloneDeep(os);
-                      s.vars.aux[s.vars.i] = s.vars.arr[s.vars.left];
+                      s.vars.arr[s.vars.i] = s.vars.aux[s.vars.left];
                       return s;
                     },
                   },
@@ -105,7 +105,7 @@ export default class MergeSort extends Logic {
                   {
                     f(os) {
                       const s = _.cloneDeep(os);
-                      s.vars.aux[s.vars.i] = s.vars.arr[s.vars.right];
+                      s.vars.arr[s.vars.i] = s.vars.aux[s.vars.right];
                       return s;
                     },
                   },
@@ -129,7 +129,7 @@ export default class MergeSort extends Logic {
               {
                 f(os) {
                   const s = _.cloneDeep(os);
-                  s.vars.arr[s.vars.i] = s.vars.aux[s.vars.i];
+                  s.vars.aux[s.vars.i] = s.vars.arr[s.vars.i];
                   return s;
                 },
               },
@@ -142,7 +142,7 @@ export default class MergeSort extends Logic {
 
   jsCodeExampleLines = [
     'const n = arr.length;',
-    'const aux = new Array(n);',
+    'const aux = cloneDeep(arr);',
     'for (let size = 1; size < n; size *= 2) {',
     '/**/for (let leftStart = 0; leftStart < n; leftStart += 2 * size) {',
     '/*____*/console;',
@@ -152,16 +152,16 @@ export default class MergeSort extends Logic {
     '/*____*/let right = middle;',
     '/*____*/console;',
     '/*____*/for (let i = leftStart; i < rightEnd; i++) {',
-    '/*________*/if (left < middle && (right >= rightEnd || arr[left] <= arr[right])) {',
-    '/*____________*/aux[i] = arr[left];',
+    '/*________*/if (left < middle && (right >= rightEnd || aux[left] <= aux[right])) {',
+    '/*____________*/arr[i] = aux[left];',
     '/*____________*/left++;',
     '/*________*/} else {',
-    '/*____________*/aux[i] = arr[right];',
+    '/*____________*/arr[i] = aux[right];',
     '/*____________*/right++;',
     '/*________*/}',
     '/*____*/}',
     '/*____*/for (let i = leftStart; i < rightEnd; i++) {',
-    '/*________*/arr[i] = aux[i];',
+    '/*________*/aux[i] = arr[i];',
     '/*____*/}',
     '/**/}',
     '}',
@@ -173,7 +173,7 @@ export default class MergeSort extends Logic {
       algo: {
         code: this.jsCodeExampleLines,
         lines: this.linesForMergeSort,
-        breakpoints: [21],
+        breakpoints: [17],
       },
       inputs: [
         {
