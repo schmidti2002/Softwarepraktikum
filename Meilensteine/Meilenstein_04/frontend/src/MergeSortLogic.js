@@ -10,7 +10,7 @@ export default class MergeSort extends Logic {
     super(eventReporter, stateChangeCallback);
     this.exec.changeAlgo(
       this.linesForMergeSort,
-      [17],
+      [12, 14],
       10,
       { arr: [40, 28, 32, 12, 24, 36, 4, 16, 20, 18, 44, 48, 0, 50, 25, 8] },
     );
@@ -72,6 +72,7 @@ export default class MergeSort extends Logic {
               return s;
             },
           },
+          // 9
           ...execFor(
             'i',
             (s) => s.vars.leftStart,
@@ -173,7 +174,7 @@ export default class MergeSort extends Logic {
       algo: {
         code: this.jsCodeExampleLines,
         lines: this.linesForMergeSort,
-        breakpoints: [17],
+        breakpoints: [12, 14],
       },
       inputs: [
         {
