@@ -1,15 +1,21 @@
 import View from './View';
 
 export default class DataView extends View {
-  #container;
+  #simpleDataContainer;
+
+  #objContainer;
 
   constructor(parentNode, eventReporter) {
     super('DataView', parentNode, eventReporter);
     this.initPromise
       .then(() => {
-        this.#container = document.getElementById('dataview-container');
-        if (!this.#container) {
-          eventReporter.fatal('element with id "dataview-container" not found!');
+        this.#objContainer = document.getElementById('objContainer');
+        if (!this.#objContainer) {
+          eventReporter.fatal('element with id "objContainer" not found!');
+        }
+        this.#simpleDataContainer = document.getElementById('simpleDataContainer');
+        if (!this.#simpleDataContainer) {
+          eventReporter.fatal('element with id "simpleDataContainer" not found!');
         }
       });
   }
@@ -19,13 +25,60 @@ export default class DataView extends View {
       this.showEmpty();
       return;
     }
-    const div = document.createElement('div');
-    this.#renderData(div, data);
-    this.#container.innerHTML = '';
-    this.#container.appendChild(div);
+    const divObj = document.createElement('div');
+    divObj.classList.add('row');
+    divObj.classList.add('border');
+    const divSimple = document.createElement('div');
+    this.#renderData(divObj, divSimple, data);
+    this.#objContainer.innerHTML = '';
+    this.#objContainer.appendChild(divObj);
+    this.#simpleDataContainer.innerHTML = '';
+    this.#simpleDataContainer.appendChild(divSimple);
   }
 
-  #renderData(parentNode, data) {
+  #renderData(parentNodeObj, parentNodeSimple, data) {
+    const divObj = document.createElement('div');
+    const divSimple = document.createElement('div');
+    switch (typeof data) {
+      case 'object':
+        if (!data) {
+          divSimple.innerText = String(data);
+        }
+        Object.keys(data).forEach((key) => {
+          if (data[key] !== undefined) {
+            const innerDiv = document.createElement('div');
+            innerDiv.classList.add('d-flex');
+            innerDiv.textContent = `${key}:`;
+            // primärer Datentyp oder Objekt?
+            if (typeof data[key] === 'number' || typeof data[key] === 'string' || typeof data[key] === 'boolean') {
+              this.#renderDataSimple(innerDiv, data[key]);
+              divSimple.appendChild(innerDiv);
+            } else {
+              innerDiv.classList.add('col');
+              innerDiv.classList.add('border');
+              this.#renderDataObject(innerDiv, data[key]);
+              divObj.appendChild(innerDiv);
+            }
+          }
+        });
+        break;
+      default:
+        divSimple.textContent = String(data);
+    }
+    divObj.classList.add(`dataview-type-${typeof data}`);
+    parentNodeObj.appendChild(divObj);
+    divSimple.classList.add(`dataview-type-${typeof data}`);
+    parentNodeSimple.appendChild(divSimple);
+  }
+
+  #renderDataSimple(parentNode, data) {
+    const div = document.createElement('div');
+    div.textContent = String(data);
+    div.classList.add(`dataview-type-${typeof data}`);
+    parentNode.appendChild(div);
+  }
+
+  #renderDataObject(parentNode, data) {
     const div = document.createElement('div');
     switch (typeof data) {
       case 'object':
@@ -37,7 +90,7 @@ export default class DataView extends View {
             const innerDiv = document.createElement('div');
             innerDiv.classList.add('d-flex');
             innerDiv.textContent = `${key}:`;
-            this.#renderData(innerDiv, data[key]);
+            this.#renderDataObject(innerDiv, data[key]);
             div.appendChild(innerDiv);
           }
         });
@@ -50,6 +103,7 @@ export default class DataView extends View {
   }
 
   showEmpty() {
-    this.#container.innerHTML = 'Placeholder for nothing to show';
+    this.#objContainer.innerHTML = 'Placeholder for nothing to show';
+    this.#simpleDataContainer.innerHTML = 'Placeholder for nothing to show';
   }
 }
