@@ -47,3 +47,16 @@ def verify_admin(user_uuid, database):
         return True # Adminrechte zurückgeben
     except:
         return abort(403, message="User not allowed to execute this operation")
+    
+def user_body(request):
+    try:
+        id = request.form.get("id")
+        name = request.form.get("name")
+        data= request.form.get("data")
+        state = request.form.get("state")
+        if id == None or name == None or data == None or state == None:
+            return ("Send data conflicts with existing entry", 409)
+    except :
+        return abort(409, message="Send data conflicts with existing entry")
+    
+    return {"id": id, "name": name, "data": data, "state": state}

@@ -47,21 +47,14 @@ class list_favorite(Resource):
 
     def post(self):
         user_uuid = Endpoints_util.getUserUUID(request, database)
-        
+         
         if user_uuid == None:
             return abort(401, message="API key is missing or invalid")
         
+        user_body = Endpoints_util.user_body(request)
+        
         try:
-            id = request.form.get("id")
-            name = request.form.get("name")
-            data= request.form.get("data")
-            state = request.form.get("state")
-            if id == None or name == None or data == None or state == None:
-                return ("Send data conflicts with existing entry", 409)
-        except :
-            return abort(409, message="Send data conflicts with existing entry")
-        try:
-            cursor.execute("""INSERT INTO public."ListFavorite" (id, name, data, state) VALUES (%s, %s, %s, %s)""", (id, name, data, state))
+            cursor.execute("""INSERT INTO public."ListFavorite" (id, name, data, state) VALUES (%s, %s, %s, %s)""", (user_body["id"], user_body["name"], user_body["data"], user_body["state"]))
             database.commit()
         except:
             database.rollback()
