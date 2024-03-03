@@ -11,8 +11,13 @@ def db_connect():
     host_url = "swp.dczlabs.xyz"
     port = "3131"
     user_name = "swpusr"
-    password = os.environ.get('db_password')
+
+    password_file_path = os.environ.get('DB_PASSWORD_FILE')
     Datenbank = "swp"
+
+    # Das Passwort aus der geheimen Datei im Docker-Container lesen
+    with open(password_file_path, 'r') as file:
+        password = file.read().strip()
 
     database = psycopg2.connect(host=host_url, port= port, user=user_name, password=password, database=Datenbank)
     return database
