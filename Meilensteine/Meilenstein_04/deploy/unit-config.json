@@ -1,0 +1,62 @@
+{
+    "settings": {
+        "http": {
+            "log_route": true
+        }
+    },
+    "listeners": {
+        "*:3130": {
+            "pass": "routes"
+        }
+    },
+    "routes": [
+        {
+            "match": {
+                "uri": "/api/*"
+            },
+            "action": {
+                "pass": "applications/flask"
+            }
+        },
+        {
+            "match": { // TODO remove after fixed path in index.html
+                "uri": "/dist/bundle.js"
+            },
+            "action": {
+                "share": [
+                    "/www/static/bundle.js"
+                ]
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "~\\.html?$",
+                    "~\\.js$",
+                    "~\\.css$",
+                    "/"
+                ]
+            },
+            "action": {
+                "share": [
+                    "/www/static$uri"
+                ],
+                "index": "index.html",
+                "types": [
+                    "application/javascript",
+                    "text/html",
+                    "text/css"
+                ]
+            }
+        }
+    ],
+    "applications": {
+        "flask": {
+            "type": "python 3.11",
+            "path": "/www/",
+            "module": "hello",
+            "callable": "app",
+            "prefix": "/api"
+        }
+    }
+}
