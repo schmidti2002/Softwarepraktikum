@@ -26,7 +26,6 @@ export default class DataView extends View {
       return;
     }
     const divObj = document.createElement('div');
-    divObj.classList.add('row');
     divObj.classList.add('border');
     const divSimple = document.createElement('div');
     this.#renderData(divObj, divSimple, data);
@@ -38,6 +37,7 @@ export default class DataView extends View {
 
   #renderData(parentNodeObj, parentNodeSimple, data) {
     const divObj = document.createElement('div');
+    divObj.classList.add('row');
     const divSimple = document.createElement('div');
     switch (typeof data) {
       case 'object':
