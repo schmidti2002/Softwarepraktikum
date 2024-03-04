@@ -55,103 +55,6 @@ export default class SingleLinkedList extends Logic {
     return {front: node};
   }
 
-  algos = [
-    {
-      name: 'Daten an Position hinzufügen',
-      algo: {
-        code: this.jsExampleAddDataAtPosition,
-        lines: this.linesForAddDataAtPosition,
-        breakpoints: [1],
-      },
-      inputs: [
-        {
-          name: 'Daten',
-          field: 'data',
-          type: 'string',
-          prefill: () => _.join("D"),
-          validators: [{
-            func: inputLength,
-            param: {min: 1, max: lengthOfData}
-          }]
-        },{
-          name: 'Position',
-          field: 'position',
-          type: 'integer',
-          prefill: () => _.join("0"),
-          validators: [{
-            func: minMax,
-            param: {min: 0},
-          }]
-        }
-      ]
-    },
-    {
-      name: 'Daten von Position zurückgeben',
-      algo: {
-        code: [],
-        lines: this.linesForGetDataAtPosition,
-        breakpoints: [],
-      },
-      inputs: [{
-        name: 'Position',
-          field: 'position',
-          type: 'integer',
-          validators: [{
-            func: minMax,
-            param: {min: 0},
-          }]
-      }]
-    },{
-      name: 'Position von Datan zurückgeben',
-      algo: {
-        code: [],
-        lines: this.linesForGetPositionOfData,
-        breakpoints: [],
-      },
-      inputs: [{
-        name: 'Daten',
-          field: 'data',
-          type: 'string',
-          validators: [{
-            func: inputLength,
-            param: {min: 1, max: lengthOfData}
-          }]
-      }]
-    },{
-      name: 'Daten an Position löschen',
-      algo: {
-        code: [],
-        lines: this.linesForRemoveDataAtPosition,
-        breakpoints: [],
-      },
-      inputs: [{
-        name: 'Daten',
-          field: 'data',
-          type: 'string',
-          validators: [{
-            func: inputLength,
-            param: {min: 1, max: lengthOfData}
-          }]
-      }]
-    },{
-      name: 'Liste invertieren',
-      algo: {
-        code: [],
-        lines: this.linesForInvertList,
-        breakpoints: [],
-      },
-      inputs: []
-    },{
-      name: 'Liste löschen',
-      algo: {
-        code: [],
-        lines: this.linesForDeleteList,
-        breakpoints: [],
-      },
-      inputs: []
-    }
-  ]
-
   /* public boolean addDataAtPosition(int position, String data) {
         if (position < 0 || position > getSize()) {
             System.err.println(
@@ -430,6 +333,103 @@ export default class SingleLinkedList extends Logic {
 
     return size;
   }
+  algos = [
+    {
+      name: 'Daten an Position hinzufügen',
+      algo: {
+        code: this.jsExampleAddDataAtPosition,
+        lines: this.linesForAddDataAtPosition,
+        breakpoints: [1],
+      },
+      inputs: [
+        {
+          name: 'Daten',
+          field: 'data',
+          type: 'string',
+          prefill: () => "D",
+          validators: [{
+            func: inputLength,
+            param: {min: 1, max: lengthOfData}
+          }]
+        },{
+          name: 'Position',
+          field: 'position',
+          type: 'integer',
+          prefill: () => "0",
+          validators: [{
+            func: minMax,
+            param: {min: 0},
+          }]
+        }
+      ]
+    },
+    {
+      name: 'Daten von Position zurückgeben',
+      algo: {
+        code: [],
+        lines: this.linesForGetDataAtPosition,
+        breakpoints: [],
+      },
+      inputs: [{
+        name: 'Position',
+          field: 'position',
+          type: 'integer',
+          validators: [{
+            func: minMax,
+            param: {min: 0},
+          }]
+      }]
+    },{
+      name: 'Position von Datan zurückgeben',
+      algo: {
+        code: [],
+        lines: this.linesForGetPositionOfData,
+        breakpoints: [],
+      },
+      inputs: [{
+        name: 'Daten',
+          field: 'data',
+          type: 'string',
+          validators: [{
+            func: inputLength,
+            param: {min: 1, max: lengthOfData}
+          }]
+      }]
+    },{
+      name: 'Daten an Position löschen',
+      algo: {
+        code: [],
+        lines: this.linesForRemoveDataAtPosition,
+        breakpoints: [],
+      },
+      inputs: [{
+        name: 'Daten',
+          field: 'data',
+          type: 'string',
+          validators: [{
+            func: inputLength,
+            param: {min: 1, max: lengthOfData}
+          }]
+      }]
+    },{
+      name: 'Liste invertieren',
+      algo: {
+        code: [],
+        lines: this.linesForInvertList,
+        breakpoints: [],
+      },
+      inputs: []
+    },{
+      name: 'Liste löschen',
+      algo: {
+        code: [],
+        lines: this.linesForDeleteList,
+        breakpoints: [],
+      },
+      inputs: []
+    }
+  ]
+
 
   /*
   // Data und Position im Ausgabebereich ausgeben
