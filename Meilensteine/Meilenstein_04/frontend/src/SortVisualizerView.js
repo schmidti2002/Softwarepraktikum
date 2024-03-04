@@ -1,6 +1,6 @@
 import VisualizerView from './VisualizerView';
 
-// Visualisiert ein Array von Zahlen als Säulendiagram
+// Wird in loadAuD(type) in AuDView.js instanziert, aber lediglich für die Sortieralgorithmen
 export default class SortVisualizerView extends VisualizerView {
   constructor(parentNode, eventReporter) {
     super('SortVisualizerView', parentNode, eventReporter);
@@ -8,7 +8,8 @@ export default class SortVisualizerView extends VisualizerView {
       this.container = document.getElementById('sortview-container');
     });
   }
-
+  
+  // Visualisiert ein Array von Zahlen als Säulendiagram
   renderData(data) {
     this.container.innerHTML = '';
 

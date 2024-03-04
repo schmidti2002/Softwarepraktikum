@@ -3,7 +3,7 @@ import { execFor, execIfElse } from './AlgoExecuter';
 import Logic from './Logic';
 import { arrayEveryEntry, minMax, notEmpty } from './inputValidators';
 
-// Klasse für den BubbleSort
+// Klasse für die Logik von BubbleSort
 export default class BubbleSort extends Logic {
   // Konstruktor
   constructor(eventReporter, stateChangeCallback) {
@@ -12,12 +12,12 @@ export default class BubbleSort extends Logic {
       this.linesForBubbleSort,
       [8],
       10,
-      { arr: [50, 35, 40, 15, 30, 45, 5, 20, 25, 10] },
+      { arr: [50, 35, 40, 15, 30, 45, 5, 20, 25, 10] },   // Standardwerte
     );
     this.exec.outputFunction = () => {
       this.showOutput();
     };
-    this.showOutput();
+    this.showOutput(); // Werte initial anzeigen
   }
 
   // Algorithmus, der schrittweise ausgeführt wird
@@ -55,6 +55,7 @@ export default class BubbleSort extends Logic {
     ),
   ];
 
+  // Der Code für das Sortieren, welcher in der CodeView angezeigt werden soll
   jsCodeExampleLines = [
     'let temp;',
     'const n = arr.length;',
@@ -68,6 +69,7 @@ export default class BubbleSort extends Logic {
     '    }',
     '}'];
 
+  // Die Algorithmen von BubbleSort, werden in AuDView.js geladen
   algos = [
     {
       name: 'Sortieren',

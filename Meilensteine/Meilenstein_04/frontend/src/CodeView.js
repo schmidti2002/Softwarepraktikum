@@ -1,5 +1,6 @@
 import View from './View';
 
+// Diese Klasse zeigt den Code eines Algorithmus einer AoD an
 export default class CodeView extends View {
   #container;
 
@@ -19,6 +20,9 @@ export default class CodeView extends View {
     this.#container.innerHTML = 'Placeholder for nothing to show';
   }
 
+  // zeigt den Code des derzeitigen Algorithmus an
+  // dieser wird in lines[] in den Logikklassen gespeichert
+  // wird in loadAlgoByIndex(index) in AuDView.js aufgerufen 
   renderCode(lines) {
     if (!lines || !lines.length) {
       this.showEmpty();
@@ -39,6 +43,9 @@ export default class CodeView extends View {
     this.#container.appendChild(table);
   }
 
+  // zeigt die Position Breakpoints im Code an
+  // die Breakpoint wereden in breakpoints[] in algo in algos[] der Logikklassen gespeichert
+  // wird in loadAlgoByIndex(index) in AuDView.js aufgerufen 
   renderBreakpoints(breakpoints) {
     this.#container.firstChild.childNodes.forEach((child, lineNr) => {
       if (breakpoints.includes(lineNr)) {
@@ -49,6 +56,8 @@ export default class CodeView extends View {
     });
   }
 
+  // zeigt die aktuelle Position im Code an
+  // (unter anderem?) aufgerufen in #onLogicStateChange(data, variables, line, running) in AuDView.js
   renderCurrentMarker(line) {
     this.#container.firstChild.childNodes.forEach((child, lineNr) => {
       if (lineNr === line) {
