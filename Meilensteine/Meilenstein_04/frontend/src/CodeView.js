@@ -20,7 +20,8 @@ export default class CodeView extends View {
     this.#container.innerHTML = 'Placeholder for nothing to show';
   }
 
-  // zeigt den Code, in lines in den Logikklassen gespeichert, an
+  // zeigt den Code des derzeitigen Algorithmus an
+  // dieser wird in lines[] in den Logikklassen gespeichert
   // wird in loadAlgoByIndex(index) in AuDView.js aufgerufen 
   renderCode(lines) {
     if (!lines || !lines.length) {
@@ -42,7 +43,8 @@ export default class CodeView extends View {
     this.#container.appendChild(table);
   }
 
-  // zeigt die Breakpoint, in breakpoints in algo in algos[] der Logikklassen gespeichert, an
+  // zeigt die Position Breakpoints im Code an
+  // die Breakpoint wereden in breakpoints[] in algo in algos[] der Logikklassen gespeichert
   // wird in loadAlgoByIndex(index) in AuDView.js aufgerufen 
   renderBreakpoints(breakpoints) {
     this.#container.firstChild.childNodes.forEach((child, lineNr) => {
@@ -54,7 +56,7 @@ export default class CodeView extends View {
     });
   }
 
-  // zeigt vermutlich die aktuelle Position im Code an???
+  // zeigt die aktuelle Position im Code an
   // (unter anderem?) aufgerufen in #onLogicStateChange(data, variables, line, running) in AuDView.js
   renderCurrentMarker(line) {
     this.#container.firstChild.childNodes.forEach((child, lineNr) => {

@@ -253,7 +253,8 @@ export class Executer {
     return false;
   }
 
-  // gibt wahr zurück, wenn der Algorithmus läuft
+  // gibt wahr zurück, wenn der Algorithmus läuft,
+  // indem es prüft, ob die ID des Intervals für Autoplay nicht undefined ist
   isRunning() {
     return this.intervalId !== undefined;
   }

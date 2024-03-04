@@ -28,6 +28,7 @@ export default class InputView extends View {
   // return({error: string}|{value: T})
 
   // parst ein Integer und gibt ihn als {value: Integer} zurück
+  // im Fehlerfall {error: 'Darf nur eine Ganzzahl sein'}
   static parseInt(value) {
     const wsRemoved = value.trim();
     if (!/^[+-]?\d+$/.test(wsRemoved)) {
@@ -40,6 +41,7 @@ export default class InputView extends View {
   }
 
   // parst ein Integer-Array und gibt es als {value: Integer[]} zurück
+  // im Fehlerfall Beispielsweise {error: 'Darf nur eine Ganzzahl sein (Position 5)'}
   static parseIntArray(value) {
     const arr = [];
     const entries = value.split(',');
