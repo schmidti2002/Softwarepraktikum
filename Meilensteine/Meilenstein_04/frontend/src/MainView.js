@@ -2,6 +2,7 @@ import View from './View';
 import SingleLinkedList from './SingleLinkedListLogic';
 import AuDView from './AuDView';
 
+// Die MainView lädt alle AoDs
 export default class MainView extends View {
   constructor(parentNode, singletonManager) {
     const eventReporter = singletonManager.get('EventReporter');
@@ -19,6 +20,7 @@ export default class MainView extends View {
     });
   }
 
+  // merkt sich, wo man in der Webanwendung ist, um bei Neuladen wieder dorthin zurückzukehren
   // eslint-disable-next-line class-methods-use-this
   setLastLoad(value) {
     localStorage.setItem('lastLoad', value);

@@ -1,5 +1,6 @@
 import View from './View';
 
+// Diese Klasse alle derzeit gespeichtern Variablen und ihren Wert anzeigen
 export default class DataView extends View {
   #container;
 
@@ -14,6 +15,8 @@ export default class DataView extends View {
       });
   }
 
+  // zeigt die Daten an
+  // (unter anderem?) aufgerufen in #onLogicStateChange(data, variables, line, running) in AuDView.js
   renderData(data) {
     if (data === null || data === undefined) {
       this.showEmpty();
