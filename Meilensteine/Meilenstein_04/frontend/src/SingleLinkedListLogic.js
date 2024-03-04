@@ -44,6 +44,10 @@ export default class SingleLinkedList extends Logic {
       1,
       this.#initList(),
     );
+
+    this.exec.outputFunction = () => {
+      this.showOutput();
+    };
     this.showOutput();
   }
 
@@ -455,5 +459,9 @@ export default class SingleLinkedList extends Logic {
       this.exec.state.currentLine,
       this.exec.isRunning(),
     );
+  }
+
+  loadAlgoByIndex(index, inputs) {
+    super.loadAlgoByIndex(index, {...inputs, front: this.exec.state.vars.front})
   }
 }
