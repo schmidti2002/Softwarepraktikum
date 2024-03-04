@@ -8,9 +8,6 @@ const lengthOfData = 20
 
 // Node-Klasse
 export class Node {
-  // Möglicherweise sollte die Möglichkeit bestehen,
-  // sich diese Klasse irgendwo anzeigen zu lassen
-
   constructor(data) {
     this.data = data;
   }
@@ -22,7 +19,6 @@ export class Node {
   setData(data) {
     this.data = data;
   }
-
 }
 
 // Klasse des ungerichteten ungewichteten Graphen
@@ -41,25 +37,61 @@ export default class DirectedUnweightedGraph extends Logic {
 
   // Initialisierung des Graphen mit Standardwerten
   #initGraph() {
-    const adjlist = [];
-    const list = [];
-    list.push(new Node("A"));
-    adjlist.push(list);
-    
-    //list[0][0] = new Node("A");
-    //list[1][0] = new Node("B");
-    //list[2][0] = new Node("C");
-    //list[0][1] = list[1][0];
-    //list[1][1] = list[2][0];
-    return {adjList: adjlist};
+    let nodeA = new Node("A");
+    let nodeB = new Node("B");
+    let nodeC = new Node("C");
+    let nodeD = new Node("D");
+    const alist = [];
+    let list = [];
+    list.push(nodeA);
+    list.push(nodeB);
+    alist.push(list);
+    list = [];
+    list.push(nodeB);
+    list.push(nodeC);
+    alist.push(list);
+    list = [];
+    list.push(nodeC);
+    alist.push(list);
+    list = [];
+    list.push(nodeD);
+    list.push(nodeB);
+    alist.push(list);
+    return {adjList: alist};
   }
   
   algos = []
 
+  jsExampleInsertNode = [
+    'if (this.adjList === null) {',
+    '  this.adjList = [[]];',
+    '  this.adjList[0].push(new Node(data));',
+      'return true;',
+    '}',
+    'for (let i = 0; i < this.adjList.length; i++) {',
+      'if (this.adjList[i][0].getData() === data) {',
+        'console.error("Exception in thread \"main\" java.lang.IOExeption: node already in graph");',
+        'return false;',
+        '  }',
+        '}',
+        'this.adjList.push([]);',
+        'this.adjList[this.adjList.length - 1].push(new Node(data));',
+        'return true;',
+        '}',
+        '}',
+        ];
+
+linesForInsertNode = [
+    ...execIfElse((s) => s.vars.adjList === null, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList = [[]]; return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList[0].push(new Node(s.vars.data)); return s; } },
+    ]
+
+]
 
   showOutput() {
     this.stateChangeCallback(
-      this.exec.state.vars.front,
+      this.exec.state.vars.adjList,
       this.exec.state.vars,
       this.exec.state.currentLine,
       this.exec.isRunning(),
