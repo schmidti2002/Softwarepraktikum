@@ -15,6 +15,11 @@ export default class GraphVisualizerView extends VisualizerView {
   // data ist das erste Element des stateChangeCallback() in showOutput() in SingleLinkedListLogic.js
   // Methode zur Visualisierung des Graphen
  renderData(adjacencyList) {
+    if(adjacencyList === null || adjacencyList[0] === null || adjacencyList[0][0] === null ){
+        this.eventReporter.error("adjacencyList ist leer");
+        return;
+    }
+
     var elements = { nodes: [], edges: [] };
 
     // Generate nodes and edges from adjacencyList
@@ -47,23 +52,28 @@ export default class GraphVisualizerView extends VisualizerView {
           selector: 'node',
           style: {
             'background-color': '#ffa54f',
-            'label': 'data(id)'
+            'label': 'data(id)',
           }
         },
         {
           selector: 'edge',
           style: {
             'width': 3,
-            'line-color': '#000000',
-            'target-arrow-color': '#000000',
+            'line-color': '#2b3340',
+            'target-arrow-color': '#2b3340',
             'target-arrow-shape': 'triangle',
-            'curve-style': 'straight'
+            'curve-style': 'straight',
+            'text-background-opacity': 1, // Opazität des Hintergrundfelds für Label (0 bis 1)
+            'text-background-padding': '5px', // Abstand zwischen Label und Hintergrund
           }
         }
       ],
       layout: {
-        //name: 'breadthfirst',
         name: 'circle',
+        //name: 'breadthfirst',
+        //name: 'cose',
+        randomize: false,
+        avoidOverlap: true,
       }
     });
   } 
