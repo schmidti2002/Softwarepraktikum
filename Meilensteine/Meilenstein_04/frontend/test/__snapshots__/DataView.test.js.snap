@@ -27,3 +27,4 @@ exports[`DataView showEmpty method displays "Placeholder for nothing to show" 1`
     <div id="simpleDataContainer" class="col">Placeholder for nothing to show</div>
 "
 `;
+

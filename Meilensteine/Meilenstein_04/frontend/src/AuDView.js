@@ -5,6 +5,7 @@ import DataView from './DataView';
 import InputView from './InputView';
 import SortVisualizerView from './SortVisualizerView';
 import View from './View';
+import MergeSort from './MergeSortLogic';
 
 // Diese Klasse verwaltet die Algorithmen und Datenstrukturen
 // Die Klasse wird in MainView instanziert
@@ -105,6 +106,18 @@ export default class AuDView extends View {
           this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
           this.visualizerView.initPromise.then(() => {
             this.logic = new BubbleSort(
+              this.eventReporter,
+              (data, variables, line, running) => {
+                this.#onLogicStateChange(data, variables, line, running);
+              },
+            );
+            resolve();
+          });
+          break;
+        case 'MergeSort':
+          this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+          this.visualizerView.initPromise.then(() => {
+            this.logic = new MergeSort(
               this.eventReporter,
               (data, variables, line, running) => {
                 this.#onLogicStateChange(data, variables, line, running);
