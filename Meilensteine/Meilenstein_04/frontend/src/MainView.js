@@ -48,14 +48,18 @@ export default class MainView extends View {
     );
   }
 
-  // DirectedUnweightedGraph fetchen und Standardbeispiel laden
-  loadDirectedUnweightedGraph() {
+   // SingleLinkedList fetchen und Standardbeispiel laden
+   loadDirectedUnweightedGraph() {
     this.setLastLoad('loadDirectedUnweightedGraph');
-    fetch('DirectedUnweightedGraph.html')
-      .then((response) => response.text())
-      .then((data) => {
-        this.content.innerHTML = data;
-      });
+
+    // Einbinden der AuD-Logik
+    const container = document.getElementById('mainContainer');
+    const mainContainer = new AuDView(container, this.singletonManager);
+    mainContainer.initPromise.then(
+      () => {
+        mainContainer.loadAuD('DirectedUnweightedGraph');
+      },
+    );
   }
 
   // BubbleSort direkt laden und AuD-Logik einbinden
