@@ -56,7 +56,7 @@ export default class SingleLinkedList extends Logic {
     let node = new Node("A");
     node.setNext(new Node("B"));
     node.getNext().setNext(new Node("C"));
-    return {front: node};
+    return {front: node, output: null};
   }
 
   /* public boolean addDataAtPosition(int position, String data) {
@@ -136,6 +136,13 @@ export default class SingleLinkedList extends Logic {
           return s;
         },
       },
+      {
+        f(os) { // Breakpoint
+          const s = _.cloneDeep(os);
+          s.vars.output = true;
+          return s;
+        },
+      }
     ]),
   ];
 
@@ -194,7 +201,7 @@ export default class SingleLinkedList extends Logic {
     { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
     ...execFor('i', () => 0, (s) => s.vars.i < this.getSize(), 1, [
       ...execIfElse((s) => s.vars.currentNode.getData() === s.vars.data, [
-        { f(os) { const s = _.cloneDeep(os); s.vars.positionFound = s.vars.i; return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = s.vars.i; return s; } },
         // Return-Statement noch hinzufügen
       ]),
       {
@@ -204,6 +211,7 @@ export default class SingleLinkedList extends Logic {
           return s;
         },
       },
+      
     ]),
   ];
 
