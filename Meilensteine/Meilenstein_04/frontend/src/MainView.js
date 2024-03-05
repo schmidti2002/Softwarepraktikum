@@ -50,8 +50,8 @@ export default class MainView extends View {
     );
   }
 
-   // SingleLinkedList fetchen und Standardbeispiel laden
-   loadDirectedUnweightedGraph() {
+  // SingleLinkedList fetchen und Standardbeispiel laden
+  loadDirectedUnweightedGraph() {
     this.setLastLoad('loadDirectedUnweightedGraph');
 
     // Einbinden der AuD-Logik
@@ -119,5 +119,43 @@ export default class MainView extends View {
     document.body.classList.toggle('dark-mode');
     document.body.classList.toggle('light-mode');
     document.getElementById('darkModeToggle').classList.toggle('inverted');
+  }
+
+  convertToImage() {
+    const content = document.getElementById('mainContainer');
+    html2canvas(content).then(canvas => {
+      // Hier haben Sie das Canvas-Element, das Sie als Bild speichern können
+      const image = canvas.toDataURL('image/png');
+
+      // Optional: Speichern Sie das Bild als Datei (nur in unterstützten Browsern)
+      const a = document.createElement('a');
+      a.href = image;
+      a.download = 'Algosaurus.png';
+      a.click();
+    });
+  }
+
+  convertToPDF() {
+    const content = document.getElementById('mainContainer');
+    html2canvas(content).then(canvas => {
+      // Erstellen Sie ein Image aus dem Canvas
+      const imgData = canvas.toDataURL('image/png');
+
+      // Initialisieren Sie jsPDF
+      const pdf = new jspdf.jsPDF({
+        orientation: 'p',
+        unit: 'px',
+        format: 'a4',
+      });
+
+      // Fügen Sie das Image zum PDF hinzu
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+      // Speichern Sie das PDF
+      pdf.save('Algosaurus.pdf');
+    });
   }
 }

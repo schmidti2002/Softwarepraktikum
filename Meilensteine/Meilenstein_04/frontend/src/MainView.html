@@ -80,8 +80,21 @@
                 <a class="nav-link" href="Login.html">Logout</a>
             </li>
 
-            <img src="./pics/darkmode.png" alt="dark-mode-toggle" class="btn img-fluid d-inline-block align-top darkModeIconResizer"  style="max-height: 50px;"data-onclick="toggleDarkMode" id="darkModeToggle">
+            <!-- Export -->
+            <li class="nav-item dropdown flex-fill">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Export
+                </a>
+                <nav class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item btn" data-onclick="convertToImage">PNG</a>
+                    <nav class="dropdown-divider"></nav>
+                    <a class="dropdown-item btn" data-onclick="convertToPDF">PDF</a>
+                </nav>
             </li>
+
+            <img src="./pics/darkmode.png" alt="dark-mode-toggle" class="btn img-fluid d-inline-block align-top darkModeIconResizer"  style="max-height: 50px;"data-onclick="toggleDarkMode" id="darkModeToggle">
+            <li>
             <img src="./pics/DinoFrech.png" alt="Ein frech schauender Dino" class="img-fluid d-inline-block align-top" style="max-height: 50px;">
             </li>
         </ul>
