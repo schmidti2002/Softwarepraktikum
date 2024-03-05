@@ -6,47 +6,50 @@ import View from './View';
 
 export default class PasswordResetView extends View {
     constructor(parentNode, singletonManager) {
-      const eventReporter = singletonManager.get('EventReporter');
-      super('PasswordResetView', parentNode, eventReporter);
-      this.eventReporter = eventReporter;
-  
-      this.initPromise.then(() => {
-        // Eingabemaske für Nutzername und Email erzeugen
-        this.inputView = new InputView(
-          document.getElementById('password-reset-input'),
-          eventReporter,
-          () => { },
-        );
-        this.inputView.initPromise.then(() => this.inputView.loadConfig([
-          {
-            name: 'Nutzername',
-            field: 'username',
-            type: 'string',
-            validators: [{
-              func: notEmpty,
-            },
-            ],
-          },
-          {
-            name: 'Email',
-            field: 'email',
-            type: 'email',
-            validators: [
-              {
-                func: validateEmail,
-              },
-            ],
-          },
-        ]));
-      });
+        const eventReporter = singletonManager.get('EventReporter');
+        super('PasswordResetView', parentNode, eventReporter);
+        this.eventReporter = eventReporter;
+
+        this.initPromise.then(() => {
+            // Eingabemaske für Nutzername und Email erzeugen
+            this.inputView = new InputView(
+                document.getElementById('password-reset-input'),
+                eventReporter,
+                () => {}
+            );
+            this.inputView.initPromise.then(() =>
+                this.inputView.loadConfig([
+                    {
+                        name: 'Nutzername',
+                        field: 'username',
+                        type: 'string',
+                        validators: [
+                            {
+                                func: notEmpty,
+                            },
+                        ],
+                    },
+                    {
+                        name: 'Email',
+                        field: 'email',
+                        type: 'email',
+                        validators: [
+                            {
+                                func: validateEmail,
+                            },
+                        ],
+                    },
+                ])
+            );
+        });
     }
 
     async onClickResetPassword() {
         if (!this.inputView.validate()) {
-          this.eventReporter.info('Nutzername und E-Mail-Adresse werden benötigt.');
-          return;
+            this.eventReporter.info('Nutzername und E-Mail-Adresse werden benötigt.');
+            return;
         }
-        
+
         const { username, email } = this.inputView.getValues(); // Werte aus der Eingabemaske abrufen
 
         try {
@@ -58,11 +61,19 @@ export default class PasswordResetView extends View {
                 // Passwortreset durchführen
                 // ToDo: resetPassword für API implementieren
                 const resetResponse = await UserApi.resetPassword(user.email);
-                if (resetResponse.status === 200) {
-                    this.eventReporter.success('Passwortreset erfolgreich. Überprüfen Sie Ihre E-Mail für weitere Anweisungen.');
-                } else {
-                    this.eventReporter.error('Fehler beim Passwortreset.');
-                }
+                resetResponse
+                    .then((response) => {
+                        if (response.status === 200) {
+                            this.eventReporter.success(
+                                'Passwortreset erfolgreich. Überprüfen Sie Ihre E-Mail für weitere Anweisungen.'
+                            );
+                        } else {
+                            this.eventReporter.error('Fehler beim Passwortreset.');
+                        }
+                    })
+                    .catch((error) => {
+                        this.eventReporter.error('Fehler beim Passwortreset: ' + error.message);
+                    });
             } else {
                 this.eventReporter.error('Benutzer nicht gefunden.');
             }

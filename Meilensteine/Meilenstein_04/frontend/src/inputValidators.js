@@ -92,7 +92,7 @@ export function validateEmail(email) {
   // Überprüfung, ob die E-Mail-Adresse dem regulären Ausdruck entspricht
   if (emailRegex.test(email)) {
       return null; // Die E-Mail-Adresse ist gültig
-  } else {
-      return 'Ungültige E-Mail-Adresse'; // Die E-Mail-Adresse ist ungültig
   }
+
+  return 'Ungültige E-Mail-Adresse'; // Die E-Mail-Adresse ist ungültig
 }
