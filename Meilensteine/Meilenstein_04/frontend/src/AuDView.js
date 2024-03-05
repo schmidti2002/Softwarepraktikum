@@ -142,33 +142,21 @@ export default class AuDView extends View {
               resolve();
             });
             break;
-        case 'MergeSort':
-          this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
-          this.visualizerView.initPromise.then(() => {
-            this.logic = new MergeSort(
-              this.eventReporter,
-              (data, variables, line, running) => {
-                this.#onLogicStateChange(data, variables, line, running);
-              },
-            );
-            resolve();
-          });
-          break;
-        case 'SingleLinkedList':
-          this.visualizerView = new ListVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
-          this.visualizerView.initPromise.then(() => {
-            this.logic = new SingleLinkedList(
-              this.eventReporter,
-              (data, variables, line, running) => {
-                this.#onLogicStateChange(data, variables, line, running);
-              },
-            );
-            resolve();
-          });
-          break;
-        default:
-          this.eventReporter.fatal('Datenstruktur/Algo nicht gefunden!');
-          break;
+            case 'MergeSort':
+              this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+              this.visualizerView.initPromise.then(() => {
+                this.logic = new MergeSort(
+                  this.eventReporter,
+                  (data, variables, line, running) => {
+                    this.#onLogicStateChange(data, variables, line, running);
+                  },
+                );
+                resolve();
+              });
+              break;
+            default:
+              this.eventReporter.fatal('Datenstruktur/Algo nicht gefunden!');
+              break;
       }
     }).then(() => {
       this.dropdown.innerHTML = '<option value="" disabled selected>Bitte Algo Auswählen</option>';

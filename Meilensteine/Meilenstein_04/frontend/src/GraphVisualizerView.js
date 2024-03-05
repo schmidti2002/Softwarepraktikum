@@ -14,7 +14,7 @@ export default class GraphVisualizerView extends VisualizerView {
   // data ist das erste Element des stateChangeCallback() in showOutput() in SingleLinkedListLogic.js
   // Methode zur Visualisierung des Graphen
  renderData(adjacencyList) {
-    if(adjacencyList === null || adjacencyList[0] === null || adjacencyList[0][0] === null ){
+    if(adjacencyList === null || adjacencyList[0] === null || adjacencyList[0][0] === null || adjacencyList === undefined || adjacencyList[0] === undefined || adjacencyList[0][0] === undefined ){
         this.eventReporter.error("adjacencyList ist leer");
         return;
     }
