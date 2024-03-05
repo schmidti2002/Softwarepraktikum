@@ -119,15 +119,15 @@ export default class SingleLinkedList extends Logic {
       { f(os) { const s = _.cloneDeep(os); s.vars.newNode = new Node(s.vars.data); return s; } },
       ...execIfElse((s) => s.vars.position === 0, [
         { f(os) { const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.front); return s; } },
-        { f(os) {const s = _.cloneDeep(os); s.vars.front = s.vars.newNode; return s; }, },
+        { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.newNode; return s; }, },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
       ], [
         { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
         ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
           {f(os) {const s = _.cloneDeep(os); s.vars.currentNode = s.vars.currentNode.getNext();return s; },},
         ]),
-        {f(os) {const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.currentNode.getNext()); return s; },},
-        {f(os) {const s = _.cloneDeep(os);s.vars.currentNode.setNext(s.vars.newNode); return s; }, },
+        {f(os) { const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.currentNode.getNext()); return s; },},
+        {f(os) { const s = _.cloneDeep(os);s.vars.currentNode.setNext(s.vars.newNode); return s; }, },
         {f(os) { const s = _.cloneDeep(os);s.vars.output = true; return s;},}
       ]),
     ]),

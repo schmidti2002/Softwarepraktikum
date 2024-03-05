@@ -527,10 +527,28 @@ export default class DirectedUnweightedGraph extends Logic {
             },
         ]
       },{
-        name: 'Kante hinzufügen',
+        name: 'Kanten von Knoten finden',
         algo: {
-          code: this.exampleInsertEdge,
-          lines: this.linesForInsertEdge,
+          code: this.exampleGetEdgesOfNode,
+          lines: this.linesForGetEdgesOfNode,
+          breakpoints: [],
+        },
+        inputs: [
+        {
+            name: 'Knoten',
+            field: 'data',
+            type: 'string',
+            validators: [{
+                func: inputLength,
+                param: {min: 1, max: lengthOfData}
+            }]
+            },
+        ]
+      },{
+        name: 'Kante löschen',
+        algo: {
+          code: this.exampleRemoveEdge,
+          lines: this.linesForRemoveEdge,
           breakpoints: [],
         },
         inputs: [
@@ -545,24 +563,6 @@ export default class DirectedUnweightedGraph extends Logic {
             },{
             name: 'Knoten 2 - eingehender Knoten',
             field: 'nodeTwo',
-            type: 'string',
-            validators: [{
-                func: inputLength,
-                param: {min: 1, max: lengthOfData}
-            }]
-            },
-        ]
-      },{
-        name: 'Kanten von Knoten finden',
-        algo: {
-          code: this.exampleGetEdgesOfNode,
-          lines: this.linesForGetEdgesOfNode,
-          breakpoints: [],
-        },
-        inputs: [
-        {
-            name: 'Knoten',
-            field: 'data',
             type: 'string',
             validators: [{
                 func: inputLength,
