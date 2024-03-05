@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask_restful import Api, Resource, abort
 import psycopg2
-
+import os
 
 DESIRED_FORMAT = "%Y-%m-%d %H:%M:%S+00:00"
 MAX_APIKEY_AGE_MIN = 20
@@ -11,7 +11,7 @@ def db_connect():
     host_url = "swp.dczlabs.xyz"
     port = "3131"
     user_name = "swpusr"
-    password = "251f6100a8ff1dd2"
+    password = os.environ.get('db_password')
     Datenbank = "swp"
 
     database = psycopg2.connect(host=host_url, port= port, user=user_name, password=password, database=Datenbank)
