@@ -2,6 +2,7 @@ from datetime import datetime
 from flask_restful import Api, Resource, abort
 import psycopg2
 import os
+import json
 
 DESIRED_FORMAT = "%Y-%m-%d %H:%M:%S+00:00"
 MAX_APIKEY_AGE_MIN = 20
@@ -51,10 +52,11 @@ def verify_admin(user_uuid, database):
     
 def user_body(request):
     try:
-        id = request.form.get("id")
-        name = request.form.get("name")
-        data= request.form.get("data")
-        state = request.form.get("state")
+        data_resquest= json.loads(request.get_json())
+        id = data_resquest["id"]
+        name = data_resquest["name"]
+        data= data_resquest["data"]
+        state = data_resquest["state"]
         if id == None or name == None or data == None or state == None:
             return ("Send data conflicts with existing entry", 409)
     except :

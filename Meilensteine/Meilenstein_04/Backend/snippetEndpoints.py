@@ -5,6 +5,7 @@ from flask_restful import Api, Resource, abort
 from flask_cors import CORS
 import random
 import string
+import json
 
 # wichtige 
 from hashlib import sha256

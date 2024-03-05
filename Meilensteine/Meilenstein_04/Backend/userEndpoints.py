@@ -8,6 +8,7 @@ from flask_caching import Cache
 import random
 import string
 import secrets
+import json
 
 # wichtige 
 from hashlib import sha256
@@ -101,11 +102,12 @@ class user(Resource):
     def post(self):
         # Daten aus dem Request holen
         try:
-            id = request.form.get("id")
-            name = request.form.get("username")
-            passwd= request.form.get("passwd")
-            email = request.form.get("email")
-            admin = bool(request.form.get("admin"))
+            data_resquest= json.loads(request.get_json())
+            id = data_resquest["id"]
+            name = data_resquest["username"]
+            passwd= data_resquest["passwd"]
+            email = data_resquest["email"]
+            admin = bool(data_resquest["admin"])
             if id is None or name is None or passwd is None or email is None or admin is None:
                 return abort(409, message="Send data conflicts with existing entry")
         except:
@@ -132,11 +134,12 @@ class user(Resource):
         
         # Daten aus dem Request holen
         try:
-            id = request.form.get("id")
-            name = request.form.get("username")
-            passwd= request.form.get("passwd")
-            email = request.form.get("email")
-            admin = request.form.get("admin")
+            data_resquest= json.loads(request.get_json())
+            id = data_resquest["id"]
+            name = data_resquest["username"]
+            passwd= data_resquest["passwd"]
+            email = data_resquest["email"]
+            admin = bool(data_resquest["admin"])
             if id is None or name is None or passwd is None or email is None or admin is None:
                 return abort(409, message="Send data conflicts with existing entry")
         except :
