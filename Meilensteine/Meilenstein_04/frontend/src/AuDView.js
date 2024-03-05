@@ -104,7 +104,7 @@ export default class AuDView extends View {
     this.visualizerView.renderData(_.cloneDeep(data));
     this.inputView.setDisabled(running);
     this.#onFormValidChanged();
-  }
+  } 
 
   // Einen Algorithmus oder Datenstruktur einladen
   // Wird in MainView gesetzt

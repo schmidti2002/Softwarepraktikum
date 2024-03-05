@@ -14,6 +14,7 @@ export default class GraphVisualizerView extends VisualizerView {
   // data ist das erste Element des stateChangeCallback() in showOutput() in SingleLinkedListLogic.js
   // Methode zur Visualisierung des Graphen
  renderData(adjacencyList) {
+  try{
     if(adjacencyList === null || adjacencyList === undefined || adjacencyList.length === 0){
         while (this.container.firstChild) {
           this.container.removeChild(this.container.firstChild);
@@ -21,7 +22,7 @@ export default class GraphVisualizerView extends VisualizerView {
         this.eventReporter.info("Adjazenzliste ist leer");
         return;
     }
-
+    this.container.innerHTML = '';
     var elements = { nodes: [], edges: [] };
 
     // Generate nodes and edges from adjacencyList
@@ -46,7 +47,7 @@ export default class GraphVisualizerView extends VisualizerView {
     });
 
     // Initialize Cytoscape
-    var cy = window.cy = cytoscape({
+    cy = window.cy = cytoscape({
       container: this.container,
       elements: elements,
       style: [
@@ -78,5 +79,6 @@ export default class GraphVisualizerView extends VisualizerView {
         avoidOverlap: true,
       }
     });
+  } catch (error) {}
   } 
 }

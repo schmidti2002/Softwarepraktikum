@@ -11,13 +11,14 @@ export default class ListVisualizerView extends VisualizerView {
   }
 
   renderData(startNode) {
+    try {
     if(startNode === null){
       while (this.container.firstChild) {
         this.container.removeChild(this.container.firstChild);
       }
       return;
     }
-
+    this.container.innerHTML = '';
     var elements = { nodes: [], edges: [] };
   
     var visited = new Set();
@@ -65,6 +66,7 @@ export default class ListVisualizerView extends VisualizerView {
         rows: 1
       }
     });
+    } catch (error) {}
   }  
 }
   // Ausgabe der Liste in der Visualisierung
