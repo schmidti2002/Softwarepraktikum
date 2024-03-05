@@ -29,16 +29,6 @@ export default class PasswordResetView extends View {
                             },
                         ],
                     },
-                    {
-                        name: 'Email',
-                        field: 'email',
-                        type: 'email',
-                        validators: [
-                            {
-                                func: validateEmail,
-                            },
-                        ],
-                    },
                 ])
             );
         });
@@ -46,39 +36,30 @@ export default class PasswordResetView extends View {
 
     async onClickResetPassword() {
         if (!this.inputView.validate()) {
-            this.eventReporter.info('Nutzername und E-Mail-Adresse werden benötigt.');
+            this.eventReporter.info('Nutzername wird benötigt.');
             return;
         }
-
-        const { username, email } = this.inputView.getValues(); // Werte aus der Eingabemaske abrufen
-
+    
+        const { username } = this.inputView.getValues(); // Wert des Benutzernamens abrufen
+    
         try {
-            // Benutzer abrufen
-            const user = await UserApi.userGet({ username, email });
-
-            // Überprüfen, ob ein Benutzer gefunden wurde
-            if (user) {
-                // Passwortreset durchführen
-                // ToDo: resetPassword für API implementieren
-                const resetResponse = await UserApi.resetPassword(user.email);
-                resetResponse
-                    .then((response) => {
-                        if (response.status === 200) {
-                            this.eventReporter.success(
-                                'Passwortreset erfolgreich. Überprüfen Sie Ihre E-Mail für weitere Anweisungen.'
-                            );
-                        } else {
-                            this.eventReporter.error('Fehler beim Passwortreset.');
-                        }
-                    })
-                    .catch((error) => {
-                        this.eventReporter.error('Fehler beim Passwortreset: ' + error.message);
-                    });
-            } else {
-                this.eventReporter.error('Benutzer nicht gefunden.');
-            }
+            // Passwortreset durchführen
+            // ToDo: resetPassword für API implementieren
+            const resetResponse = await UserApi.resetPassword(username);
+            
+            resetResponse.then(response => {
+                if (response.status === 200) {
+                    this.eventReporter.success(
+                        'Passwortreset erfolgreich. Überprüfen Sie Ihre E-Mail für weitere Anweisungen.'
+                    );
+                } else {
+                    this.eventReporter.error('Fehler beim Passwortreset.');
+                }
+            }).catch(error => {
+                this.eventReporter.error('Fehler beim Passwortreset: ' + error.message);
+            });
         } catch (error) {
-            this.eventReporter.error('Fehler bei der API-Anfrage: ' + error.message);
+            this.eventReporter.error('Fehler beim Passwortreset: ' + error.message);
         }
     }
 }
