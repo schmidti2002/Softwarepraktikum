@@ -156,6 +156,29 @@ paths:
           description: apitoken delted
         "401":
           description: apitoken not found or user not logged in
+    /user/reset-password:
+    post:
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: password reset succesful
+        "404":
+          description: user with email not found
+        "500":
+          description: server error
 
   /list/algo:
     get:
