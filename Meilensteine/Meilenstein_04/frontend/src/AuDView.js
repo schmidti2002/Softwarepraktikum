@@ -1,11 +1,13 @@
 import * as _ from 'lodash';
 import BubbleSort from './BubbleSortLogic';
 import SingleLinkedList from './SingleLinkedListLogic';
+import DirectedUnweightedGraph from './DirectedUnweightedGraphLogic';
 import CodeView from './CodeView';
 import DataView from './DataView';
 import InputView from './InputView';
 import SortVisualizerView from './SortVisualizerView';
 import ListVisualizerView from './ListVisualizerView';
+import GraphVisualizerView from './GraphVisualizerView';
 import View from './View';
 import MergeSort from './MergeSortLogic';
 
@@ -98,7 +100,7 @@ export default class AuDView extends View {
     this.inputView.setDisabled(running);
     this.#onFormValidChanged();
   }
-
+  
   // Einen Algorithmus oder Datenstruktur einladen
   // Wird in MainView gesetzt
   loadAuD(type) {
@@ -116,6 +118,30 @@ export default class AuDView extends View {
             resolve();
           });
           break;
+          case 'SingleLinkedList':
+            this.visualizerView = new ListVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+            this.visualizerView.initPromise.then(() => {
+              this.logic = new SingleLinkedList(
+                this.eventReporter,
+                (data, variables, line, running) => {
+                  this.#onLogicStateChange(data, variables, line, running);
+                },
+              );
+              resolve();
+            });
+            break;
+            case 'DirectedUnweightedGraph':
+            this.visualizerView = new GraphVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+            this.visualizerView.initPromise.then(() => {
+              this.logic = new DirectedUnweightedGraph(
+                this.eventReporter,
+                (data, variables, line, running) => {
+                  this.#onLogicStateChange(data, variables, line, running);
+                },
+              );
+              resolve();
+            });
+            break;
         case 'MergeSort':
           this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
           this.visualizerView.initPromise.then(() => {
