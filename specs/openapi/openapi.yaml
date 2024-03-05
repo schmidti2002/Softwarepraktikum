@@ -156,6 +156,56 @@ paths:
           description: apitoken delted
         "401":
           description: apitoken not found or user not logged in
+  /user/reset-password:
+    get:
+      tags:
+        - user
+      responses:
+        "200":
+          description: password reset request sent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+    post:
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+              properties:
+                username:
+                  type: string
+      responses:
+        "200":
+          description: password reset request created
+  /user/reset-password/{username}:
+    delete:
+      tags:
+        - user
+      parameters:
+        - name: username
+          required: true
+          in: path
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: password reset request deleted
+        "404":
+          description: password reset request not found
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
 
   /list/algo:
     get:

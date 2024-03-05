@@ -1,7 +1,7 @@
 import InputView from './InputView';
 import View from './View';
 import {
-  emptyOr, inputLength, notEmpty, password,
+  emptyOr, inputLength, notEmpty, password, validateEmail,
 } from './inputValidators';
 
 export default class UserView extends View {
@@ -50,7 +50,7 @@ export default class UserView extends View {
           type: 'string',
           prefill: () => this.#userInfo.email,
           validators: [{
-            func: notEmpty, // TODO email
+            func: validateEmail,
           },
           ],
         },
