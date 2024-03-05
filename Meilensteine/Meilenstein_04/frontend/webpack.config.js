@@ -2,13 +2,18 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/ContentOrganizer.js',
+  entry: './src/entry.js',
   devtool: 'inline-source-map',
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
   devServer: {
     static: './src',
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'https://swp.dczlabs.xyz:3130',
+        logLevel: 'debug', /*optional*/
+        changeOrigin: true
+      }
+    ]
   },
   module: {
     rules: [
@@ -16,8 +21,8 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      }
-    ]
+      },
+    ],
   },
   resolve: {
     extensions: ['.ts', '.js'],

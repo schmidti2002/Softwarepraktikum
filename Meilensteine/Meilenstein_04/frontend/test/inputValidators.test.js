@@ -1,6 +1,8 @@
-import { expect, describe, test, jest, beforeEach } from '@jest/globals';
 import {
-  minMax, notEmpty, regex, arrayEveryEntry,
+  expect, describe, test, jest, beforeEach,
+} from '@jest/globals';
+import {
+  minMax, notEmpty, regex, arrayEveryEntry, inputLength, password,
 } from '../src/inputValidators';
 
 describe('inputValidators.js', () => {
@@ -8,8 +10,8 @@ describe('inputValidators.js', () => {
     test.each([
       ['2', { min: 1, max: 3 }, null],
       ['-2', { min: -999, max: -1 }, null],
-      ['3', { min: 1, max: 2 }, 'Darf nicht größer als 2 sein'],
-      ['1', { min: 2, max: 3 }, 'Darf nicht kleiner als 2 sein'],
+      ['3', { max: 2 }, 'Darf nicht größer als 2 sein'],
+      ['1', { min: 2 }, 'Darf nicht kleiner als 2 sein'],
       ['3.9', { min: 1.9, max: 2.9 }, 'Darf nicht größer als 2.9 sein'],
       ['1.9', { min: 2.9, max: 3.9 }, 'Darf nicht kleiner als 2.9 sein'],
       ['0.0', { min: -1.9, max: 2.9 }, null],
@@ -62,6 +64,62 @@ describe('inputValidators.js', () => {
       ['?', abRegex, 'Enstpricht nicht dem erwarteten Muster'],
     ])('prüft ob %s der regular expresion %s entspricht', (value, param, result) => {
       expect(regex(value, param)).toBe(result);
+    });
+  });
+
+  describe('inputLength validator', () => {
+    test.each([
+      ['', { min: 0, max: 3 }, null],
+      ['', { }, null],
+      ['a', { min: 2 }, 'Darf nicht kürzer als 2 sein'],
+      ['abc', { max: 2 }, 'Darf nicht länger als 2 sein'],
+    ])('Länge von %s liegt im Bereich %s', (value, params, result) => {
+      expect(inputLength(value, params)).toBe(result);
+    });
+  });
+
+  describe('password validator', () => {
+    for (let i = 0; i < 15; i++) {
+      let combination = i;
+      let passwd = '';
+      const errors = [];
+      const correct = [];
+      if (combination >= 8) {
+        combination -= 8;
+        passwd += 'a';
+        correct.push('Kleinbuchstaben');
+      } else {
+        errors.push('Kleinbuchstaben');
+      }
+      if (combination >= 4) {
+        combination -= 4;
+        passwd += 'G';
+        correct.push('Großbuchstaben');
+      } else {
+        errors.push('Großbuchstaben');
+      }
+      if (combination >= 2) {
+        combination -= 2;
+        passwd += '4';
+        correct.push('Zahlen');
+      } else {
+        errors.push('Zahlen');
+      }
+      if (combination >= 1) {
+        passwd += '!';
+        correct.push('Sonderzeichen');
+      } else {
+        errors.push('Sonderzeichen');
+      }
+      test(`password:${passwd}`, () => {
+        const result = password(passwd);
+        errors.forEach((err) => expect(result).toContain(err));
+        correct.forEach((err) => expect(result).not.toContain(err));
+      });
+    }
+
+    test('password:aG4!', () => {
+      expect(password('aG4!')).toBe(null);
     });
   });
 

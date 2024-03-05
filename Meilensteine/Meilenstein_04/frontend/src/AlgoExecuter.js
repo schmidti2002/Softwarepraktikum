@@ -1,4 +1,7 @@
 import * as _ from 'lodash';
+
+// Diese Klasse kümmert sich um die Ausführung von Code, wie sie die Algorithmen bereitstellen
+
 /*
 Minimal usage example for BubbleSort:
 lines = [
@@ -21,12 +24,15 @@ exec.outputFunction = () => showOutput(); // oder eine andere Funktion
 exec.play(false, () => console.log(JSON.stringify(exec.state.vars.arr)));
 */
 
+// Hilfsfunktion; Speichert aktuell existente Variablen in varsStack
 function execStartBlock(oldState) {
   const state = _.cloneDeep(oldState);
   state.varsStack.push(Object.keys(state.vars).filter((n) => state.vars[n] !== undefined));
   return state;
 }
 
+// Hilfsfunktion; Löscht alle Variablen die seit dem
+// letzten Aufruf von execStartBlock erstellt wurden
 function execEndBlock(oldState) {
   const state = _.cloneDeep(oldState);
   const existingVars = state.varsStack.pop();
@@ -38,6 +44,8 @@ function execEndBlock(oldState) {
   return state;
 }
 
+// Hilfsfunktion; lokale Variablen existieren nur innerhalb der
+// Zeilen die der Funktion übergeben wurden
 export function execBlock(lines) {
   return [
     {
@@ -55,6 +63,11 @@ export function execBlock(lines) {
   ];
 }
 
+// Hilfsfunktion; entspricht einer for-Schleife
+// counter(string): Name der Zählvariable
+// start(state => number): Startwert
+// condition(state => bool): Schleifenbedingung
+// step(number | state => number): Inkrement pro Durchlauf
 export function execFor(counter, start, condition, step, lines) {
   return [
     {
@@ -94,6 +107,7 @@ export function execFor(counter, start, condition, step, lines) {
   ];
 }
 
+// Hilfsfunktion; entspricht einer while-Schleife
 export function execWhile(condition, lines) {
   return [
     {
@@ -118,6 +132,7 @@ export function execWhile(condition, lines) {
   ];
 }
 
+// Hilfsfunktion; entspricht einem if-(else-)Konstrukt
 export function execIfElse(condition, lines, elsLines = []) {
   return [
     {
@@ -157,36 +172,37 @@ export class Executer {
 
   outputFunction = function () { }; // Funktion, um den AoD zu visualisieren
 
+  // Zustand des Algorithmus
   state = {
     currentLine: 0, // Zeile, die der Algo gerade bearbeitet
-    varsStack: [],
-    vars: {},
+    varsStack: [], // Wird für die Simulation von Variablenlebenszeiten verwendet
+    vars: {}, // Hier finden sich alle Variablen
   };
 
+  // alter Zustand, wird für den Reset des Algorithmus benötigt
   OldState = {
     currentLine: 0,
     varsStack: [],
     vars: {},
   };
 
-  intervalId;
+  intervalId; // Speichert die ID des Intervals für Autoplay
 
   // Konstruktor
-  constructor(errorReporter) {
-    this.errorReporter = errorReporter;
+  constructor(eventReporter) {
+    this.eventReporter = eventReporter;
   }
 
   // private; Führt eine line aus
   #step() {
-    // Abfrage vielleicht nicht nötig
-    if (this.state.currentLine === this.lines.length) {
+    if (this.state.currentLine >= this.lines.length) {
       this.#stop();
       return;
     }
     const oldLine = this.state.currentLine;
     const { f } = this.lines[this.state.currentLine];
     if (f) {
-      this.state = f(this.state);
+      this.state = f(this.state, this.eventReporter);
     }
     if (oldLine === this.state.currentLine) {
       this.state.currentLine += 1;
@@ -200,6 +216,7 @@ export class Executer {
     }
   }
 
+  // Führt eine aus
   step() {
     this.#step();
     this.outputFunction();
@@ -209,7 +226,7 @@ export class Executer {
   #nextBreakpoint() {
     let stepsCounter = 0;
     do {
-      if (this.state.currentLine === this.lines.length) {
+      if (this.state.currentLine >= this.lines.length) {
         this.#stop();
         return;
       }
@@ -217,8 +234,9 @@ export class Executer {
     } while (!this.breakpoints.includes(this.state.currentLine) && stepsCounter++ < 1000);
   }
 
-  // Ändern des Algorithmus; stellt sicher, dass zurzeit kein Algorithmus läuft
+  // Ändern des Algorithmus
   changeAlgo(lines, breakpoints, timeout, vars) {
+    // stellt sicher, dass zurzeit kein Algorithmus läuft
     if (!this.isRunning()) {
       this.lines = lines;
       this.breakpoints = breakpoints;
@@ -231,18 +249,12 @@ export class Executer {
       this.OldState = _.cloneDeep(this.state);
       return true;
     }
-    this.errorReporter.warn('Algorithmus ist noch nicht beendet');
+    this.eventReporter.warn('Algorithmus ist noch nicht beendet');
     return false;
   }
 
-  // Führt einen Algorithmus zwangsweise aus
-  // Nur im Konstruktor einer Klasse zum Initialisieren der Datenstruktur verwenden.
-  forcePlay(lines) {
-    this.lines = lines;
-    this.breakpoints = [];
-    this.#nextBreakpoint();
-  }
-
+  // gibt wahr zurück, wenn der Algorithmus läuft,
+  // indem es prüft, ob die ID des Intervals für Autoplay nicht undefined ist
   isRunning() {
     return this.intervalId !== undefined;
   }

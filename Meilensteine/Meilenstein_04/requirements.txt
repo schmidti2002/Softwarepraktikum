@@ -1,0 +1,9 @@
+typing
+flask 
+flask_restful
+flask_cors 
+flask_httpauth
+flask_wtf
+flask_caching
+psycopg2
+datetime

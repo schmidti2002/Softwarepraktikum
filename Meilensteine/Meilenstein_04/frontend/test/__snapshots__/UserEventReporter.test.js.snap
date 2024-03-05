@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserEventReporter.js #spawnToast using functions error() creates error-Toast 1`] = `
+"<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11"><div class="toast align-items-center bg-danger fade show showing" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">TestNachricht</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div></div><div id="modal-container"></div>"
+`;
+
+exports[`UserEventReporter.js #spawnToast using functions fatal() creates fatal-Toast 1`] = `
+"<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div><div id="modal-container"><div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="padding-right: 1024px;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Schwerwiegender Fehler</h5>
+        </div>
+        <div class="modal-body">TestNachricht</div>
+        <div class="modal-footer">
+          <a href="." class="btn btn-primary">Neu laden</a>
+        </div>
+      </div>
+    </div>
+  </div></div><div class="modal-backdrop fade show"></div>"
+`;
+
+exports[`UserEventReporter.js #spawnToast using functions info() creates info-Toast 1`] = `
+"<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11"><div class="toast align-items-center bg-light fade show showing" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">TestNachricht</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div></div><div id="modal-container"></div>"
+`;
+
+exports[`UserEventReporter.js #spawnToast using functions multiple calls create multiple-Toast 1`] = `
+"<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11"><div class="toast align-items-center bg-danger fade show showing" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">TestNachricht</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div><div class="toast align-items-center bg-light fade show showing" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">TestNachricht</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div><div class="toast align-items-center bg-warning fade show showing" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">TestNachricht</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div></div><div id="modal-container"></div>"
+`;
+
+exports[`UserEventReporter.js #spawnToast using functions success() creates success-Toast 1`] = `
+"<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11"><div class="toast align-items-center bg-success fade show showing" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">TestNachricht</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div></div><div id="modal-container"></div>"
+`;
+
+exports[`UserEventReporter.js #spawnToast using functions warn() creates warn-Toast 1`] = `
+"<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11"><div class="toast align-items-center bg-warning fade show showing" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">TestNachricht</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div></div><div id="modal-container"></div>"
+`;
