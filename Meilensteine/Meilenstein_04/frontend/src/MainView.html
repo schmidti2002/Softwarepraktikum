@@ -16,11 +16,22 @@
         overflow: auto;
         height: 100%;
     }
+
+    .darkModeIconResizer {
+        transform: scale(0.5);
+    }
+
+    .inverted {
+        filter: invert(100%);
+    }
 </style>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse align-items-center justify-content-center" id="navbarNav">
+<nav class="navbar navbar-expand-lg" id="navbar">
+    <nav class="collapse navbar-collapse align-items-center justify-content-center" id="navbarNav">
         <ul class="navbar-nav nav-fill w-75">
+            <li class="nav-item flex-fill">
+                <img src="./pics/DinoVerwirrt.png" alt="Ein großer Langer Dino" class="img-fluid d-inline-block align-top" style="max-height: 50px;">
+            </li>
 
             <!-- Startseite -->
             <li class="nav-item flex-fill">
@@ -33,12 +44,12 @@
                     aria-haspopup="true" aria-expanded="false">
                     Datenstrukturen
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <nav class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item btn" data-onclick="loadSingleLinkedList">Single Linked List</a>
-                    <div class="dropdown-divider"></div>
+                    <nav class="dropdown-divider"></nav>
                     <a class="dropdown-item btn" data-onclick="loadDirectedUnweightedGraph">Gerichteter ungewichteter
                         Graph</a>
-                </div>
+                    </nav>
             </li>
 
             <!-- DropDown_Menü für die Algorithmen -->
@@ -47,11 +58,11 @@
                     aria-haspopup="true" aria-expanded="false">
                     Sortieralgorithmen
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <nav class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item btn" data-onclick="loadBubbleSort">Bubble Sort</a>
-                    <div class="dropdown-divider"></div>
+                    <nav class="dropdown-divider"></nav>
                     <a class="dropdown-item btn" data-onclick="loadMergeSort">Merge Sort</a>
-                </div>
+                </nav>
             </li>
 
 
@@ -65,8 +76,26 @@
             <li class="nav-item flex-fill">
                 <a class="nav-link" data-onclick="onClickLogout">Logout</a>
             </li>
+
+            <!-- Export -->
+            <li class="nav-item dropdown flex-fill">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Export
+                </a>
+                <nav class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item btn" data-onclick="convertToImage">PNG</a>
+                    <nav class="dropdown-divider"></nav>
+                    <a class="dropdown-item btn" data-onclick="convertToPDF">PDF</a>
+                </nav>
+            </li>
+
+            <img src="./pics/darkmode.png" alt="dark-mode-toggle" class="btn img-fluid d-inline-block align-top darkModeIconResizer"  style="max-height: 50px;"data-onclick="toggleDarkMode" id="darkModeToggle">
+            <li>
+            <img src="./pics/DinoFrech.png" alt="Ein frech schauender Dino" class="img-fluid d-inline-block align-top" style="max-height: 50px;">
+            </li>
         </ul>
-    </div>
+    </nav>
 </nav>
 <div id="mainContent">
     <div class="position-relative" id="mainContainer">

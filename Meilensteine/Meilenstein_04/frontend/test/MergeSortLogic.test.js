@@ -56,7 +56,7 @@ import MergeSort from '../src/MergeSortLogic';
         [[1000000,100000,10000,1000,100,10,1], [1,10,100,1000,10000,100000,1000000]],
         ])('sort', (array, solution) => {
             merge.exec = new Executer({});
-            merge.exec.changeAlgo(merge.linesForMergeSort, [], 0, {arr: array})
+            merge.exec.changeAlgo(merge.linesForSort, [], 0, {arr: array})
             for(let i = 0; i < 1000; i++){
                 merge.nextBreak()
             }
