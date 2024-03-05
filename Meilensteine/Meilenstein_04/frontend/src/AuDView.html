@@ -8,17 +8,21 @@
             <button class="btn btn-secondary">Werte bearbeiten</button>
         </div> -->
         <div class="pt-2" id="audview-input"></div>
-        <button id="audview-algoStart" data-onclick="onClickStart" class="btn btn-primary">Start</button>
-        <div class="pt-2" id="audview-algoControls" style="visibility: hidden;">
-            <button data-onclick="onClickCtrlPlay" class="btn btn-primary col">Play</button>
-            <button data-onclick="onClickCtrlPause" class="btn btn-secondary col">Pause</button>
-            <button data-onclick="onClickCtrlNextBreak" class="btn btn-secondary col">Next Breakpoint</button>
-            <button data-onclick="onClickCtrlStep" class="btn btn-secondary col">Step</button>
-            <button data-onclick="onClickCtrlReset" class="btn btn-danger col">Reset</button>
+        <div id="audview-code"></div>
+        <br>
+        <div>
+            <button id="audview-algoStart" data-onclick="onClickStart" class="btn btn-primary">Start</button>
+            <div class="pt-2" id="audview-algoControls" style="visibility: hidden;">
+                <button data-onclick="onClickCtrlPlay" class="btn btn-primary col">Play</button>
+                <button data-onclick="onClickCtrlPause" class="btn btn-secondary col">Pause</button>
+                <button data-onclick="onClickCtrlNextBreak" class="btn btn-secondary col">Next Breakpoint</button>
+                <button data-onclick="onClickCtrlStep" class="btn btn-secondary col">Step</button>
+                <button data-onclick="onClickCtrlReset" class="btn btn-danger col">Reset</button>
+            </div>
         </div>
+        
     </div>
     <div class="col container border">
-        <div class="row" id="audview-code"></div>
         <div class="row" id="audview-data"></div>
     </div>
 </div>

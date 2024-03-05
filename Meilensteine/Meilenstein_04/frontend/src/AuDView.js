@@ -56,10 +56,15 @@ export default class AuDView extends View {
 
   // Die Buttons aus AuDView.html bekommen ihre entsprechende Funktionalität
   onClickCtrlPlay = () => this.logic.play();
+
   onClickCtrlPause = () => this.logic.pause();
+
   onClickCtrlNextBreak = () => this.logic.nextBreak();
+
   onClickCtrlStep = () => this.logic.step();
+
   onClickCtrlReset = () => this.logic.reset();
+
   onClickStart = () => this.loadAlgoByIndex(this.dropdown.value);
 
   #selectedAlgoChanged(ev) {
@@ -100,7 +105,7 @@ export default class AuDView extends View {
     this.inputView.setDisabled(running);
     this.#onFormValidChanged();
   }
-  
+
   // Einen Algorithmus oder Datenstruktur einladen
   // Wird in MainView gesetzt
   loadAuD(type) {
@@ -115,48 +120,50 @@ export default class AuDView extends View {
                 this.#onLogicStateChange(data, variables, line, running);
               },
             );
+            document.getElementById('outputDataContainer').remove();
             resolve();
           });
           break;
-          case 'SingleLinkedList':
-            this.visualizerView = new ListVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
-            this.visualizerView.initPromise.then(() => {
-              this.logic = new SingleLinkedList(
-                this.eventReporter,
-                (data, variables, line, running) => {
-                  this.#onLogicStateChange(data, variables, line, running);
-                },
-              );
-              resolve();
-            });
-            break;
-            case 'DirectedUnweightedGraph':
-            this.visualizerView = new GraphVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
-            this.visualizerView.initPromise.then(() => {
-              this.logic = new DirectedUnweightedGraph(
-                this.eventReporter,
-                (data, variables, line, running) => {
-                  this.#onLogicStateChange(data, variables, line, running);
-                },
-              );
-              resolve();
-            });
-            break;
-            case 'MergeSort':
-              this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
-              this.visualizerView.initPromise.then(() => {
-                this.logic = new MergeSort(
-                  this.eventReporter,
-                  (data, variables, line, running) => {
-                    this.#onLogicStateChange(data, variables, line, running);
-                  },
-                );
-                resolve();
-              });
-              break;
-            default:
-              this.eventReporter.fatal('Datenstruktur/Algo nicht gefunden!');
-              break;
+        case 'SingleLinkedList':
+          this.visualizerView = new ListVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+          this.visualizerView.initPromise.then(() => {
+            this.logic = new SingleLinkedList(
+              this.eventReporter,
+              (data, variables, line, running) => {
+                this.#onLogicStateChange(data, variables, line, running);
+              },
+            );
+            resolve();
+          });
+          break;
+        case 'DirectedUnweightedGraph':
+          this.visualizerView = new GraphVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+          this.visualizerView.initPromise.then(() => {
+            this.logic = new DirectedUnweightedGraph(
+              this.eventReporter,
+              (data, variables, line, running) => {
+                this.#onLogicStateChange(data, variables, line, running);
+              },
+            );
+            resolve();
+          });
+          break;
+        case 'MergeSort':
+          this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+          this.visualizerView.initPromise.then(() => {
+            this.logic = new MergeSort(
+              this.eventReporter,
+              (data, variables, line, running) => {
+                this.#onLogicStateChange(data, variables, line, running);
+              },
+            );
+            document.getElementById('outputDataContainer').remove();
+            resolve();
+          });
+          break;
+        default:
+          this.eventReporter.fatal('Datenstruktur/Algo nicht gefunden!');
+          break;
       }
     }).then(() => {
       this.dropdown.innerHTML = '<option value="" disabled selected>Bitte Algo Auswählen</option>';
