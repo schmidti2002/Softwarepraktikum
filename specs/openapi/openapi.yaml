@@ -6,7 +6,7 @@ info:
   license:
     name: AGPL V3.0
     url: https://www.gnu.org/licenses/agpl-3.0.en.html#license-text
-  version: "1.0.0"
+  version: "1.1.0"
 servers:
   - url: swp.dczlabs.xyz:3130/api
   - url: localhost:3130
@@ -67,6 +67,23 @@ paths:
         schema:
           type: string
           format: uuid
+    put:
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdatePartial"
+      responses:
+        "200":
+          description: user got deleted
+        "404":
+          description: user not found
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
     delete:
       tags:
         - user

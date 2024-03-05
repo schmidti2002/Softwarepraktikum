@@ -1,5 +1,5 @@
 <style>
-    #container {
+    #mainContainer {
         height: fit-content;
     }
 
@@ -29,7 +29,7 @@
 
             <!-- DropDown_Menü für die Datenstrukturen -->
             <li class="nav-item dropdown flex-fill">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Datenstrukturen
                 </a>
@@ -42,8 +42,8 @@
             </li>
 
             <!-- DropDown_Menü für die Algorithmen -->
-            <li class="nav-item dropdown flex-fill">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            <li id="before-admin" class="nav-item dropdown flex-fill">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Sortieralgorithmen
                 </a>
@@ -54,36 +54,32 @@
                 </div>
             </li>
 
-            <!-- Admin -->
-            <li class="nav-item flex-fill">
-                <a class="nav-link" href="#">Admin</a>
-            </li>
 
             <!-- Benutzerprofil -->
             <li class="nav-item flex-fill">
-                <a class="nav-link btn" data-onclick="showUserEditor">Benutzerprofil</a>
+                <a class="nav-link btn" data-bs-toggle="offcanvas" href="#user-editor-offcanvas" role="button"
+                    aria-controls="user-editor-offcanvas">Benutzerprofil</a>
             </li>
 
             <!-- Logout -->
             <li class="nav-item flex-fill">
-                <a class="nav-link" href="Login.html">Logout</a>
+                <a class="nav-link" data-onclick="onClickLogout">Logout</a>
             </li>
         </ul>
     </div>
 </nav>
 <div id="mainContent">
-
-    <div id="container">
-        <div class="position-relative" id="mainContainer">
-            <div class="position-absolute top-50 start-50 translate-middle">
-                <p>Redirecting to where you left off...</p>
-                <div class="position-absolute start-50 translate-middle-x">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
+    <div class="position-relative" id="mainContainer">
+        <div class="position-absolute top-50 start-50 translate-middle">
+            <p>Redirecting to where you left off...</p>
+            <div class="position-absolute start-50 translate-middle-x">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
         </div>
-        <div id="userEditor"></div>
     </div>
+</div>
+
+<div class="offcanvas offcanvas-end visible" tabindex="-1" id="user-editor-offcanvas">
 </div>

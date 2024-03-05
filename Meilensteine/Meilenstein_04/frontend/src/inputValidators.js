@@ -76,3 +76,11 @@ export function arrayEveryEntry(validator) {
     return _.join(errors);
   };
 }
+
+export function emptyOr(validator) {
+  return (value, params) => (value === '' ? null : validator(value, params));
+}
+
+export function inEnum(value, params) {
+  return params.includes(value) ? null : `valide Eingaben sind: "${_.join(params, '", "')}"`;
+}

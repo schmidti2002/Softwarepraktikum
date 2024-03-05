@@ -6,6 +6,14 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     static: './src',
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'https://swp.dczlabs.xyz:3130',
+        logLevel: 'debug', /*optional*/
+        changeOrigin: true
+      }
+    ]
   },
   module: {
     rules: [
