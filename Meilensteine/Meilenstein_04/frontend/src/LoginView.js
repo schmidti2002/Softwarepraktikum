@@ -3,12 +3,16 @@ import { Configuration, ResponseError } from './api/runtime.ts';
 import InputView from './InputView';
 import { notEmpty } from './inputValidators';
 import View from './View';
+import RegistrationView from './RegistrationView.js';
 
 export default class LoginView extends View {
+  #singletonManager;
+
   constructor(parentNode, singletonManager) {
     const eventReporter = singletonManager.get('EventReporter');
     super('LoginView', parentNode, eventReporter);
     this.eventReporter = eventReporter;
+    this.#singletonManager = singletonManager;
 
     this.initPromise.then(() => {
       // Eingabemaske für Nutzername und Passwort erzeugen
@@ -66,8 +70,9 @@ export default class LoginView extends View {
       });
   }
 
-  onClickRegister() {
-    throw new Error('not implemented');
+  async onClickRegister() {
+    const registrationView = new RegistrationView(this.parentNode, this.#singletonManager);
+    await registrationView.initPromise;
   }
 
   onClickPassword() {
