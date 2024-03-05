@@ -56,10 +56,10 @@ export default class SingleLinkedList extends Logic {
     let node = new Node("A");
     node.setNext(new Node("B"));
     node.getNext().setNext(new Node("C"));
-    return {front: node, output: null};
+    return {front: node};
   }
 
-  #getSize(front) {
+  static getSize(front) {
     let size = 0;
     let currentNode = front;
 
@@ -72,7 +72,8 @@ export default class SingleLinkedList extends Logic {
   }
 
   // public boolean addDataAtPosition(int position, String data) {
-  javaExampleAddDataAtPosition = [
+  exampleAddDataAtPosition = {
+    java: [
     'if (position < 0 || position > getSize()) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: Position ist außerhalb der Liste");',
     '   return false;',
@@ -90,9 +91,8 @@ export default class SingleLinkedList extends Logic {
     'newNode.setNext(currentNode.getNext());',
     'currentNode.setNext(newNode);',
     'return true;',
-  ]
-
-  jsExampleAddDataAtPosition = [
+  ],
+  javascript: [
     'if (position < 0 || position >= getSize()) {',
     '   console.error("Position ist außerhalb der Liste");',
     '   return false;',
@@ -109,32 +109,33 @@ export default class SingleLinkedList extends Logic {
     'newNode.setNext(currentNode.getNext());',
     'currentNode.setNext(newNode);',
     'return true;',
-  ];
+  ]}
 
   linesForAddDataAtPosition = [
-    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= this.#getSize(s.vars.front), [
-      { f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Position ist außerhalb der Liste'); return s; } },
+    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= SingleLinkedList.getSize(s.vars.front), [
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Position ist außerhalb der Liste'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.newNode = new Node(s.vars.data); return s; } },
       ...execIfElse((s) => s.vars.position === 0, [
         { f(os) { const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.front); return s; } },
-        { f(os) {const s = _.cloneDeep(os); s.vars.front = s.vars.newNode; return s; }, },
+        { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.newNode; return s; }, },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
       ], [
         { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
         ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
           {f(os) {const s = _.cloneDeep(os); s.vars.currentNode = s.vars.currentNode.getNext();return s; },},
         ]),
-        {f(os) {const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.currentNode.getNext()); return s; },},
-        {f(os) {const s = _.cloneDeep(os);s.vars.currentNode.setNext(s.vars.newNode); return s; }, },
+        {f(os) { const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.currentNode.getNext()); return s; },},
+        {f(os) { const s = _.cloneDeep(os);s.vars.currentNode.setNext(s.vars.newNode); return s; }, },
         {f(os) { const s = _.cloneDeep(os);s.vars.output = true; return s;},}
       ]),
     ]),
   ];
 
   // public String getDataAtPosition(int position) {
-  javaExampleGetDataAtPositon = [
+  exampleGetDataAtPosition = {
+    java: [
     'if (position < 0 || position >= getSize()) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: Position ist außerhalb der Liste");',
     '   return null;',
@@ -144,9 +145,8 @@ export default class SingleLinkedList extends Logic {
     '   currentNode = currentNode.getNext();',
     '}',
     'return currentNode.getData();',
-  ]
-
-  jsExampleGetDataAtPosition = [
+  ],
+  javascript: [
     'if (position < 0 || position >= getSize()) {',
     '   console.error("Position ist außerhalb der Liste");',
     '   return null;',
@@ -156,11 +156,11 @@ export default class SingleLinkedList extends Logic {
     '   currentNode = currentNode.getNext();',
     '}',
     'return currentNode.getData();',
-  ]
+  ]}
 
   linesForGetDataAtPosition = [
-    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= this.#getSize(s.vars.front), [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Position ist außerhalb der Liste'); return s; } },
+    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= SingleLinkedList.getSize(s.vars.front), [
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Position ist außerhalb der Liste'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = null; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
@@ -172,7 +172,8 @@ export default class SingleLinkedList extends Logic {
   ]
 
   // public int getPositionOfData(String data) {
-  javaExampleGetPositionOfData = [
+  exampleGetPositionOfData = {
+    java: [
     'if (front === null) {',
     '  System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Liste ist leer");',
     '  return -1;',
@@ -186,9 +187,8 @@ export default class SingleLinkedList extends Logic {
     '}',
     'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Daten sind nicht in der Liste");',
     'return -1;',
-  ]
-
-  jsExampeGetPositionOfData = [
+  ],
+  javascript: [
     'if (front === null) {',
     '   console.error("Liste ist leer");',
     '   return -1;',
@@ -202,27 +202,29 @@ export default class SingleLinkedList extends Logic {
     '}',
     'console.error("Daten sind nicht in der Liste");',
     'return -1;',
-  ]
+  ]}
 
   linesForGetPositionOfData = [
     ...execIfElse((s) => s.vars.front === null, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Liste ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Liste ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = -1; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
-      ...execFor('i', () => 0, (s) => s.vars.i < this.#getSize(s.vars.front), 1, [
+      ...execFor('pos', () => 0, (s) => s.vars.pos < SingleLinkedList.getSize(s.vars.front), 1, [
         ...execIfElse((s) => s.vars.currentNode.getData() === s.vars.data, [
-          { f(os) { const s = _.cloneDeep(os); s.vars.output = s.vars.i; return s; } },
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = s.vars.pos; s.currentLine = 'return'; return s; } },
         ]),
         {f(os) {const s = _.cloneDeep(os);s.vars.currentNode = s.vars.currentNode.getNext(); return s; },  },
       ]),
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Daten sind nicht in der Liste'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Daten sind nicht in der Liste'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = -1; return s; } },
     ]),
+    {l: 'return'},
   ];
 
   // public boolean removeDataAtPosition(int position) {
-  javaExampleRemoveDataAtPosition = [
+  exampleRemoveDataAtPosition = {
+    java: [
     'if (position < 0 || position >= getSize()) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: Position ist außerhalb der Liste");',
     '   return false;',
@@ -237,9 +239,8 @@ export default class SingleLinkedList extends Logic {
     '}',
     'currentNode.setNext(currentNode.getNext().getNext());',
     'return true;',
-  ]
-
-  jsExampleRemoveDataAtPostion = [
+  ],
+  javascript: [
     'if (position < 0 || position >= getSize()) {',
     '   console.error("Position ist außerhalb der Liste");',
     '   return false;',
@@ -254,11 +255,11 @@ export default class SingleLinkedList extends Logic {
     '}',
     'currentNode.setNext(currentNode.getNext().getNext());',
     'return true;',
-  ]
+  ]}
 
   linesForRemoveDataAtPosition = [
-    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= this.#getSize(s.vars.front), [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Position ist außerhalb der Liste'); return s; } },
+    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= SingleLinkedList.getSize(s.vars.front), [
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Position ist außerhalb der Liste'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       ...execIfElse((s) => s.vars.position === 0, [
@@ -276,7 +277,8 @@ export default class SingleLinkedList extends Logic {
   ];
 
   // public boolean invertList() {
-  javaExampleInverList = [
+  exampleInvertList = {
+    java: [
     'if (front === null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Liste ist leer");',
     '   return false;',
@@ -297,9 +299,8 @@ export default class SingleLinkedList extends Logic {
     'front.setNext(null);',
     'front = newFront;',
     'return true;',
-  ]
-
-  jsExampleInvertList = [
+  ],
+  javascript: [
     'if (front === null) {',
     '   console.error("Liste ist leer");',
     '   return false;',
@@ -320,16 +321,16 @@ export default class SingleLinkedList extends Logic {
     'front.setNext(null);',
     'front = newFront;',
     'return true;',
-  ]
+  ]}
 
   // Visualisierung bricht am Breakpoint, muss man sich sowieso nochmal genauer anschauen
   linesForInvertList = [
     ...execIfElse((s) => s.vars.front === null, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Liste ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Liste ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.newFront = s.vars.front; return s; } },
-      { f(os) {const s = _.cloneDeep(os); s.vars.size = this.#getSize(s.vars.front) - 1; return s; }, },
+      { f(os) {const s = _.cloneDeep(os); s.vars.size = SingleLinkedList.getSize(s.vars.front) - 1; return s; }, },
       ...execFor('i', () => 0, (s) => s.vars.i < s.vars.size, 1, [
         { f(os) { const s = _.cloneDeep(os); s.vars.newFront = s.vars.newFront.getNext(); return s; }, },
       ]),
@@ -348,13 +349,13 @@ export default class SingleLinkedList extends Logic {
   ];
 
   // public void deleteList() {
-  javaExampleDeleteList = [
+  exampleDeleteList = {
+    java: [
     'this.front = null;',
-  ]
-
-  jsExampleDeleteList = [
+  ],
+  javascript: [
     'this.front = null;'
-  ]
+  ]}
 
   linesForDeleteList = [
     { f(os) { const s = _.cloneDeep(os); s.vars.front = null; return s; } },
@@ -364,7 +365,7 @@ export default class SingleLinkedList extends Logic {
     {
       name: 'Daten an Position hinzufügen',
       algo: {
-        code: this.jsExampleAddDataAtPosition,
+        code: this.exampleAddDataAtPosition,
         lines: this.linesForAddDataAtPosition,
         breakpoints: [],
       },
@@ -393,7 +394,7 @@ export default class SingleLinkedList extends Logic {
     {
       name: 'Daten von Position zurückgeben',
       algo: {
-        code: this.jsExampleGetDataAtPosition,
+        code: this.exampleGetDataAtPosition,
         lines: this.linesForGetDataAtPosition,
         breakpoints: [],
       },
@@ -407,9 +408,9 @@ export default class SingleLinkedList extends Logic {
           }]
       }]
     },{
-      name: 'Position von Datan zurückgeben',
+      name: 'Position von Daten zurückgeben',
       algo: {
-        code: this.linesForGetPositionOfData,
+        code: this.exampleGetPositionOfData,
         lines: this.linesForGetPositionOfData,
         breakpoints: [],
       },
@@ -425,14 +426,14 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Daten an Position löschen',
       algo: {
-        code: this.jsExampleRemoveDataAtPostion,
+        code: this.exampleRemoveDataAtPosition,
         lines: this.linesForRemoveDataAtPosition,
         breakpoints: [],
       },
       inputs: [{
-        name: 'Daten',
-          field: 'data',
-          type: 'string',
+        name: 'Position',
+          field: 'position',
+          type: 'integer',
           validators: [{
             func: inputLength,
             param: {min: 1, max: lengthOfData}
@@ -441,7 +442,7 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Liste invertieren',
       algo: {
-        code: this.jsExampleInvertList,
+        code: this.exampleInvertList,
         lines: this.linesForInvertList,
         breakpoints: [],
       },
@@ -449,7 +450,7 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Liste löschen',
       algo: {
-        code: this.jsExampleDeleteList,
+        code: this.exampleDeleteList,
         lines: this.linesForDeleteList,
         breakpoints: [],
       },
@@ -467,6 +468,6 @@ export default class SingleLinkedList extends Logic {
   }
 
   loadAlgoByIndex(index, inputs) {
-    super.loadAlgoByIndex(index, {...inputs, front: this.exec.state.vars.front})
+    super.loadAlgoByIndex(index, {...inputs, front: this.exec.state.vars.front, output: null})
   }
 }

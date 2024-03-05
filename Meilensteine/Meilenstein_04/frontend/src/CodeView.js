@@ -3,6 +3,8 @@ import View from './View';
 // Diese Klasse zeigt den Code eines Algorithmus einer AoD an
 export default class CodeView extends View {
   #container;
+  #language;
+  #example;
 
   constructor(parentNode, eventReporter) {
     super('CodeView', parentNode, eventReporter);
@@ -12,18 +14,28 @@ export default class CodeView extends View {
         if (!this.#container) {
           eventReporter.fatal('elemnent with id "codeview-container" not found!');
         }
+        this.#language = 'java'
       });
   }
 
   showEmpty() {
     // TODO good placeholder
-    this.#container.innerHTML = 'Placeholder for nothing to show';
+    this.#container.innerHTML = ' ';
   }
 
   // zeigt den Code des derzeitigen Algorithmus an
   // dieser wird in lines[] in den Logikklassen gespeichert
   // wird in loadAlgoByIndex(index) in AuDView.js aufgerufen 
-  renderCode(lines) {
+  renderCode(example) {
+    this.#example = example;
+    this.#render();
+  }
+
+  #render(){
+    if(this.#language === 'java')
+      var lines = this.#example.java;
+    if(this.#language === 'javascript')
+      var lines = this.#example.javascript;
     if (!lines || !lines.length) {
       this.showEmpty();
       return;
@@ -66,5 +78,14 @@ export default class CodeView extends View {
         child.classList.remove('line');
       }
     });
+  }
+
+  changeLanguage(){
+    if(this.#language === 'java') {
+      this.#language = 'javascript'
+    } else {
+      this.#language = 'java'
+    }
+    this.#render();
   }
 }

@@ -48,7 +48,8 @@ export default class DirectedUnweightedGraph extends Logic {
   }
   
   // public boolean insertNode(String data) {
-  javaExampleInsertNode = [
+  exampleInsertNode = {
+    java: [
     'if (adjList == null) {',
     '   adjList = new LinkedList<>();',
     '   adjList.add(new LinkedList<>());',
@@ -64,9 +65,8 @@ export default class DirectedUnweightedGraph extends Logic {
     'adjList.add(adjList.size(), new LinkedList<>());',
     'adjList.get(adjList.size() - 1).add(new Node(data));',
     'return true;',
-  ]
-
-  jsExampleInsertNode = [
+  ],
+  javascript: [
     'if (this.adjList === null) {',
     '  this.adjList = [[]];',
     '  this.adjList[0].push(new Node(data));',
@@ -81,27 +81,28 @@ export default class DirectedUnweightedGraph extends Logic {
     'this.adjList.push([]);',
     'this.adjList[this.adjList.length - 1].push(new Node(data));',
     'return true;',
-    ];
+    ]}
 
   linesForInsertNode = [
-      ...execIfElse((s) => s.vars.adjList === null, [
-          { f(os) { const s = _.cloneDeep(os); s.vars.adjList = [[]]; return s; } },
-          { f(os) { const s = _.cloneDeep(os); s.vars.adjList[0].push(new Node(s.vars.data)); return s; } },
-          { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
-      ],[
-          ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
-              ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
-                //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten ist schon im Graphen'); return s; } },
-                { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
-              ]),]),
-      { f(os) { const s = _.cloneDeep(os); s.vars.adjList.push([]); return s; } },
-      { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.adjList.length-1].push(new Node(s.vars.data)); return s; } },
-      { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
-      ]),
+    ...execIfElse((s) => s.vars.adjList === null, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList = [[]]; return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList[0].push(new Node(s.vars.data)); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+    ],[
+        ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
+            ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
+              { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten ist schon im Graphen'); return s; } },
+              { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+            ]),]),
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList.push([]); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.adjList.length-1].push(new Node(s.vars.data)); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+    ]),
   ]
 
   // public boolean insertEdge(String nodeOne, String nodeTwo) {
-  javaExampleInsertEdge = [
+  exampleInsertEdge = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -130,9 +131,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'adjList.get(indexNodeOne).add(adjList.get(indexNodeTwo).get(0));',
     'return true;',
-  ]
-
-  jsExampleInsertEdge = [   
+  ],
+  javascript: [   
     'if (!adjList) {',
     '   console.error("Graph ist leer");',
     '   return false;',
@@ -161,11 +161,11 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'adjList[indexNodeOne].push(adjList[indexNodeTwo][0]);',
     'return true;',
-  ]
+  ]}
 
   linesForInsertEdge = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.indexNodeOne = -1; s.vars.indexNodeTwo = -1; return s; } },
@@ -178,11 +178,11 @@ export default class DirectedUnweightedGraph extends Logic {
           ]),
       ]),
       ...execIfElse((s) => s.vars.indexNodeOne === -1 || s.vars.indexNodeTwo === -1, [
-        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante ist nicht im Graph'); return s; } },
+        { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist nicht im Graph'); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
       ]),
       ...execIfElse((s) => s.vars.indexNodeTwo === -2, [
-        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante ist schon im Graph'); return s; } },
+        { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist schon im Graph'); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
       ]),
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.indexNodeOne].push(s.vars.adjList[s.vars.indexNodeTwo][0]); return s; } },
@@ -190,24 +190,55 @@ export default class DirectedUnweightedGraph extends Logic {
     ]),
   ]
 
-  /*jsExampleSearchNodeID(String data) { // vielleicht getEdgesOfNode
-  if (!adjList) {
-      console.error("Exception: graph is empty");
-      return -1;
-  }
+  // public List<Node> getEdgesOfNode(String data) {
+  exampleGetEdgesOfNode = {
+    java: [
+    'if (adjList == null) {',
+    '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
+    '   return null;',
+    '}',
+    'for (int i = 0; i < adjList.size(); i++) {',
+    '   if (adjList.get(i).get(0).getData().equals(data)) {',
+    '       return adjList.get(i).subList(0, 1);',
+    '   }',
+    '}',
+    'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Knoten nicht im Graph");',
+    'return null;',
+  ],
+  javascript: [
+    'if (!adjList) {',
+    '   console.error("Exception: Graph ist leer");',
+    '   return null;',
+    '}',
+    'for (let i = 0; i < adjList.length; i++) {',
+    '   if (adjList[i][0].getData() === data) {',
+    '       return adjList[i].splice(0, 1);',
+    '   }',
+    '}',
+    'console.error("Exception: Knoten nicht im Graph");',
+    'return null;',
+    '}',
+  ]}
 
-  for (let i = 0; i < adjList.length; i++) {
-      if (adjList[i][0].getData() === data) {
-          return i;
-      }
-  }
-
-  console.error("Exception: node not in graph");
-  return -1;
-  }*/
+  linesForGetEdgesOfNode = [
+    ...execIfElse((s) => !s.vars.adjList, [
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = null; return s; } },
+    ],[
+      ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
+        ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = _.cloneDeep(s.vars.adjList[s.vars.i]).splice(1, s.vars.adjList[s.vars.i].length); s.currentLine = 'return'; return s; } },
+        ]),
+      ]),      
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten nicht im Graph'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = null; return s; } },
+    ]),
+    {l: 'return'},
+  ]
 
   // public boolean removeEdge(String nodeOne, String nodeTwo) {
-  javaExampleRemoveEdge = [
+  exampleRemoveEdge = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -226,9 +257,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Knoten nicht im Graphen");',
     'return false;',
-  ]
-
-  jsExampleRemoveEdge = [
+  ],
+  javascript: [
   'if (!adjList) {',
   '   console.error("Graph ist leer");',
   '   return false;',
@@ -247,11 +277,11 @@ export default class DirectedUnweightedGraph extends Logic {
   '}',
   'console.error("Knoten nicht im Graphen");',
   'return false;',
-  ]
+  ]}
 
   linesForRemoveEdge = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
@@ -262,17 +292,18 @@ export default class DirectedUnweightedGraph extends Logic {
                       { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
                   ]),
               ]),
-              //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante nicht im Graphen'); return s; } },
+              { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante nicht im Graphen'); return s; } },
               { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
           ]),
       ]),
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten nicht im Graphen'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten nicht im Graphen'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ]),
   ]
 
   // public boolean removeNode(String data) {
-  javaExampleRemoveNode = [
+  exampleRemoveNode = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -292,9 +323,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Knoten nicht im Graphen");',
     'return false;',
-  ]
-
-  jsExampleRemoveNode = [
+  ],
+  javascript: [
   'if (!adjList) {',
   '   console.error("Graph ist leer");',
   '   return false;',
@@ -314,11 +344,11 @@ export default class DirectedUnweightedGraph extends Logic {
   '}',
   'console.error("Knoten nicht im Graphen");',
   'return false;',
-  ]
+  ]}
 
   linesForRemoveNode = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
@@ -334,13 +364,14 @@ export default class DirectedUnweightedGraph extends Logic {
               { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
           ]),                
       ]),        
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten nicht im Graphen'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten nicht im Graphen'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ]),
   ]
 
   // public boolean invert() {
-  javaExampleInvert = [
+  exampleInvert = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -362,9 +393,8 @@ export default class DirectedUnweightedGraph extends Logic {
     'this.deleteGraph();',
     'adjList = newAdjList;',
     'return true;',
-  ]
-
-  jsExampleInvert = [
+  ],
+  javascript: [
       'if (!adjList) {',
       ' console.error("Graph ist leer");',
       ' return false;',
@@ -386,11 +416,11 @@ export default class DirectedUnweightedGraph extends Logic {
       'this.deleteGraph();',
       'adjList = newAdjList;',
       'return true;',
-  ]
+  ]}
 
   linesForInvert = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList = []; return s; } },
@@ -414,7 +444,8 @@ export default class DirectedUnweightedGraph extends Logic {
   ]
 
   // public void deleteGraph() {
-  javaExampleDeleteGraph = [
+  exampleDeleteGraph = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist schon leer");',
     '   return false;',
@@ -424,9 +455,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'adjList.clear();',
     'return true'
-  ]
-
-  jsExampleDeleteGraph = [
+  ],
+  javascript: [
   'if (!adjList) {',
       ' console.error("Graph ist schon leer");',
       ' return false;',
@@ -436,11 +466,11 @@ export default class DirectedUnweightedGraph extends Logic {
   '}',
   'adjList.splice(0, adjList.length);',
   'return true;',
-  ]
+  ]}
 
   linesForDeleteGraph = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist schon leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist schon leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
     ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
@@ -454,7 +484,7 @@ export default class DirectedUnweightedGraph extends Logic {
     algos = [{
         name: 'Knoten hinzufügen',
         algo: {
-          code: this.jsExampleInsertNode,
+          code: this.exampleInsertNode,
           lines: this.linesForInsertNode,
           breakpoints: [],
         },
@@ -473,7 +503,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Kante hinzufügen',
         algo: {
-          code: this.jsExampleInsertEdge,
+          code: this.exampleInsertEdge,
           lines: this.linesForInsertEdge,
           breakpoints: [],
         },
@@ -497,9 +527,27 @@ export default class DirectedUnweightedGraph extends Logic {
             },
         ]
       },{
+        name: 'Kanten von Knoten finden',
+        algo: {
+          code: this.exampleGetEdgesOfNode,
+          lines: this.linesForGetEdgesOfNode,
+          breakpoints: [],
+        },
+        inputs: [
+        {
+            name: 'Knoten',
+            field: 'data',
+            type: 'string',
+            validators: [{
+                func: inputLength,
+                param: {min: 1, max: lengthOfData}
+            }]
+            },
+        ]
+      },{
         name: 'Kante löschen',
         algo: {
-          code: this.jsExampleRemoveEdge,
+          code: this.exampleRemoveEdge,
           lines: this.linesForRemoveEdge,
           breakpoints: [],
         },
@@ -525,7 +573,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Knoten löschen',
         algo: {
-          code: this.jsExampleRemoveNode,
+          code: this.exampleRemoveNode,
           lines: this.linesForRemoveNode,
           breakpoints: [],
         },
@@ -543,7 +591,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Graphen invertieren',
         algo: {
-          code: this.jsExampleInvert,
+          code: this.exampleInvert,
           lines: this.linesForInvert,
           breakpoints: [],
         },
@@ -551,7 +599,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Graphen löschen',
         algo: {
-          code: this.jsExampleDeleteGraph,
+          code: this.exampleDeleteGraph,
           lines: this.linesForDeleteGraph,
           breakpoints: [],
         },
@@ -568,6 +616,6 @@ export default class DirectedUnweightedGraph extends Logic {
     }
 
     loadAlgoByIndex(index, inputs) {
-        super.loadAlgoByIndex(index, {...inputs, adjList: this.exec.state.vars.adjList})
+        super.loadAlgoByIndex(index, {...inputs, adjList: this.exec.state.vars.adjList, output: null})
       }
 }

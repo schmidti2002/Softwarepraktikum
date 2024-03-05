@@ -118,6 +118,7 @@ export default class MainView extends View {
   toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     document.body.classList.toggle('light-mode');
+    document.getElementById('darkModeToggle').classList.toggle('inverted');
   }
 
   convertToImage() {

@@ -67,6 +67,8 @@ export default class AuDView extends View {
 
   onClickStart = () => this.loadAlgoByIndex(this.dropdown.value);
 
+  onClickChangeLanguage = () => this.codeView.changeLanguage();
+
   #selectedAlgoChanged(ev) {
     const algo = this.logic.algos[ev.target.value];
     this.inputView.loadConfig(algo.inputs);

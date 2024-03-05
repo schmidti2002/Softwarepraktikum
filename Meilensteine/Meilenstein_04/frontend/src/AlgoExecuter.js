@@ -202,7 +202,7 @@ export class Executer {
     const oldLine = this.state.currentLine;
     const { f } = this.lines[this.state.currentLine];
     if (f) {
-      this.state = f(this.state);
+      this.state = f(this.state, this.eventReporter);
     }
     if (oldLine === this.state.currentLine) {
       this.state.currentLine += 1;
