@@ -51,7 +51,7 @@ export default class DataView extends View {
     const divSimple = document.createElement('div');
     divObj.classList.add('row');
     const divOutput = document.createElement('div');    
-    if(data.output !== null){
+    if(data.output !== undefined){
       const innerDiv = document.createElement('div');
       innerDiv.classList.add('d-flex');
       innerDiv.classList.add('col');
