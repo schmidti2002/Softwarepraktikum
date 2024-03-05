@@ -157,23 +157,6 @@ paths:
         "401":
           description: apitoken not found or user not logged in
   /user/reset-password:
-    post:
-      tags:
-        - user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - username
-              properties:
-                username:
-                  type: string
-      responses:
-        "200":
-          description: password reset successful
     get:
       tags:
         - user
@@ -193,6 +176,23 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         "403":
           $ref: "#/components/responses/ForbiddenError"
+    post:
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+              properties:
+                username:
+                  type: string
+      responses:
+        "200":
+          description: password reset successful
   /user/reset-password/{username}:
     delete:
       tags:
