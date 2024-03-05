@@ -18,7 +18,7 @@ export default class InputView extends View {
     super('InputView', parentNode, eventReporter);
     this.initPromise
       .then(() => {
-        this.container = document.getElementById('inputview-container');
+        this.container = parentNode.getElementsByClassName('inputview-container')[0];
       });
     this.callback = callback;
   }
@@ -62,6 +62,20 @@ export default class InputView extends View {
     return { value };
   }
 
+  static parseAdmin(value) {
+    if (!value) {
+      return { value: null };
+    }
+    switch (value.split(' ').reverse()[0]) {
+      case 'erteilen':
+        return { value: true };
+      case 'entziehen':
+        return { value: false };
+      default:
+        return { value: null };
+    }
+  }
+
   // Map der Inputtypen auf ihre HTML type-Attributwerte und ihren Parser
   #types = {
     integer: {
@@ -79,6 +93,10 @@ export default class InputView extends View {
     password: {
       html: 'password',
       parser: InputView.parseString,
+    },
+    admin: {
+      html: 'text',
+      parser: InputView.parseAdmin,
     },
   };
 
@@ -142,6 +160,7 @@ export default class InputView extends View {
         return {
           elm: inputElm,
           errorElm,
+          prefill: input.prefill,
           validators: input.validators,
           field: input.field,
           parser: this.#types[input.type].parser,
@@ -175,6 +194,13 @@ export default class InputView extends View {
       _.set(values, input.field, result.value);
     }
     return values;
+  }
+
+  resetValues() {
+    this.#inputs.forEach((input) => {
+      input.elm.value = input.prefill ? input.prefill() : '';
+    });
+    this.validate();
   }
 
   // Validiert einen Input mit allen daran hängenden Validatoren und

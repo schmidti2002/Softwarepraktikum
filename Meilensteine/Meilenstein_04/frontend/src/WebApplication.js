@@ -21,6 +21,8 @@ export default async function entry() {
     singletonManager.registerConstructor('EventReporter', () => userEventReporter);
 
     const config = new Configuration({
+      headers: { 'content-type': 'application/json' },
+      basePath: '/api',
       middleware: [new Middleware(singletonManager.get('EventReporter'))],
     });
     singletonManager.registerConstructor('CodeStateApi', () => new CodeStateApi(config));
@@ -37,7 +39,7 @@ export default async function entry() {
     // Für den Check ob der Nutzer eingeloggt ist würde die Middleware eine Endlosschleife erzeugen.
     // const loginCheckApi = new UserApi();
 
-    return /* TODO API call so bald API da* await loginCheckApi.userGet()/ */Promise.resolve()/* */
+    return /* TODO API call so bald API da* await loginCheckApi.userApitokenGet()/ */Promise.resolve()/* */
       .then(() => new MainView(contentRoot, singletonManager))
       .catch((err) => {
         if (err instanceof ResponseError && err.response && err.response.status === 401) {
