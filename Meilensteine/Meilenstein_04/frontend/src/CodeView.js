@@ -17,7 +17,7 @@ export default class CodeView extends View {
 
   showEmpty() {
     // TODO good placeholder
-    this.#container.innerHTML = 'Placeholder for nothing to show';
+    this.#container.innerHTML = ' ';
   }
 
   // zeigt den Code des derzeitigen Algorithmus an
