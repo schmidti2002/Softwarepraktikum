@@ -37,7 +37,6 @@ export default class DataView extends View {
     const divObj = document.createElement('div');
     // divObj.classList.add('border');
     const divSimple = document.createElement('div');
-    divObj.classList.add('border');
     const divOutput = document.createElement('div');
     this.#renderData(divObj, divSimple, divOutput, data);
     this.#objContainer.innerHTML = '';

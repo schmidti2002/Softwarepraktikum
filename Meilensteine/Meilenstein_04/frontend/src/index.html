@@ -24,7 +24,6 @@
         .dark-mode ul,
         .dark-mode input,
         .dark-mode li,
-        .dark-mode button,
         .dark-mode nav {
             background-color: #202020;
         }
@@ -37,6 +36,7 @@
             font-weight: 600;
         }
 
+        .dark-mode button,
         .dark-mode textarea,
         .dark-mode select {
             background-color: #2c2c2c; /* Dunkler Hintergrund für Formularelemente */
@@ -54,6 +54,10 @@
             font-size: large;
             font-weight: 600;
         }
+
+        .buttonBorder button {
+            border-width: 3px;
+        }
     </style>
 
     <!-- Bootstrap CSS über CDN einbinden -->
@@ -61,7 +65,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
-<body class="light-mode">
+<body class="light-mode buttonBorder">
     <div id="content-root"></div>
     <div id="overlay-container"></div>
 </body>
