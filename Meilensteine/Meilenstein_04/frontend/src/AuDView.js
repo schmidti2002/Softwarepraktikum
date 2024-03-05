@@ -10,6 +10,7 @@ import ListVisualizerView from './ListVisualizerView';
 import GraphVisualizerView from './GraphVisualizerView';
 import View from './View';
 import MergeSort from './MergeSortLogic';
+import cytoscape from 'cytoscape';
 
 // Diese Klasse verwaltet die Algorithmen und Datenstrukturen
 // Die Klasse wird in MainView instanziert
@@ -104,14 +105,14 @@ export default class AuDView extends View {
     this.visualizerView.renderData(_.cloneDeep(data));
     this.inputView.setDisabled(running);
     this.#onFormValidChanged();
-  }
+  } 
 
   // Einen Algorithmus oder Datenstruktur einladen
   // Wird in MainView gesetzt
   loadAuD(type) {
-    if (visualizerView !== null){
-      this.visualizerView.cy.destroy();
-    }
+    //if (visualizerView !== undefined && visualizerView.cy !== null){
+    //  this.visualizerView.cy.destroy();
+    //}
     new Promise((resolve) => {
       switch (type) {
         case 'BubbleSort':

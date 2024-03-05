@@ -4,8 +4,7 @@ import cytoscape from 'cytoscape';
 // Visualisiert ein Array von Zahlen als Säulendiagram
 export default class GraphVisualizerView extends VisualizerView {
   constructor(parentNode, eventReporter) {
-    cy;
-    super('GraphVisualizerView', parentNode, eventReporter, cy);
+    super('GraphVisualizerView', parentNode, eventReporter);
     this.initPromise.then(() => {
       this.container = document.getElementById('graphview-container');
     });
@@ -15,6 +14,7 @@ export default class GraphVisualizerView extends VisualizerView {
   // data ist das erste Element des stateChangeCallback() in showOutput() in SingleLinkedListLogic.js
   // Methode zur Visualisierung des Graphen
  renderData(adjacencyList) {
+  try{
     if(adjacencyList === null || adjacencyList === undefined || adjacencyList.length === 0){
         while (this.container.firstChild) {
           this.container.removeChild(this.container.firstChild);
@@ -79,5 +79,6 @@ export default class GraphVisualizerView extends VisualizerView {
         avoidOverlap: true,
       }
     });
+  } catch (error) {}
   } 
 }
