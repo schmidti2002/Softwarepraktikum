@@ -20,43 +20,23 @@ export default class BubbleSort extends Logic {
     this.showOutput(); // Werte initial anzeigen
   }
 
-  // Algorithmus, der schrittweise ausgeführt wird
-  linesForBubbleSort = [
-    { f(os) { const s = _.cloneDeep(os); s.vars.temp = 0; return s; } },
-    { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
-    ...execFor(
-      'i',
-      () => 0,
-      (s) => s.vars.i < s.vars.n - 1,
-      1,
-      execFor(
-        'k',
-        () => 0,
-        (s) => s.vars.k < s.vars.n - 1 - s.vars.i,
-        1,
-        execIfElse((s) => s.vars.arr[s.vars.k] > s.vars.arr[s.vars.k + 1], [
-          { f(os) { const s = _.cloneDeep(os); s.vars.temp = s.vars.arr[s.vars.k]; return s; } },
-          {
-            f(os) {
-              const s = _.cloneDeep(os);
-              s.vars.arr[s.vars.k] = s.vars.arr[s.vars.k + 1];
-              return s;
-            },
-          },
-          {
-            f(os) {
-              const s = _.cloneDeep(os);
-              s.vars.arr[s.vars.k + 1] = s.vars.temp;
-              return s;
-            },
-          },
-        ]),
-      ),
-    ),
-  ];
+  // public static int[] bubbleSort(int[] arr) {
+  javaExampleSort = [
+    'int temp;',
+    'for (int i = 0; i < arr.length - 1; i++) {',
+    '   for (int k = 0; k < arr.length - 1 - i; k++) {',
+    '       if (arr[k] > arr[k + 1]) {',
+    '           temp = arr[k];',
+    '           arr[k] = arr[k + 1];',
+    '           arr[k + 1] = temp;',
+    '       }',
+    '   }',
+    '}',
+    'return arr;',
+  ]
 
   // Der Code für das Sortieren, welcher in der CodeView angezeigt werden soll
-  jsCodeExampleLines = [
+  jsCodeExampleSort = [
     'let temp;',
     'const n = arr.length;',
     'for (let i = 0; i < n - 1; i++) {',
@@ -67,15 +47,31 @@ export default class BubbleSort extends Logic {
     '            arr[k + 1] = temp;',
     '        }',
     '    }',
-    '}'];
+    '}'
+  ];
+
+  // Algorithmus, der schrittweise ausgeführt wird
+  linesForSort = [
+    { f(os) { const s = _.cloneDeep(os); s.vars.temp = 0; return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
+    ...execFor('i', () => 0,(s) => s.vars.i < s.vars.n - 1, 1, [
+     ...execFor('k',() => 0,(s) => s.vars.k < s.vars.n - 1 - s.vars.i, 1, [
+       ...execIfElse((s) => s.vars.arr[s.vars.k] > s.vars.arr[s.vars.k + 1], [
+          { f(os) { const s = _.cloneDeep(os); s.vars.temp = s.vars.arr[s.vars.k]; return s; } },
+          { f(os) { const s = _.cloneDeep(os); s.vars.arr[s.vars.k] = s.vars.arr[s.vars.k + 1];  return s; }, },
+          { f(os) { const s = _.cloneDeep(os); s.vars.arr[s.vars.k + 1] = s.vars.temp; return s; }, },
+        ]),
+      ]),
+    ]),
+  ];  
 
   // Die Algorithmen von BubbleSort, werden in AuDView.js geladen
   algos = [
     {
       name: 'Sortieren',
       algo: {
-        code: this.jsCodeExampleLines,
-        lines: this.linesForBubbleSort,
+        code: this.jsCodeExampleSort,
+        lines: this.linesForSort,
         breakpoints: [8],
       },
       inputs: [
