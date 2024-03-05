@@ -19,7 +19,7 @@
             }
         },
         {
-            "match": { // TODO remove after fixed path in index.html
+            "match": { 
                 "uri": "/dist/bundle.js"
             },
             "action": {
@@ -54,7 +54,7 @@
         "flask": {
             "type": "python 3.11",
             "path": "/www/",
-            "module": "hello",
+            "module": "main",
             "callable": "app",
             "prefix": "/api"
         }

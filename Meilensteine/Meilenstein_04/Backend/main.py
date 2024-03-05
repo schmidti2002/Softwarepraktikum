@@ -66,6 +66,11 @@ api.add_resource(easteregg.brew_coffee, '/brew_coffee')
 def catch_all(path):
     return (f"Bitte einen richtigen Endpunkt treffen. Angeforderter Pfad: /{path}", 400)
 
+# Aufbau der Datenbankverbindung zum Start und INIT
+with app.app_context():
+    datenbank = Endpoints_util.db_connect()
+    cursor = database.cursor()
+
 
 if __name__ == "__main__":
     database = Endpoints_util.db_connect()
