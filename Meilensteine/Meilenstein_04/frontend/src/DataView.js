@@ -37,6 +37,7 @@ export default class DataView extends View {
     const divObj = document.createElement('div');
     // divObj.classList.add('border');
     const divSimple = document.createElement('div');
+
     const divOutput = document.createElement('div');
     this.#renderData(divObj, divSimple, divOutput, data);
     this.#objContainer.innerHTML = '';
@@ -154,8 +155,8 @@ export default class DataView extends View {
   } */
 
   showEmpty() {
-    this.#objContainer.innerHTML = 'Placeholder for nothing to show in objContainer';
-    this.#simpleDataContainer.innerHTML = 'Placeholder for nothing to show in simpleDataContainer';
-    this.#outputDataContainer.innerHTML = 'Placeholder for nothing to show in outputDataContainer';
+    this.#objContainer.innerHTML = ' ';
+    this.#simpleDataContainer.innerHTML = ' ';
+    this.#outputDataContainer.innerHTML = ' ';
   }
 }
