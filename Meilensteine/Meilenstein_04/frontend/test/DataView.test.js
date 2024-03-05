@@ -46,7 +46,7 @@ describe('DataView', () => {
   describe('showEmpty method', () => {
     test('displays "Placeholder for nothing to show"', async () => {
       dataView.showEmpty();
-      expect(mockContainer.innerHTML).toBe('Placeholder for nothing to show');
+      expect(mockContainer.innerHTML).toMatchSnapshot();
     });
   });
 

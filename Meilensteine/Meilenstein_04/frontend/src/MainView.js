@@ -1,6 +1,7 @@
 import View from './View';
 import AuDView from './AuDView';
 
+// Die MainView lädt alle AoDs
 export default class MainView extends View {
   constructor(parentNode, singletonManager) {
     const eventReporter = singletonManager.get('EventReporter');
@@ -18,6 +19,7 @@ export default class MainView extends View {
     });
   }
 
+  // merkt sich, wo man in der Webanwendung ist, um bei Neuladen wieder dorthin zurückzukehren
   // eslint-disable-next-line class-methods-use-this
   setLastLoad(value) {
     // zum Debuggen geändert
@@ -79,11 +81,15 @@ export default class MainView extends View {
   // MergeSort fetchen und Standardbeispiel laden
   loadMergeSort() {
     this.setLastLoad('loadMergeSort');
-    fetch('MergeSort.html')
-      .then((response) => response.text())
-      .then((data) => {
-        this.content.innerHTML = data;
-      });
+
+    // Einbinden der AuD-Logik
+    const container = document.getElementById('mainContainer');
+    const mainContainer = new AuDView(container, this.singletonManager);
+    mainContainer.initPromise.then(
+      () => {
+        mainContainer.loadAuD('MergeSort');
+      },
+    );
   }
 
   // ToDo: Größe des Containers für das Benutzerprofil anpassen,

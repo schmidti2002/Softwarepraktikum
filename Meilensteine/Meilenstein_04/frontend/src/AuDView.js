@@ -9,7 +9,10 @@ import SortVisualizerView from './SortVisualizerView';
 import ListVisualizerView from './ListVisualizerView';
 import GraphVisualizerView from './GraphVisualizerView';
 import View from './View';
+import MergeSort from './MergeSortLogic';
 
+// Diese Klasse verwaltet die Algorithmen und Datenstrukturen
+// Die Klasse wird in MainView instanziert
 export default class AuDView extends View {
   visualizerView;
 
@@ -51,16 +54,12 @@ export default class AuDView extends View {
     });
   }
 
+  // Die Buttons aus AuDView.html bekommen ihre entsprechende Funktionalität
   onClickCtrlPlay = () => this.logic.play();
-
   onClickCtrlPause = () => this.logic.pause();
-
   onClickCtrlNextBreak = () => this.logic.nextBreak();
-
   onClickCtrlStep = () => this.logic.step();
-
   onClickCtrlReset = () => this.logic.reset();
-
   onClickStart = () => this.loadAlgoByIndex(this.dropdown.value);
 
   #selectedAlgoChanged(ev) {
@@ -73,6 +72,8 @@ export default class AuDView extends View {
         || (this.logic && this.logic.exec.isRunning());
   }
 
+  // Einen Algorithmus (eines AoD) laden.
+  // Die Algorithmen werden in den entsprechenden Logic-Klassen in algos[] definiert
   loadAlgoByIndex(index) {
     const algo = this.logic.algos[index];
     if (!algo) {
@@ -100,6 +101,8 @@ export default class AuDView extends View {
     this.#onFormValidChanged();
   }
   
+  // Einen Algorithmus oder Datenstruktur einladen
+  // Wird in MainView gesetzt
   loadAuD(type) {
     new Promise((resolve) => {
       switch (type) {
@@ -139,6 +142,30 @@ export default class AuDView extends View {
               resolve();
             });
             break;
+        case 'MergeSort':
+          this.visualizerView = new SortVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+          this.visualizerView.initPromise.then(() => {
+            this.logic = new MergeSort(
+              this.eventReporter,
+              (data, variables, line, running) => {
+                this.#onLogicStateChange(data, variables, line, running);
+              },
+            );
+            resolve();
+          });
+          break;
+        case 'SingleLinkedList':
+          this.visualizerView = new ListVisualizerView(document.getElementById('audview-visu'), this.eventReporter);
+          this.visualizerView.initPromise.then(() => {
+            this.logic = new SingleLinkedList(
+              this.eventReporter,
+              (data, variables, line, running) => {
+                this.#onLogicStateChange(data, variables, line, running);
+              },
+            );
+            resolve();
+          });
+          break;
         default:
           this.eventReporter.fatal('Datenstruktur/Algo nicht gefunden!');
           break;

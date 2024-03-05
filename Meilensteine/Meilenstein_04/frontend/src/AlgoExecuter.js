@@ -1,4 +1,7 @@
 import * as _ from 'lodash';
+
+// Diese Klasse kümmert sich um die Ausführung von Code, wie sie die Algorithmen bereitstellen
+
 /*
 Minimal usage example for BubbleSort:
 lines = [
@@ -169,12 +172,14 @@ export class Executer {
 
   outputFunction = function () { }; // Funktion, um den AoD zu visualisieren
 
+  // Zustand des Algorithmus
   state = {
     currentLine: 0, // Zeile, die der Algo gerade bearbeitet
     varsStack: [], // Wird für die Simulation von Variablenlebenszeiten verwendet
-    vars: {},
+    vars: {}, // Hier finden sich alle Variablen
   };
 
+  // alter Zustand, wird für den Reset des Algorithmus benötigt
   OldState = {
     currentLine: 0,
     varsStack: [],
@@ -211,6 +216,7 @@ export class Executer {
     }
   }
 
+  // Führt eine aus
   step() {
     this.#step();
     this.outputFunction();
@@ -228,8 +234,9 @@ export class Executer {
     } while (!this.breakpoints.includes(this.state.currentLine) && stepsCounter++ < 1000);
   }
 
-  // Ändern des Algorithmus; stellt sicher, dass zurzeit kein Algorithmus läuft
+  // Ändern des Algorithmus
   changeAlgo(lines, breakpoints, timeout, vars) {
+    // stellt sicher, dass zurzeit kein Algorithmus läuft
     if (!this.isRunning()) {
       this.lines = lines;
       this.breakpoints = breakpoints;
@@ -246,6 +253,8 @@ export class Executer {
     return false;
   }
 
+  // gibt wahr zurück, wenn der Algorithmus läuft,
+  // indem es prüft, ob die ID des Intervals für Autoplay nicht undefined ist
   isRunning() {
     return this.intervalId !== undefined;
   }

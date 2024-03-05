@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
 import View from './View';
 
+// Diese Klasse ist für die Eingabe von Werten in die Software zuständig
+// sie validiert und parst diese nach vorab definierter Konfigurationen 
 export default class InputView extends View {
   // Callback bei Eingaben.
   // valid(bool)
@@ -24,6 +26,9 @@ export default class InputView extends View {
   // Parser für die verschiedenen Inputtypen
   // value(string)
   // return({error: string}|{value: T})
+
+  // parst ein Integer und gibt ihn als {value: Integer} zurück
+  // im Fehlerfall {error: 'Darf nur eine Ganzzahl sein'}
   static parseInt(value) {
     const wsRemoved = value.trim();
     if (!/^[+-]?\d+$/.test(wsRemoved)) {
@@ -35,6 +40,8 @@ export default class InputView extends View {
     return { value: Number.parseInt(wsRemoved, 10) };
   }
 
+  // parst ein Integer-Array und gibt es als {value: Integer[]} zurück
+  // im Fehlerfall Beispielsweise {error: 'Darf nur eine Ganzzahl sein (Position 5)'}
   static parseIntArray(value) {
     const arr = [];
     const entries = value.split(',');
@@ -50,6 +57,7 @@ export default class InputView extends View {
     return { value: arr };
   }
 
+  // parst einen String und gibt in als Objekt zurück
   static parseString(value) {
     return { value };
   }
