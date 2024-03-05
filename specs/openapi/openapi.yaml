@@ -172,8 +172,6 @@ paths:
                 properties:
                   username:
                     type: string
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
         "403":
           $ref: "#/components/responses/ForbiddenError"
     post:
@@ -209,8 +207,6 @@ paths:
           description: reset request deleted
         "404":
           description: reset request not found
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
         "403":
           $ref: "#/components/responses/ForbiddenError"
 
