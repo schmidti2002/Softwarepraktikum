@@ -88,10 +88,10 @@ export function inEnum(value, params) {
 export function validateEmail(email) {
   // Regulärer Ausdruck zur Überprüfung der E-Mail-Adresse
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
+
   // Überprüfung, ob die E-Mail-Adresse dem regulären Ausdruck entspricht
   if (emailRegex.test(email)) {
-      return null; // Die E-Mail-Adresse ist gültig
+    return null; // Die E-Mail-Adresse ist gültig
   }
 
   return 'Ungültige E-Mail-Adresse'; // Die E-Mail-Adresse ist ungültig
