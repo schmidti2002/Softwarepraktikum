@@ -60,7 +60,7 @@ export default class MainView extends View {
     this.setLastLoad('loadSingleLinkedList');
 
     // Einbinden der AuD-Logik
-    const mainContainer = new AuDView(this.#container, this.singletonManager);
+    const mainContainer = new AuDView(this.#container, this.#singletonManager);
     mainContainer.initPromise.then(
       () => {
         mainContainer.loadAuD('SingleLinkedList');
@@ -73,7 +73,7 @@ export default class MainView extends View {
     this.setLastLoad('loadDirectedUnweightedGraph');
 
     // Einbinden der AuD-Logik
-    const mainContainer = new AuDView(this.#container, this.singletonManager);
+    const mainContainer = new AuDView(this.#container, this.#singletonManager);
     mainContainer.initPromise.then(
       () => {
         mainContainer.loadAuD('DirectedUnweightedGraph');
@@ -99,7 +99,7 @@ export default class MainView extends View {
     this.setLastLoad('loadMergeSort');
 
     // Einbinden der AuD-Logik
-    const mainContainer = new AuDView(this.#container, this.singletonManager);
+    const mainContainer = new AuDView(this.#container, this.#singletonManager);
     mainContainer.initPromise.then(
       () => {
         mainContainer.loadAuD('MergeSort');

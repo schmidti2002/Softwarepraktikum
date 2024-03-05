@@ -195,7 +195,7 @@ export class Executer {
 
   // private; Führt eine line aus
   #step() {
-    if (this.state.currentLine === this.lines.length) {
+    if (this.state.currentLine >= this.lines.length) {
       this.#stop();
       return;
     }
@@ -226,7 +226,7 @@ export class Executer {
   #nextBreakpoint() {
     let stepsCounter = 0;
     do {
-      if (this.state.currentLine === this.lines.length) {
+      if (this.state.currentLine >= this.lines.length) {
         this.#stop();
         return;
       }

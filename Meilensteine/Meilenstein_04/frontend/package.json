@@ -40,6 +40,5 @@
     "cytoscape": "^3.28.1",
     "lodash": "^4.17.21",
     "uuid": "^9.0.1"
-  },
-  "packageManager": "yarn@4.1.0"
+  }
 }
