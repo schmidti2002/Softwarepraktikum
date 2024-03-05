@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_restful import Api, Resource, abort
 import psycopg2
+import os
 
 
 DESIRED_FORMAT = "%Y-%m-%d %H:%M:%S+00:00"
@@ -11,14 +12,20 @@ def db_connect():
     host_url = "swp.dczlabs.xyz"
     port = "3131"
     user_name = "swpusr"
-    password = "251f6100a8ff1dd2"
-    #password_file_path = "~/praktikum/db_password.txt"
     Datenbank = "swp"
 
-    # Das Passwort aus der geheimen Datei im Docker-Container lesen
-    #with open(password_file_path, 'r') as file:
-    #    password = file.read().strip()
+    password = "251f6100a8ff1dd2"
+    """ # erste alternative 
+    password_file_path = "~/praktikum/db_password.txt"
 
+    # Das Passwort aus der geheimen Datei im Docker-Container lesen
+    with open(password_file_path, 'r') as file:
+        password = file.read().strip()
+    """
+
+    """ # Zweite Alte 
+    password = os.environ.get('db_password')
+    """
 
     database = psycopg2.connect(host=host_url, port= port, user=user_name, password=password, database=Datenbank)
     return database
