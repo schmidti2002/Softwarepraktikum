@@ -1,5 +1,4 @@
 import VisualizerView from './VisualizerView';
-import * as d3 from 'd3';
 import cytoscape from 'cytoscape';
 
 // Visualisiert ein Array von Zahlen als Säulendiagram
