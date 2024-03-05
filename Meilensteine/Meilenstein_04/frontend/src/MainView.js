@@ -1,20 +1,39 @@
 import View from './View';
 import AuDView from './AuDView';
+import AdminView from './AdminView';
+import UserView from './UserView';
 
 // Die MainView lädt alle AoDs
 export default class MainView extends View {
+  #userApi;
+
+  #singletonManager;
+
+  #container;
+
   constructor(parentNode, singletonManager) {
     const eventReporter = singletonManager.get('EventReporter');
     super('MainView', parentNode, eventReporter);
-    this.singletonManager = singletonManager;
+    this.#singletonManager = singletonManager;
 
-    this.initPromise.then(() => {
-      this.content = document.getElementById('mainContainer');
+    const pageLoad = this.initPromise.then(() => {
+      this.#container = document.getElementById('mainContainer');
       const lastLoad = localStorage.getItem('lastLoad');
       if (lastLoad) {
         this[lastLoad]();
       } else {
         this.loadStartpage();
+      }
+      const userContainer = document.getElementById('user-editor-offcanvas');
+      new UserView(userContainer, this.#singletonManager);
+    });
+    this.#userApi = singletonManager.get('UserApi');
+    Promise.all([/* this.#userApi.userGet() */Promise.resolve({ admin: true }), pageLoad]).then(([user]) => {
+      if (user.admin) {
+        const adminPanelLink = document.createElement('li');
+        adminPanelLink.classList.add('nav-item', 'flex-fill');
+        adminPanelLink.innerHTML = '<a data-onclick="loadAdminPanel" class="nav-link">Admin</a>';
+        document.getElementById('before-admin').after(adminPanelLink);
       }
     });
   }
@@ -32,7 +51,7 @@ export default class MainView extends View {
     fetch('StartPage.html')
       .then((response) => response.text())
       .then((data) => {
-        this.content.innerHTML = data;
+        this.#container.innerHTML = data;
       });
   }
 
@@ -41,8 +60,7 @@ export default class MainView extends View {
     this.setLastLoad('loadSingleLinkedList');
 
     // Einbinden der AuD-Logik
-    const container = document.getElementById('mainContainer');
-    const mainContainer = new AuDView(container, this.singletonManager);
+    const mainContainer = new AuDView(this.#container, this.singletonManager);
     mainContainer.initPromise.then(
       () => {
         mainContainer.loadAuD('SingleLinkedList');
@@ -55,8 +73,7 @@ export default class MainView extends View {
     this.setLastLoad('loadDirectedUnweightedGraph');
 
     // Einbinden der AuD-Logik
-    const container = document.getElementById('mainContainer');
-    const mainContainer = new AuDView(container, this.singletonManager);
+    const mainContainer = new AuDView(this.#container, this.singletonManager);
     mainContainer.initPromise.then(
       () => {
         mainContainer.loadAuD('DirectedUnweightedGraph');
@@ -69,8 +86,7 @@ export default class MainView extends View {
     this.setLastLoad('loadBubbleSort');
 
     // Einbinden der AuD-Logik
-    const container = document.getElementById('mainContainer');
-    const mainContainer = new AuDView(container, this.singletonManager);
+    const mainContainer = new AuDView(this.#container, this.#singletonManager);
     mainContainer.initPromise.then(
       () => {
         mainContainer.loadAuD('BubbleSort');
@@ -83,8 +99,7 @@ export default class MainView extends View {
     this.setLastLoad('loadMergeSort');
 
     // Einbinden der AuD-Logik
-    const container = document.getElementById('mainContainer');
-    const mainContainer = new AuDView(container, this.singletonManager);
+    const mainContainer = new AuDView(this.#container, this.singletonManager);
     mainContainer.initPromise.then(
       () => {
         mainContainer.loadAuD('MergeSort');
@@ -92,27 +107,14 @@ export default class MainView extends View {
     );
   }
 
-  // ToDo: Größe des Containers für das Benutzerprofil anpassen,
-  // sodass er sich rechts am Rand öffnet/schließt
-  showUserEditor() {
-    const container = document.getElementById('container');
-    const mainContainer = document.getElementById('mainContainer');
-    const userEditor = document.getElementById('userEditor');
-    container.style.flexDirection = 'row';
+  async loadAdminPanel() {
+    this.setLastLoad('loadAdminPanel');
+    const adminView = new AdminView(this.#container, this.#singletonManager);
+    await adminView.initPromise;
+  }
 
-    if (mainContainer.style.width === '100%') { // Benutzerprofil ist bereits ausgeblendet
-      mainContainer.style.width = '75%';
-      userEditor.style.width = '25%';
-      fetch('UserEditor.html')
-        .then((response) => response.text())
-        .then((data) => {
-          userEditor.innerHTML = data;
-        });
-    } else { // Benutzerprofil ist bereits eingeblendet
-      mainContainer.style.width = '100%';
-      userEditor.style.width = '0%';
-      userEditor.innerHTML = '';
-    }
+  onClickLogout() {
+    this.#userApi.userApitokenDelete().then(() => window.location.reload());
   }
 
   toggleDarkMode() {
