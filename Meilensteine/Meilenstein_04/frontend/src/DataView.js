@@ -3,8 +3,11 @@ import View from './View';
 // Diese Klasse alle derzeit gespeichtern Variablen und ihren Wert anzeigen
 export default class DataView extends View {
   #simpleDataContainer;
+
   #objContainer;
-  #outputDataContainer
+
+  #outputDataContainer;
+
   constructor(parentNode, eventReporter) {
     super('DataView', parentNode, eventReporter);
     this.initPromise
@@ -25,7 +28,7 @@ export default class DataView extends View {
   }
 
   // zeigt die Daten an
-  // (unter anderem?) aufgerufen in #onLogicStateChange(data, variables, line, running) in AuDView.js
+  // (unter anderem?) aufgerufen in #onLogicStateChange(data, variables, line, running) in AuDViewJS
   renderData(data) {
     if (data === null || data === undefined) {
       this.showEmpty();
@@ -33,7 +36,7 @@ export default class DataView extends View {
     }
     const divObj = document.createElement('div');
     divObj.classList.add('border');
-    const divSimple = document.createElement('div');    
+    const divSimple = document.createElement('div');
     divObj.classList.add('border');
     const divOutput = document.createElement('div');
     this.#renderData(divObj, divSimple, divOutput, data);
@@ -50,8 +53,8 @@ export default class DataView extends View {
     divObj.classList.add('row');
     const divSimple = document.createElement('div');
     divObj.classList.add('row');
-    const divOutput = document.createElement('div');    
-    if(data.output !== undefined){
+    const divOutput = document.createElement('div');
+    if (data.output !== undefined) {
       const innerDiv = document.createElement('div');
       innerDiv.classList.add('d-flex');
       innerDiv.classList.add('col');
@@ -126,7 +129,7 @@ export default class DataView extends View {
     parentNode.appendChild(div);
   }
 
-  /*#renderOutput(parentNode, data){
+  /* #renderOutput(parentNode, data){
     const div = document.createElement('div');
     switch (typeof data) {
       case 'object':
@@ -149,7 +152,7 @@ export default class DataView extends View {
     }
     div.classList.add(`dataview-type-${typeof data}`);
     parentNode.appendChild(div);
-  }*/
+  } */
 
   showEmpty() {
     this.#objContainer.innerHTML = 'Placeholder for nothing to show in objContainer';
