@@ -109,9 +109,6 @@ export default class AuDView extends View {
   // Einen Algorithmus oder Datenstruktur einladen
   // Wird in MainView gesetzt
   loadAuD(type) {
-    //if (visualizerView !== undefined && visualizerView.cy !== null){
-    //  this.visualizerView.cy.destroy();
-    //}
     new Promise((resolve) => {
       switch (type) {
         case 'BubbleSort':
