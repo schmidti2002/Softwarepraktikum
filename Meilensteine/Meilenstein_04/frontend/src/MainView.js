@@ -110,7 +110,6 @@ export default class MainView extends View {
 
   toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
-    document.getElementById('navbar').classList.toggle('navbar-light');
-    document.getElementById('navbar').classList.toggle('bg-light');
+    document.body.classList.toggle('light-mode');
   }
 }
