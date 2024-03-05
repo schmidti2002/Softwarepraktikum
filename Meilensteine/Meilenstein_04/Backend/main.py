@@ -33,6 +33,7 @@ api.add_resource(userEndpoints.user, '/user')
 api.add_resource(userEndpoints.user_edit, '/user_edit/<edit_userid>')
 api.add_resource(userEndpoints.useres, '/useres')
 api.add_resource(userEndpoints.userapitoken,'/user/apitoken')
+api.add_resource(userEndpoints.userpassword_reset, '/user/reset')
 
 api.add_resource(sortEndpoints.sort_algo, "/sort/algo")
 api.add_resource(sortEndpoints.sort_favorite, "/sort/favorite")

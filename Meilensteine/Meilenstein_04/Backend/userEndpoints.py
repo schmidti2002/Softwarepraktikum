@@ -4,6 +4,7 @@ from flask import Flask, request
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
+from flask_caching import Cache
 import random
 import string
 import secrets
@@ -16,6 +17,7 @@ from datetime import datetime
 import Endpoints_util 
 
 app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 api = Api(app)
 
 
@@ -194,7 +196,7 @@ class user_edit(Resource):
         # Daten aus dem Request holen und überprüfen
         user_uuid = Endpoints_util.getUserUUID(request, database)
         # Auf Adminrechte überprüfen
-        Endpoints_util.verify_admin(user_edit, database)
+        Endpoints_util.verify_admin(user_uuid, database)
         
         # Daten des Users überprüfen
         try:
@@ -226,7 +228,55 @@ class useres(Resource):
             response_dic.append({"id":result[i-1][0],"username": result[i-1][1], "admin": result[i-1][2], "email": result[i-1][3]})
         return jsonify(response_dic)
 
+class userpassword_reset(Resource):
+
+    def post(self):
+        # Daten aus dem Request holen
+        username = request.form.get('username')
+        if username:
+            # Holen Sie die aktuelle Liste der Benutzernamen aus dem Cache
+            usernames = cache.get('usernames') or []
+            # Fügen Sie den neuen Benutzernamen hinzu
+            usernames.append(username)
+            # Setzen Sie die aktualisierte Liste der Benutzernamen im Cache
+            cache.set('usernames', usernames)
+            return ("Password reset request created", 200)
+        else:
+            return ("Send data conflicts with existing entry", 409)
+
+    def get(self):
+        # User UUID holen
+        user_uuid = Endpoints_util.getUserUUID(request, database)
+
+        # Adminrechte überprüfen#
+        Endpoints_util.verify_admin(user_uuid, database)
+
+        # Cache holen
+        usernames = cache.get('usernames') or []
+        return jsonify(usernames)
+    
+    def delete(self):
+        # User UUID holen
+        user_uuid = Endpoints_util.getUserUUID(request, database)
+
+        # Adminrechte überprüfen
+        Endpoints_util.verify_admin(user_uuid, database)
+
+        user_edit = request.form.get('username')
+        if user_edit:
+            # Cache holen
+            usernames = cache.get('usernames') or []
+            # Löschen Sie den Benutzernamen aus der Liste
+            usernames.remove(user_edit)
+            # Setzen Sie die aktualisierte Liste der Benutzernamen im Cache
+            cache.set('usernames', usernames)
+            return ("Password reset request deleted", 200)
+        else:
+            return ("userrequest not exist", 404)
+
+
 api.add_resource(user, '/user')
 api.add_resource(user_edit, '/user_edit/<edit_userid>')
 api.add_resource(useres, '/useres')
 api.add_resource(userapitoken,'/user/apitoken')
+api.add_resource(userpassword_reset, '/user/password_reset')
