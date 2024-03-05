@@ -240,7 +240,7 @@ class userpassword_reset(Resource):
             usernames.append(username)
             # Setzen Sie die aktualisierte Liste der Benutzernamen im Cache
             cache.set('usernames', usernames)
-            return ("Password reset request created", 200)
+            return ("password request create", 200)
         else:
             return ("Send data conflicts with existing entry", 409)
 
@@ -254,8 +254,8 @@ class userpassword_reset(Resource):
         # Cache holen
         usernames = cache.get('usernames') or []
         return jsonify(usernames)
-    
-    def delete(self):
+class userpassword_reset_username(Resource):    
+    def delete(self, username):
         # User UUID holen
         user_uuid = Endpoints_util.getUserUUID(request, database)
 
@@ -267,16 +267,17 @@ class userpassword_reset(Resource):
             # Cache holen
             usernames = cache.get('usernames') or []
             # Löschen Sie den Benutzernamen aus der Liste
-            usernames.remove(user_edit)
+            usernames.remove(username)
             # Setzen Sie die aktualisierte Liste der Benutzernamen im Cache
             cache.set('usernames', usernames)
-            return ("Password reset request deleted", 200)
+            return ("reset request delete", 200)
         else:
-            return ("userrequest not exist", 404)
+            return ("reset request not found", 404)
 
 
 api.add_resource(user, '/user')
 api.add_resource(user_edit, '/user_edit/<edit_userid>')
 api.add_resource(useres, '/useres')
 api.add_resource(userapitoken,'/user/apitoken')
-api.add_resource(userpassword_reset, '/user/password_reset')
+api.add_resource(userpassword_reset, '/user/reset-password')
+api.add_resource(userpassword_reset_username, '/user/reset-password/<username>')
