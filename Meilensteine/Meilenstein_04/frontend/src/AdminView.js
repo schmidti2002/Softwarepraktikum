@@ -138,14 +138,7 @@ ${user.username} ${user.admin ? '👨🏻‍🔧' : ''}<span id="user-${user.id}
   }
 
   async loadUsers() {
-    this.#users = _.chain(await /* this.#userApi.usersGet() */Promise.resolve([
-      {
-        id: 1, username: 'Bob', email: 'bob@example.com', admin: true,
-      },
-      {
-        id: 2, username: 'Eve', email: 'eve@example.com', admin: false,
-      },
-    ]))
+    this.#users = _.chain(await this.#userApi.usersGet())
       .map((user) => this.createUserEntry(user))
       .keyBy((user) => user.data.id)
       .value();

@@ -19,9 +19,7 @@ export default class UserView extends View {
     const eventReporter = singletonManager.get('EventReporter');
     super('UserView', parentNode, eventReporter);
     this.#userApi = singletonManager.get('UserApi');
-    const userDataRequest = Promise.resolve({
-      id: 1, username: 'Bob', email: 'bob@example.com', admin: true,
-    });// TODO this.#userApi.userGet();
+    const userDataRequest = this.#userApi.userGet();
 
     this.initPromise.then(async () => {
       this.#resetBtn = document.getElementById('user-editor-reset');

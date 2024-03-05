@@ -28,7 +28,7 @@ export default class MainView extends View {
       new UserView(userContainer, this.#singletonManager);
     });
     this.#userApi = singletonManager.get('UserApi');
-    Promise.all([/* this.#userApi.userGet() */Promise.resolve({ admin: true }), pageLoad]).then(([user]) => {
+    Promise.all([this.#userApi.userGet(), pageLoad]).then(([user]) => {
       if (user.admin) {
         const adminPanelLink = document.createElement('li');
         adminPanelLink.classList.add('nav-item', 'flex-fill');

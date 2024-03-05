@@ -37,9 +37,9 @@ export default async function entry() {
     const contentRoot = document.getElementById('content-root');
 
     // Für den Check ob der Nutzer eingeloggt ist würde die Middleware eine Endlosschleife erzeugen.
-    // const loginCheckApi = new UserApi();
+    const loginCheckApi = new UserApi();
 
-    return /* TODO API call so bald API da* await loginCheckApi.userApitokenGet()/ */Promise.resolve()/* */
+    return await loginCheckApi.userApitokenGet()
       .then(() => new MainView(contentRoot, singletonManager))
       .catch((err) => {
         if (err instanceof ResponseError && err.response && err.response.status === 401) {
