@@ -204,6 +204,7 @@ paths:
           schema:
             type: string
             format: string
+      responses:
         "200":
           description: reset request deleted
         "404":
