@@ -35,7 +35,7 @@ export default class DataView extends View {
       return;
     }
     const divObj = document.createElement('div');
-    divObj.classList.add('border');
+    // divObj.classList.add('border');
     const divSimple = document.createElement('div');
     divObj.classList.add('border');
     const divOutput = document.createElement('div');
@@ -79,7 +79,7 @@ export default class DataView extends View {
               divSimple.appendChild(innerDiv);
             } else {
               innerDiv.classList.add('col');
-              innerDiv.classList.add('border');
+              // innerDiv.classList.add('border');
               this.#renderDataObject(innerDiv, data[key]);
               divObj.appendChild(innerDiv);
             }

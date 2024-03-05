@@ -114,4 +114,9 @@ export default class MainView extends View {
       userEditor.innerHTML = '';
     }
   }
+
+  toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    document.body.classList.toggle('light-mode');
+  }
 }
