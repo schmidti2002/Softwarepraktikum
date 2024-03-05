@@ -56,7 +56,7 @@ describe('BubbleSort', () => {
       [[1000000,100000,10000,1000,100,10,1], [1,10,100,1000,10000,100000,1000000]],
       ])('sort', (array, solution) => {
         bubble.exec = new Executer({});
-        bubble.exec.changeAlgo(bubble.linesForBubbleSort, [], 0, {arr: array})
+        bubble.exec.changeAlgo(bubble.linesForSort, [], 0, {arr: array})
           for(let i = 0; i < 1000; i++){
             bubble.nextBreak()
           }
