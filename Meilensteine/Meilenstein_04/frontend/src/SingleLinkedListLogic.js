@@ -134,7 +134,7 @@ export default class SingleLinkedList extends Logic {
   ];
 
   // public String getDataAtPosition(int position) {
-  exampleGetDataAtPositon = {
+  exampleGetDataAtPosition = {
     java: [
     'if (position < 0 || position >= getSize()) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: Position ist außerhalb der Liste");',
@@ -277,7 +277,7 @@ export default class SingleLinkedList extends Logic {
   ];
 
   // public boolean invertList() {
-  exampleInverList = {
+  exampleInvertList = {
     java: [
     'if (front === null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Liste ist leer");',
@@ -410,7 +410,7 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Position von Daten zurückgeben',
       algo: {
-        code: this.exampeGetPositionOfData,
+        code: this.exampleGetPositionOfData,
         lines: this.linesForGetPositionOfData,
         breakpoints: [],
       },
@@ -426,7 +426,7 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Daten an Position löschen',
       algo: {
-        code: this.exampleRemoveDataAtPostion,
+        code: this.exampleRemoveDataAtPosition,
         lines: this.linesForRemoveDataAtPosition,
         breakpoints: [],
       },

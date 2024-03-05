@@ -49,7 +49,7 @@ export default class DirectedUnweightedGraph extends Logic {
   
   // public boolean insertNode(String data) {
   exampleInsertNode = {
-    javascript: [
+    java: [
     'if (adjList == null) {',
     '   adjList = new LinkedList<>();',
     '   adjList.add(new LinkedList<>());',
@@ -102,7 +102,7 @@ export default class DirectedUnweightedGraph extends Logic {
 
   // public boolean insertEdge(String nodeOne, String nodeTwo) {
   exampleInsertEdge = {
-    javascript: [
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -616,6 +616,6 @@ export default class DirectedUnweightedGraph extends Logic {
     }
 
     loadAlgoByIndex(index, inputs) {
-        super.loadAlgoByIndex(index, {...inputs, adjList: this.exec.state.vars.adjList})
+        super.loadAlgoByIndex(index, {...inputs, adjList: this.exec.state.vars.adjList, output: null})
       }
 }
