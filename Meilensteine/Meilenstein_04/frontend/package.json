@@ -26,12 +26,12 @@
   },
   "scripts": {
     "test": "jest",
-    "api-prepare": "openapi-generator-cli generate -i ../../../specs/openapi/openapi.yaml -g typescript-fetch -o ./src/api",
+    "api-prepare": "openapi-generator-cli generate -i ../specs/openapi/openapi.yaml -g typescript-fetch -o ./src/api",
     "lint": "eslint ./src/*.js",
     "sonar": "yarn test --coverage; yarn lint -f json -o ./coverage/eslint.json",
     "watch": "webpack --watch",
     "build": "webpack",
-    "package": "yarn run api-prepare && yarn build --mode=production --no-devtool",
+    "package": "mkdir -p dist; cp src/*.html ./dist/ && yarn run api-prepare && yarn build --mode=production --no-devtool",
     "start": "webpack serve --open --host 0.0.0.0"
   },
   "dependencies": {
