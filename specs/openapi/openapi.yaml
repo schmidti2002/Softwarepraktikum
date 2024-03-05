@@ -162,7 +162,7 @@ paths:
         - user
       responses:
         "200":
-          description: reset request sent
+          description: password reset request sent
           content:
             application/json:
               schema:
@@ -190,7 +190,7 @@ paths:
                   type: string
       responses:
         "200":
-          description: password reset successful
+          description: password request created
   /user/reset-password/{username}:
     delete:
       tags:
@@ -204,9 +204,9 @@ paths:
             format: string
       responses:
         "200":
-          description: reset request deleted
+          description: password reset request deleted
         "404":
-          description: reset request not found
+          description: password reset request not found
         "403":
           $ref: "#/components/responses/ForbiddenError"
 
