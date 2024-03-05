@@ -12,7 +12,7 @@ def db_connect():
     port = "3131"
     user_name = "swpusr"
     password = "251f6100a8ff1dd2"
-    #password_file_path = "/run/secrets/db_password"
+    #password_file_path = "~/praktikum/db_password.txt"
     Datenbank = "swp"
 
     # Das Passwort aus der geheimen Datei im Docker-Container lesen
