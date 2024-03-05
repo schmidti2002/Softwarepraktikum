@@ -44,7 +44,7 @@ export default class DirectedUnweightedGraph extends Logic {
     let nodeB = new Node("B");
     let nodeC = new Node("C");
     let nodeD = new Node("D");
-    return {adjList: [[nodeA, nodeB],[nodeB, nodeC, nodeD],[nodeC,nodeA],[nodeD]]};
+    return {adjList: [[nodeA, nodeB],[nodeB, nodeC, nodeD],[nodeC,nodeA],[nodeD]], output: null};
   }
   
   jsExampleInsertNode = [
@@ -55,7 +55,7 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'for (let i = 0; i < this.adjList.length; i++) {',
     '   if (this.adjList[i][0].getData() === data) {',
-    '       console.error("Exception in thread \"main\" java.lang.IOExeption: node already in graph");',
+    '       console.error("Knoten ist schon im Graphen");',
     '       return false;',
     '   }',
     '}',
@@ -68,19 +68,22 @@ export default class DirectedUnweightedGraph extends Logic {
         ...execIfElse((s) => s.vars.adjList === null, [
             { f(os) { const s = _.cloneDeep(os); s.vars.adjList = [[]]; return s; } },
             { f(os) { const s = _.cloneDeep(os); s.vars.adjList[0].push(new Node(s.vars.data)); return s; } },
+            { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
         ],[
             ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
                 ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
-                    {}
+                  //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten ist schon im Graphen'); return s; } },
+                  { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
                 ]),]),
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList.push([]); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.adjList.length-1].push(new Node(s.vars.data)); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
         ]),
     ]
 
     jsExampleInsertEdge = [   
         'if (!adjList) {',
-        '   console.error("Exeption in thread \"main\" java.lang.NullPointerExeption: graph is empty");',
+        '   console.error("Graph ist leer");',
         '   return false;',
         '}',
         'let indexNodeOne = -1, indexNodeTwo = -1;',
@@ -98,10 +101,10 @@ export default class DirectedUnweightedGraph extends Logic {
         '   }',
         '}',
         'if (indexNodeOne === -1 || indexNodeTwo === -1) {',
-        '   console.error("Exeption in thread \"main\" java.lang.IOExeption: node not in graph");',
+        '   console.error("Kante nicht im Graph");',
         '   return false;',
         '}',
-        'if (indexNodeTwo === -2) {console.error("Exeption in thread \"main\" java.lang.IOExeption: edge already in graph");',
+        'if (indexNodeTwo === -2) {console.error("Kante ist schon im Graph");',
         '   return false;',
         '}',
         'adjList[indexNodeOne].push(adjList[indexNodeTwo][0]);',
@@ -109,6 +112,10 @@ export default class DirectedUnweightedGraph extends Logic {
     ]
 
     linesForInsertEdge = [
+      ...execIfElse((s) => !s.vars.adjList, [
+        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+      ],[
         { f(os) { const s = _.cloneDeep(os); s.vars.indexNodeOne = -1; s.vars.indexNodeTwo = -1; return s; } },
         ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
             ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.nodeOne, [
@@ -118,7 +125,17 @@ export default class DirectedUnweightedGraph extends Logic {
                 { f(os) { const s = _.cloneDeep(os); s.vars.indexNodeTwo = s.vars.i; return s; } },
             ]),
         ]),
-        { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.indexNodeOne].push(s.vars.adjList[s.vars.indexNodeTwo][0]); return s; } },
+        ...execIfElse((s) => s.vars.indexNodeOne === -1 || s.vars.indexNodeTwo === -1, [
+          //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante nicht im Graph'); return s; } },
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+        ]),
+        ...execIfElse((s) => s.vars.indexNodeTwo === -2, [
+          //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante ist schon im Graph'); return s; } },
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+        ]),
+          { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.indexNodeOne].push(s.vars.adjList[s.vars.indexNodeTwo][0]); return s; } },
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },        
+    ]),
     ]
 
     /*jsExampleSearchNodeID(String data) { // vielleicht getEdgesOfNode
@@ -139,7 +156,7 @@ export default class DirectedUnweightedGraph extends Logic {
 
     jsExampleRemoveEdge = [
     'if (!adjList) {',
-    '   console.error("Exception: graph is empty");',
+    '   console.error("Graph ist leer");',
     '   return false;',
     '}',
     'for (let i = 0; i < adjList.length; i++) {',
@@ -150,29 +167,39 @@ export default class DirectedUnweightedGraph extends Logic {
     '               return true;',
     '           }',
     '       }',
-    '       console.error("Exception: edge not in graph");',
+    '       console.error("Kante nicht im Graphen");',
     '       return false;',
     '   }',
     '}',
-    'console.error("Exception: node not in graph");',
+    'console.error("Knoten nicht im Graphen");',
     'return false;',
     ]
 
     linesForRemoveEdge = [
+      ...execIfElse((s) => !s.vars.adjList, [
+        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+      ],[
         ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
             ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.nodeOne, [
                 ...execFor('k', () => 0, (s) => s.vars.k < s.vars.adjList[s.vars.i].length, 1, [
                     ...execIfElse((s) => s.vars.adjList[s.vars.i][s.vars.k].getData() === s.vars.nodeTwo, [
                         { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.i].splice(s.vars.k, 1); return s; } },
+                        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
                     ]),
                 ]),
+                //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante nicht im Graphen'); return s; } },
+                { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
             ]),
         ]),
+        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten nicht im Graphen'); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+      ]),
     ]
 
     jsExampleRemoveNode = [
     'if (!adjList) {',
-    '   console.error("Exception: graph is empty");',
+    '   console.error("Graph ist leer");',
     '   return false;',
     '}',
     'for (let i = 0; i < adjList.length; i++) {',
@@ -188,11 +215,15 @@ export default class DirectedUnweightedGraph extends Logic {
     '       return true;',
     '   }',
     '}',
-    'console.error("Exception: node not in graph");',
+    'console.error("Knoten nicht im Graphen");',
     'return false;',
     ]
 
     linesForRemoveNode = [
+      ...execIfElse((s) => !s.vars.adjList, [
+        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+      ],[
         ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
             ...execFor('k', () => 1, (s) => s.vars.k < s.vars.adjList[s.vars.i].length, 1, [
                 ...execIfElse((s) => s.vars.adjList[s.vars.i][s.vars.k].getData() === s.vars.data, [
@@ -203,13 +234,17 @@ export default class DirectedUnweightedGraph extends Logic {
         ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
             ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
                 { f(os) { const s = _.cloneDeep(os); s.vars.adjList.splice(s.vars.i, 1); return s; } },
+                { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
             ]),                
-        ]),
+        ]),        
+        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten nicht im Graphen'); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+      ]),
     ]
 
     jsExampleInvert = [
         'if (!adjList) {',
-        ' console.error("Exception: graph is empty");',
+        ' console.error("Graph ist leer");',
         ' return false;',
         '}',
         'let newAdjList = [];',
@@ -232,6 +267,10 @@ export default class DirectedUnweightedGraph extends Logic {
     ]
 
     linesForInvert = [
+      ...execIfElse((s) => !s.vars.adjList, [
+        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+      ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList = []; return s; } },
       ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
         { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList.push([]); return s; } },
@@ -249,20 +288,32 @@ export default class DirectedUnweightedGraph extends Logic {
     { f(os) { const s = _.cloneDeep(os); s.vars.adjList = undefined; return s; } },
     { f(os) { const s = _.cloneDeep(os); s.vars.adjList = s.vars.newAdjList; return s; } },
     { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+  ]),
   ]
 
   jsExampleDeleteGraph = [
+  'if (!adjList) {',
+      ' console.error("Graph ist schon leer");',
+      ' return false;',
+  '}',
   'for (let i = 0; i < adjList.length; i++) {',
   '   adjList[i].splice(0, adjList[i].length); // Clear the inner arrays',
   '}',
   'adjList.splice(0, adjList.length); // Clear the outer array',
+  'return true;',
   ]
 
   linesForDeleteGraph = [
+    ...execIfElse((s) => !s.vars.adjList, [
+      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist schon leer'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+    ],[
     ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
       { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList[s.vars.i].splice(0, s.vars.adjList[s.vars.i].length); return s; } },
     ]),
     { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList.splice(0, s.vars.adjList.length); return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+  ])
   ]
 
     algos = [{
