@@ -8,17 +8,16 @@ MAX_APIKEY_AGE_MIN = 20
 
 def db_connect():
     import psycopg2
-    host_url = "swp.dczlabs.xyz"
-    port = "3131"
-    user_name = "swpusr"
+    host_url = os.environ.get('DB_HOST')
+    port = os.environ.get('DB_PORT')
+    user_name = os.environ.get('DB_USER')
 
     password_file_path = os.environ.get('DB_PASSWORD_FILE')
-    Datenbank = "swp"
+    Datenbank = os.environ.get('DB_NAME')
 
     # Das Passwort aus der geheimen Datei im Docker-Container lesen
     with open(password_file_path, 'r') as file:
         password = file.read().strip()
-
     database = psycopg2.connect(host=host_url, port= port, user=user_name, password=password, database=Datenbank)
     return database
 

@@ -68,7 +68,7 @@ def catch_all(path):
 
 # Aufbau der Datenbankverbindung zum Start und INIT
 with app.app_context():
-    datenbank = Endpoints_util.db_connect()
+    database = Endpoints_util.db_connect()
     cursor = database.cursor()
 
 

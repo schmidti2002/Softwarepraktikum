@@ -15,12 +15,24 @@ services:
     secrets:
       - db_password
     networks:
-      - dbnet
+      dbnet:
+        aliases:
+          - db.local
   server:
     build:
       context: ../
+    mem_limit: 64mb
+    environment:
+      DB_HOST: "db.local"
+      DB_PORT: "5432"
+      DB_USER: "swpusr"
+      DB_PASSWORD_FILE: "/run/secrets/db_password"
+      DB_NAME: "swp"
     ports:
       - "3130:3130"
+    restart: unless-stopped
+    secrets:
+      - db_password
     networks:
       certnet:
         aliases:
@@ -28,9 +40,11 @@ services:
       dbnet:
   certbot:
     build:
-      context: ./certbot/ 
+      context: ./certbot/
+    mem_limit: 64mb 
     environment:
       ADMIN_EMAIL: /run/secrets/admin_email
+    restart: unless-stopped
     secrets:
       - admin_email
     ports:
