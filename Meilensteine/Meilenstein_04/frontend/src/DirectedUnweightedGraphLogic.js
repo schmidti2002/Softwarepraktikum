@@ -48,7 +48,8 @@ export default class DirectedUnweightedGraph extends Logic {
   }
   
   // public boolean insertNode(String data) {
-  javaExampleInsertNode = [
+  exampleInsertNode = {
+    javascript: [
     'if (adjList == null) {',
     '   adjList = new LinkedList<>();',
     '   adjList.add(new LinkedList<>());',
@@ -64,9 +65,8 @@ export default class DirectedUnweightedGraph extends Logic {
     'adjList.add(adjList.size(), new LinkedList<>());',
     'adjList.get(adjList.size() - 1).add(new Node(data));',
     'return true;',
-  ]
-
-  jsExampleInsertNode = [
+  ],
+  javascript: [
     'if (this.adjList === null) {',
     '  this.adjList = [[]];',
     '  this.adjList[0].push(new Node(data));',
@@ -81,7 +81,7 @@ export default class DirectedUnweightedGraph extends Logic {
     'this.adjList.push([]);',
     'this.adjList[this.adjList.length - 1].push(new Node(data));',
     'return true;',
-    ];
+    ]}
 
   linesForInsertNode = [
     ...execIfElse((s) => s.vars.adjList === null, [
@@ -101,7 +101,8 @@ export default class DirectedUnweightedGraph extends Logic {
   ]
 
   // public boolean insertEdge(String nodeOne, String nodeTwo) {
-  javaExampleInsertEdge = [
+  exampleInsertEdge = {
+    javascript: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -130,9 +131,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'adjList.get(indexNodeOne).add(adjList.get(indexNodeTwo).get(0));',
     'return true;',
-  ]
-
-  jsExampleInsertEdge = [   
+  ],
+  javascript: [   
     'if (!adjList) {',
     '   console.error("Graph ist leer");',
     '   return false;',
@@ -161,7 +161,7 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'adjList[indexNodeOne].push(adjList[indexNodeTwo][0]);',
     'return true;',
-  ]
+  ]}
 
   linesForInsertEdge = [
     ...execIfElse((s) => !s.vars.adjList, [
@@ -191,7 +191,8 @@ export default class DirectedUnweightedGraph extends Logic {
   ]
 
   // public List<Node> getEdgesOfNode(String data) {
-  javaExampleGetEdgesOfNode = [
+  exampleGetEdgesOfNode = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return null;',
@@ -203,9 +204,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Knoten nicht im Graph");',
     'return null;',
-  ]
-
-  jsExampleGetEdgesOfNode = [
+  ],
+  javascript: [
     'if (!adjList) {',
     '   console.error("Exception: Graph ist leer");',
     '   return null;',
@@ -218,7 +218,7 @@ export default class DirectedUnweightedGraph extends Logic {
     'console.error("Exception: Knoten nicht im Graph");',
     'return null;',
     '}',
-  ]
+  ]}
 
   linesForGetEdgesOfNode = [
     ...execIfElse((s) => !s.vars.adjList, [
@@ -237,7 +237,8 @@ export default class DirectedUnweightedGraph extends Logic {
   ]
 
   // public boolean removeEdge(String nodeOne, String nodeTwo) {
-  javaExampleRemoveEdge = [
+  exampleRemoveEdge = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -256,9 +257,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Knoten nicht im Graphen");',
     'return false;',
-  ]
-
-  jsExampleRemoveEdge = [
+  ],
+  javascript: [
   'if (!adjList) {',
   '   console.error("Graph ist leer");',
   '   return false;',
@@ -277,7 +277,7 @@ export default class DirectedUnweightedGraph extends Logic {
   '}',
   'console.error("Knoten nicht im Graphen");',
   'return false;',
-  ]
+  ]}
 
   linesForRemoveEdge = [
     ...execIfElse((s) => !s.vars.adjList, [
@@ -302,7 +302,8 @@ export default class DirectedUnweightedGraph extends Logic {
   ]
 
   // public boolean removeNode(String data) {
-  javaExampleRemoveNode = [
+  exampleRemoveNode = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -322,9 +323,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Knoten nicht im Graphen");',
     'return false;',
-  ]
-
-  jsExampleRemoveNode = [
+  ],
+  javascript: [
   'if (!adjList) {',
   '   console.error("Graph ist leer");',
   '   return false;',
@@ -344,7 +344,7 @@ export default class DirectedUnweightedGraph extends Logic {
   '}',
   'console.error("Knoten nicht im Graphen");',
   'return false;',
-  ]
+  ]}
 
   linesForRemoveNode = [
     ...execIfElse((s) => !s.vars.adjList, [
@@ -370,7 +370,8 @@ export default class DirectedUnweightedGraph extends Logic {
   ]
 
   // public boolean invert() {
-  javaExampleInvert = [
+  exampleInvert = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
     '   return false;',
@@ -392,9 +393,8 @@ export default class DirectedUnweightedGraph extends Logic {
     'this.deleteGraph();',
     'adjList = newAdjList;',
     'return true;',
-  ]
-
-  jsExampleInvert = [
+  ],
+  javascript: [
       'if (!adjList) {',
       ' console.error("Graph ist leer");',
       ' return false;',
@@ -416,7 +416,7 @@ export default class DirectedUnweightedGraph extends Logic {
       'this.deleteGraph();',
       'adjList = newAdjList;',
       'return true;',
-  ]
+  ]}
 
   linesForInvert = [
     ...execIfElse((s) => !s.vars.adjList, [
@@ -444,7 +444,8 @@ export default class DirectedUnweightedGraph extends Logic {
   ]
 
   // public void deleteGraph() {
-  javaExampleDeleteGraph = [
+  exampleDeleteGraph = {
+    java: [
     'if (adjList == null) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist schon leer");',
     '   return false;',
@@ -454,9 +455,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'adjList.clear();',
     'return true'
-  ]
-
-  jsExampleDeleteGraph = [
+  ],
+  javascript: [
   'if (!adjList) {',
       ' console.error("Graph ist schon leer");',
       ' return false;',
@@ -466,7 +466,7 @@ export default class DirectedUnweightedGraph extends Logic {
   '}',
   'adjList.splice(0, adjList.length);',
   'return true;',
-  ]
+  ]}
 
   linesForDeleteGraph = [
     ...execIfElse((s) => !s.vars.adjList, [
@@ -484,7 +484,7 @@ export default class DirectedUnweightedGraph extends Logic {
     algos = [{
         name: 'Knoten hinzufügen',
         algo: {
-          code: this.jsExampleInsertNode,
+          code: this.exampleInsertNode,
           lines: this.linesForInsertNode,
           breakpoints: [],
         },
@@ -503,7 +503,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Kante hinzufügen',
         algo: {
-          code: this.jsExampleInsertEdge,
+          code: this.exampleInsertEdge,
           lines: this.linesForInsertEdge,
           breakpoints: [],
         },
@@ -529,7 +529,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Kante hinzufügen',
         algo: {
-          code: this.jsExampleInsertEdge,
+          code: this.exampleInsertEdge,
           lines: this.linesForInsertEdge,
           breakpoints: [],
         },
@@ -555,7 +555,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Kanten von Knoten finden',
         algo: {
-          code: this.jsExampleGetEdgesOfNode,
+          code: this.exampleGetEdgesOfNode,
           lines: this.linesForGetEdgesOfNode,
           breakpoints: [],
         },
@@ -573,7 +573,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Knoten löschen',
         algo: {
-          code: this.jsExampleRemoveNode,
+          code: this.exampleRemoveNode,
           lines: this.linesForRemoveNode,
           breakpoints: [],
         },
@@ -591,7 +591,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Graphen invertieren',
         algo: {
-          code: this.jsExampleInvert,
+          code: this.exampleInvert,
           lines: this.linesForInvert,
           breakpoints: [],
         },
@@ -599,7 +599,7 @@ export default class DirectedUnweightedGraph extends Logic {
       },{
         name: 'Graphen löschen',
         algo: {
-          code: this.jsExampleDeleteGraph,
+          code: this.exampleDeleteGraph,
           lines: this.linesForDeleteGraph,
           breakpoints: [],
         },

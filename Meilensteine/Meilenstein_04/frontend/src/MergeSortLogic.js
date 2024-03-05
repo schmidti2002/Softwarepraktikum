@@ -21,7 +21,8 @@ export default class MergeSort extends Logic {
   }
 
   // public static void mergeSort(int[] arr) {
-  javaExampleSort = [
+  exampleSort = {
+    java: [
     'int n = arr.length;',
     'int[] aux = Arrays.copyOf(arr, n);',
     'for (int size = 1; size < n; size *= 2) {',
@@ -44,9 +45,8 @@ export default class MergeSort extends Logic {
     '       }',
     '   }',
     '}',
-  ]
-
-  jsExampleSort = [
+  ],
+  javascript: [
     'const n = arr.length;',
     'const aux = cloneDeep(arr);',
     'for (let size = 1; size < n; size *= 2) {',
@@ -69,7 +69,7 @@ export default class MergeSort extends Logic {
     '       }',
     '   }',
     '}',
-  ];
+  ]}
 
   linesForSort = [
     { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
@@ -100,7 +100,7 @@ export default class MergeSort extends Logic {
     {
       name: 'Sortieren',
       algo: {
-        code: this.jsExampleSort,
+        code: this.exampleSort,
         lines: this.linesForSort,
         breakpoints: [12, 14],
       },

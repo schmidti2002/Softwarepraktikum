@@ -21,7 +21,9 @@ export default class BubbleSort extends Logic {
   }
 
   // public static int[] bubbleSort(int[] arr) {
-  javaExampleSort = [
+  // Der Code für das Sortieren, welcher in der CodeView angezeigt werden soll
+  exampleSort = { 
+    java: [
     'int temp;',
     'for (int i = 0; i < arr.length - 1; i++) {',
     '   for (int k = 0; k < arr.length - 1 - i; k++) {',
@@ -33,10 +35,8 @@ export default class BubbleSort extends Logic {
     '   }',
     '}',
     'return arr;',
-  ]
-
-  // Der Code für das Sortieren, welcher in der CodeView angezeigt werden soll
-  jsCodeExampleSort = [
+  ],
+  javascript: [
     'let temp;',
     'const n = arr.length;',
     'for (let i = 0; i < n - 1; i++) {',
@@ -47,8 +47,8 @@ export default class BubbleSort extends Logic {
     '            arr[k + 1] = temp;',
     '        }',
     '    }',
-    '}'
-  ];
+    '}',
+  ],}
 
   // Algorithmus, der schrittweise ausgeführt wird
   linesForSort = [
@@ -70,7 +70,7 @@ export default class BubbleSort extends Logic {
     {
       name: 'Sortieren',
       algo: {
-        code: this.jsCodeExampleSort,
+        code: this.exampleSort,
         lines: this.linesForSort,
         breakpoints: [8],
       },
