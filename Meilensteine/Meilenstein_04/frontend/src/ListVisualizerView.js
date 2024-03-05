@@ -1,4 +1,5 @@
 import VisualizerView from './VisualizerView';
+import cytoscape from 'cytoscape';
 
 // Visualisiert ein Array von Zahlen als Säulendiagram
 export default class ListVisualizerView extends VisualizerView {
@@ -9,9 +10,66 @@ export default class ListVisualizerView extends VisualizerView {
     });
   }
 
+  renderData(startNode) {
+    if(startNode === null){
+      while (this.container.firstChild) {
+        this.container.removeChild(this.container.firstChild);
+      }
+      return;
+    }
+
+    var elements = { nodes: [], edges: [] };
+  
+    var visited = new Set();
+    var queue = [startNode];
+  
+    while (queue.length > 0) {
+      var currentNode = queue.shift();
+      visited.add(currentNode.getData());
+  
+      elements.nodes.push({ data: { id: currentNode.getData() } });
+  
+      var nextNode = currentNode.getNext();
+      if (nextNode) {
+        elements.edges.push({ data: { source: currentNode.getData(), target: nextNode.getData() } });
+        if (!visited.has(nextNode.getData())) {
+          queue.push(nextNode);
+        }
+      }
+    }
+  
+    var cy = window.cy = cytoscape({
+      container: this.container, // wird zu this.container
+      elements: elements,
+      style: [
+        {
+          selector: 'node',
+          style: {
+            'background-color': '#ffa54f',
+            'label': 'data(id)'
+          }
+        },
+        {
+          selector: 'edge',
+          style: {
+            'width': 3,
+            'line-color': '#ccc',
+            'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'straight'
+          }
+        }
+      ],
+      layout: {
+        name: 'grid',
+        rows: 1
+      }
+    });
+  }  
+}
   // Ausgabe der Liste in der Visualisierung
   // data ist das erste Element des stateChangeCallback() in showOutput() in SingleLinkedListLogic.js
-  renderData(data) {
+  /*renderData(data) {
     //const graphContainer = document.getElementById('graph');
     const graphContainer = this.container;
     graphContainer.innerHTML = '';
@@ -57,4 +115,4 @@ export default class ListVisualizerView extends VisualizerView {
     // Zeige den Graphen an
     graphContainer.style.display = 'flex';
   }
-}
+}*/
