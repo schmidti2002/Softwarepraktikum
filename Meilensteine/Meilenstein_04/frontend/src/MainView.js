@@ -50,8 +50,8 @@ export default class MainView extends View {
     );
   }
 
-   // SingleLinkedList fetchen und Standardbeispiel laden
-   loadDirectedUnweightedGraph() {
+  // SingleLinkedList fetchen und Standardbeispiel laden
+  loadDirectedUnweightedGraph() {
     this.setLastLoad('loadDirectedUnweightedGraph');
 
     // Einbinden der AuD-Logik
