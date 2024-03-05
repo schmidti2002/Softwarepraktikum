@@ -97,12 +97,6 @@ class user(Resource):
         return (response_dic, 200)
     
     def post(self):
-        # Daten aus dem Request holen und überprüfen
-        user_uuid = Endpoints_util.getUserUUID(request, database)
-
-        # Auf Adminrechte überprüfen
-        Endpoints_util.verify_admin(user_uuid, database)
-        
         # Daten aus dem Request holen
         try:
             id = request.form.get("id")
