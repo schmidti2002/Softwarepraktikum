@@ -17,7 +17,7 @@ export default class ListVisualizerView extends VisualizerView {
       }
       return;
     }
-
+    this.container.innerHTML = '';
     var elements = { nodes: [], edges: [] };
   
     var visited = new Set();

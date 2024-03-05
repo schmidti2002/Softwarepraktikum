@@ -2,7 +2,7 @@
 // Lädt HTML und fügt es unter der ParentNode ein.
 // Leidet Klickevents an den enstprechenden Listener weiter.
 export default class View {
-  constructor(name, parentNode, eventReporter) {
+  constructor(name, parentNode, eventReporter, cy) {
     this.parentNode = parentNode;
     if (!parentNode) {
       eventReporter.fatal(`could not init view of type ${name}. No parent node!`);
@@ -19,6 +19,7 @@ export default class View {
       .catch(() => {
         eventReporter.fatal(`could not init view of type ${name}. Could not load ${name}.html!`);
       });
+      cy.destroy();
   }
 
   // geht solange den DOM-Tree vom geklickten Element nach oben durch bis
