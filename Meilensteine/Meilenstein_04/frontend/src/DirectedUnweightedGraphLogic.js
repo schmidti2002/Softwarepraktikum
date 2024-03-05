@@ -84,20 +84,20 @@ export default class DirectedUnweightedGraph extends Logic {
     ];
 
   linesForInsertNode = [
-      ...execIfElse((s) => s.vars.adjList === null, [
-          { f(os) { const s = _.cloneDeep(os); s.vars.adjList = [[]]; return s; } },
-          { f(os) { const s = _.cloneDeep(os); s.vars.adjList[0].push(new Node(s.vars.data)); return s; } },
-          { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
-      ],[
-          ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
-              ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
-                //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten ist schon im Graphen'); return s; } },
-                { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
-              ]),]),
-      { f(os) { const s = _.cloneDeep(os); s.vars.adjList.push([]); return s; } },
-      { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.adjList.length-1].push(new Node(s.vars.data)); return s; } },
-      { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
-      ]),
+    ...execIfElse((s) => s.vars.adjList === null, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList = [[]]; return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList[0].push(new Node(s.vars.data)); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+    ],[
+        ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
+            ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
+              { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten ist schon im Graphen'); return s; } },
+              { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+            ]),]),
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList.push([]); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.adjList.length-1].push(new Node(s.vars.data)); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+    ]),
   ]
 
   // public boolean insertEdge(String nodeOne, String nodeTwo) {
@@ -165,7 +165,7 @@ export default class DirectedUnweightedGraph extends Logic {
 
   linesForInsertEdge = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.indexNodeOne = -1; s.vars.indexNodeTwo = -1; return s; } },
@@ -178,11 +178,11 @@ export default class DirectedUnweightedGraph extends Logic {
           ]),
       ]),
       ...execIfElse((s) => s.vars.indexNodeOne === -1 || s.vars.indexNodeTwo === -1, [
-        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante ist nicht im Graph'); return s; } },
+        { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist nicht im Graph'); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
       ]),
       ...execIfElse((s) => s.vars.indexNodeTwo === -2, [
-        //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante ist schon im Graph'); return s; } },
+        { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist schon im Graph'); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
       ]),
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.indexNodeOne].push(s.vars.adjList[s.vars.indexNodeTwo][0]); return s; } },
@@ -190,21 +190,51 @@ export default class DirectedUnweightedGraph extends Logic {
     ]),
   ]
 
-  /*jsExampleSearchNodeID(String data) { // vielleicht getEdgesOfNode
-  if (!adjList) {
-      console.error("Exception: graph is empty");
-      return -1;
-  }
+  // public List<Node> getEdgesOfNode(String data) {
+  javaExampleGetEdgesOfNode = [
+    'if (adjList == null) {',
+    '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Graph ist leer");',
+    '   return null;',
+    '}',
+    'for (int i = 0; i < adjList.size(); i++) {',
+    '   if (adjList.get(i).get(0).getData().equals(data)) {',
+    '       return adjList.get(i).subList(0, 1);',
+    '   }',
+    '}',
+    'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Knoten nicht im Graph");',
+    'return null;',
+  ]
 
-  for (let i = 0; i < adjList.length; i++) {
-      if (adjList[i][0].getData() === data) {
-          return i;
-      }
-  }
+  jsExampleGetEdgesOfNode = [
+    'if (!adjList) {',
+    '   console.error("Exception: Graph ist leer");',
+    '   return null;',
+    '}',
+    'for (let i = 0; i < adjList.length; i++) {',
+    '   if (adjList[i][0].getData() === data) {',
+    '       return adjList[i].splice(0, 1);',
+    '   }',
+    '}',
+    'console.error("Exception: Knoten nicht im Graph");',
+    'return null;',
+    '}',
+  ]
 
-  console.error("Exception: node not in graph");
-  return -1;
-  }*/
+  linesForGetEdgesOfNode = [
+    ...execIfElse((s) => !s.vars.adjList, [
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = null; return s; } },
+    ],[
+      ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
+        ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = _.cloneDeep(s.vars.adjList[s.vars.i]).splice(1, s.vars.adjList[s.vars.i].length); s.currentLine = 'return'; return s; } },
+        ]),
+      ]),      
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten nicht im Graph'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = null; return s; } },
+    ]),
+    {l: 'return'},
+  ]
 
   // public boolean removeEdge(String nodeOne, String nodeTwo) {
   javaExampleRemoveEdge = [
@@ -251,7 +281,7 @@ export default class DirectedUnweightedGraph extends Logic {
 
   linesForRemoveEdge = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
@@ -262,11 +292,11 @@ export default class DirectedUnweightedGraph extends Logic {
                       { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
                   ]),
               ]),
-              //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Kante nicht im Graphen'); return s; } },
+              { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante nicht im Graphen'); return s; } },
               { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
           ]),
       ]),
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten nicht im Graphen'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten nicht im Graphen'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ]),
   ]
@@ -318,7 +348,7 @@ export default class DirectedUnweightedGraph extends Logic {
 
   linesForRemoveNode = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
@@ -334,7 +364,7 @@ export default class DirectedUnweightedGraph extends Logic {
               { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
           ]),                
       ]),        
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Knoten nicht im Graphen'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten nicht im Graphen'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ]),
   ]
@@ -390,7 +420,7 @@ export default class DirectedUnweightedGraph extends Logic {
 
   linesForInvert = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
       { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList = []; return s; } },
@@ -440,7 +470,7 @@ export default class DirectedUnweightedGraph extends Logic {
 
   linesForDeleteGraph = [
     ...execIfElse((s) => !s.vars.adjList, [
-      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Graph ist schon leer'); return s; } },
+      { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Graph ist schon leer'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
     ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
@@ -497,10 +527,10 @@ export default class DirectedUnweightedGraph extends Logic {
             },
         ]
       },{
-        name: 'Kante löschen',
+        name: 'Kante hinzufügen',
         algo: {
-          code: this.jsExampleRemoveEdge,
-          lines: this.linesForRemoveEdge,
+          code: this.jsExampleInsertEdge,
+          lines: this.linesForInsertEdge,
           breakpoints: [],
         },
         inputs: [
@@ -515,6 +545,24 @@ export default class DirectedUnweightedGraph extends Logic {
             },{
             name: 'Knoten 2 - eingehender Knoten',
             field: 'nodeTwo',
+            type: 'string',
+            validators: [{
+                func: inputLength,
+                param: {min: 1, max: lengthOfData}
+            }]
+            },
+        ]
+      },{
+        name: 'Kanten von Knoten finden',
+        algo: {
+          code: this.jsExampleGetEdgesOfNode,
+          lines: this.linesForGetEdgesOfNode,
+          breakpoints: [],
+        },
+        inputs: [
+        {
+            name: 'Knoten',
+            field: 'data',
             type: 'string',
             validators: [{
                 func: inputLength,
