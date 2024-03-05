@@ -59,284 +59,9 @@ export default class SingleLinkedList extends Logic {
     return {front: node, output: null};
   }
 
-  /* public boolean addDataAtPosition(int position, String data) {
-        if (position < 0 || position > getSize()) {
-            System.err.println(
-                "Exeption in thread \"main\""
-                + "java.lang.ListIndexOutOfBounceExeption: position is out of list");
-            return false;
-        }
-        Node newNode = new Node(data);
-        if (position === 0) {
-            newNode.setNext(front);
-            front = newNode;
-            return true;
-        }
-        Node currentNode = front;
-        for (int currentIndex = 1; currentIndex < position; currentIndex++) {
-            currentNode = currentNode.getNext();
-        }
-        newNode.setNext(currentNode.getNext());
-        currentNode.setNext(newNode);
-        return true;
-  }  */
-
-  jsExampleAddDataAtPosition = [
-    'let newNode = new Node(data);',
-    'if (position === 0) {',
-    '   newNode.setNext(front);',
-    '   front = newNode;',
-    '   return true; //gibt es nicht',
-    'let currentNode = front;',
-    'for (let currentIndex = 1; currentIndex < position; currentIndex++) {',
-    '   currentNode = currentNode.getNext();',
-    '}',
-    'newNode.setNext(currentNode.getNext());',
-    'currentNode.setNext(newNode);',
-    'return true; // gibt es auch nicht',
-  ];
-
-  linesForAddDataAtPosition = [
-    // if (position < 0 || position > this.getSize(this.front)) {
-    //    console.error("Exception: position is out of list");
-    //    return false;
-    // }
-    { f(os) { const s = _.cloneDeep(os); s.vars.newNode = new Node(s.vars.data); return s; } },
-    ...execIfElse((s) => s.vars.position === 0, [
-      { f(os) { const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.front); return s; } },
-      {
-        f(os) { // Breakpoint
-          const s = _.cloneDeep(os);
-          s.vars.front = s.vars.newNode;
-          return s;
-        },
-      },
-    ], [
-      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
-      ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
-        {
-          f(os) {
-            const s = _.cloneDeep(os);
-            s.vars.currentNode = s.vars.currentNode.getNext();
-            return s;
-          },
-        },
-      ]),
-      {
-        f(os) {
-          const s = _.cloneDeep(os);
-          s.vars.newNode.setNext(s.vars.currentNode.getNext());
-          return s;
-        },
-      },
-      {
-        f(os) { // Breakpoint
-          const s = _.cloneDeep(os);
-          s.vars.currentNode.setNext(s.vars.newNode);
-          return s;
-        },
-      },
-      {
-        f(os) { // Breakpoint
-          const s = _.cloneDeep(os);
-          s.vars.output = true;
-          return s;
-        },
-      }
-    ]),
-  ];
-
-  /* public String getDataAtPosition(int position) {
-        if (position < 0 || position >= getSize()) {
-            System.err.println(
-                    "Exeption in thread \"main\""
-                    + "java.lang.ListIndexOutOfBounceExeption: position is out of list");
-            return null;
-        }
-        Node currentNode = front;
-        for (int currentIndex = 0; currentIndex < position; currentIndex++) {
-            currentNode = currentNode.getNext();
-        }
-        return currentNode.getData();
-  } */
-
-  linesForGetDataAtPosition = [
-    { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
-    ...execFor('i', () => 0, (s) => s.vars.i < s.vars.position, 1, [
-      {
-        f(os) {
-          const s = _.cloneDeep(os);
-          s.vars.currentNode = s.vars.currentNode.getNext();
-          return s;
-        },
-      },
-    ]),
-    {
-      f(os) {
-        const s = _.cloneDeep(os);
-        s.vars.dataFound = s.vars.currentNode.getData();
-        return s;
-      },
-    },
-  ];
-
-  /* public int getPositionOfData(String data) {
-    if (front === null) {
-      System.err.println("Exeption in thread \"main\""
-      +"java.lang.NullPointerExeption: list is empty");
-      return -1;
-    }
-    Node currentNode = front;
-    for (int position = 0; position < getSize(); position++) {
-      if (currentNode.getData().equals(data)) {
-        return position;
-      }
-      currentNode = currentNode.getNext();
-    }
-    System.err.println("Exeption in thread \"main\" java.lang.IOExeption: data not in list");
-    return -1;
-  } */
-
-  linesForGetPositionOfData = [
-    { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
-    ...execFor('i', () => 0, (s) => s.vars.i < this.getSize(), 1, [
-      ...execIfElse((s) => s.vars.currentNode.getData() === s.vars.data, [
-        { f(os) { const s = _.cloneDeep(os); s.vars.output = s.vars.i; return s; } },
-        // Return-Statement noch hinzufügen
-      ]),
-      {
-        f(os) {
-          const s = _.cloneDeep(os);
-          s.vars.currentNode = s.vars.currentNode.getNext();
-          return s;
-        },
-      },
-      
-    ]),
-  ];
-
-  /* public boolean removeDataAtPosition(int position) {
-    if (position < 0 || position >= getSize()) {
-      System.err.println(
-          "Exeption in thread \"main\""
-          +"java.lang.ListIndexOutOfBounceExeption: position is out of list");
-      return false;
-    }
-    if (position === 0) {
-      front = front.getNext();
-      return true;
-    }
-    Node currentNode = front;
-    for (int currentIndex = 1; currentIndex < position; currentIndex++) {
-      currentNode = currentNode.getNext();
-    }
-    currentNode.setNext(currentNode.getNext().getNext());
-    return true;
-  } */
-
-  // Auch hier die Return-Statements noch hinzufügen
-  linesForRemoveDataAtPosition = [
-    ...execIfElse((s) => s.vars.position === 0, [
-      { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.front.getNext(); return s; } },
-    ], [
-      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
-      ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
-        {
-          f(os) {
-            const s = _.cloneDeep(os);
-            s.vars.currentNode = s.vars.currentNode.getNext();
-            return s;
-          },
-        },
-      ]),
-      {
-        f(os) {
-          const s = _.cloneDeep(os);
-          s.vars.currentNode.setNext(s.vars.currentNode.getNext().getNext());
-          return s;
-        },
-      },
-    ]),
-  ];
-
-  /* public boolean invertList() {
-    if (front === null) {
-      System.err.println("Exeption in thread \"main\""
-      +"java.lang.NullPointerExeption: list is empty");
-      return false;
-    }
-    Node newFront = front;
-    int size = getSize() - 1;
-    for (int i = 0; i < size; i++) {
-      newFront = newFront.getNext();
-    }
-    Node currentNode;
-    for (int j = 0; j < size; j++) {
-      currentNode = front;
-      for (int k = 0; k < size - 1 - j; k++) {
-        currentNode = currentNode.getNext();
-      }
-      currentNode.getNext().setNext(currentNode);
-    }
-    front.setNext(null);
-    front = newFront;
-    return true;
-  } */
-
-  // Visualisierung bricht am Breakpoint, muss man sich sowieso nochmal genauer anschauen
-  linesForInvertList = [
-    { f(os) { const s = _.cloneDeep(os); s.vars.newFront = s.vars.front; return s; } },
-    {
-      f(os) {
-        const s = _.cloneDeep(os);
-        s.vars.size = this.getSize(s.vars.front) - 1;
-        return s;
-      },
-    },
-    ...execFor('i', () => 0, (s) => s.vars.i < s.vars.size, 1, [
-      {
-        f(os) {
-          const s = _.cloneDeep(os);
-          s.vars.newFront = s.vars.newFront.getNext();
-          return s;
-        },
-      },
-    ]),
-    { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = undefined; return s; } },
-    ...execFor('j', () => 0, (s) => s.vars.j < s.vars.size, 1, [
-      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
-      ...execFor('k', () => 0, (s) => s.vars.k < s.vars.size - 1 - s.vars.j, 1, [
-        {
-          f(os) { // Breakpoint
-            const s = _.cloneDeep(os);
-            s.vars.currentNode = s.vars.currentNode.getNext();
-            return s;
-          },
-        },
-      ]),
-      {
-        f(os) {
-          const s = _.cloneDeep(os);
-          s.vars.currentNode.getNext().setNext(s.vars.currentNode);
-          return s;
-        },
-      },
-    ]),
-    { f(os) { const s = _.cloneDeep(os); s.vars.front.setNext(null); return s; } },
-    { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.newFront; return s; } },
-  ];
-
-  /* public void deleteList() {
-    this.front = null;
-  } */
-
-  linesForDeleteList = [
-    { f(os) { const s = _.cloneDeep(os); s.vars.front = null; return s; } },
-  ];
-
-  getSize() {
+  #getSize(front) {
     let size = 0;
-    let currentNode = this.exec.state.vars.front;
+    let currentNode = front;
 
     while (currentNode !== null) {
       currentNode = currentNode.getNext();
@@ -345,13 +70,303 @@ export default class SingleLinkedList extends Logic {
 
     return size;
   }
+
+  // public boolean addDataAtPosition(int position, String data) {
+  javaExampleAddDataAtPosition = [
+    'if (position < 0 || position > getSize()) {',
+    '   System.err.println("Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: Position ist außerhalb der Liste");',
+    '   return false;',
+    '}',
+    'Node newNode = new Node(data);',
+    'if (position === 0) {',
+    '   newNode.setNext(front);',
+    '   front = newNode;',
+    '   return true;',
+    '}',
+    'Node currentNode = front;',
+    'for (int currentIndex = 1; currentIndex < position; currentIndex++) {',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'newNode.setNext(currentNode.getNext());',
+    'currentNode.setNext(newNode);',
+    'return true;',
+  ]
+
+  jsExampleAddDataAtPosition = [
+    'if (position < 0 || position >= getSize()) {',
+    '   console.error("Position ist außerhalb der Liste");',
+    '   return false;',
+    '}',
+    'let newNode = new Node(data);',
+    'if (position === 0) {',
+    '   newNode.setNext(front);',
+    '   front = newNode;',
+    '   return true;',
+    'let currentNode = front;',
+    'for (let currentIndex = 1; currentIndex < position; currentIndex++) {',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'newNode.setNext(currentNode.getNext());',
+    'currentNode.setNext(newNode);',
+    'return true;',
+  ];
+
+  linesForAddDataAtPosition = [
+    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= this.#getSize(s.vars.front), [
+      { f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Position ist außerhalb der Liste'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+    ],[
+      { f(os) { const s = _.cloneDeep(os); s.vars.newNode = new Node(s.vars.data); return s; } },
+      ...execIfElse((s) => s.vars.position === 0, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.front); return s; } },
+        { f(os) {const s = _.cloneDeep(os); s.vars.front = s.vars.newNode; return s; }, },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+      ], [
+        { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+        ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
+          {f(os) {const s = _.cloneDeep(os); s.vars.currentNode = s.vars.currentNode.getNext();return s; },},
+        ]),
+        {f(os) {const s = _.cloneDeep(os); s.vars.newNode.setNext(s.vars.currentNode.getNext()); return s; },},
+        {f(os) {const s = _.cloneDeep(os);s.vars.currentNode.setNext(s.vars.newNode); return s; }, },
+        {f(os) { const s = _.cloneDeep(os);s.vars.output = true; return s;},}
+      ]),
+    ]),
+  ];
+
+  // public String getDataAtPosition(int position) {
+  javaExampleGetDataAtPositon = [
+    'if (position < 0 || position >= getSize()) {',
+    '   System.err.println("Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: Position ist außerhalb der Liste");',
+    '   return null;',
+    '}',
+    'Node currentNode = front;',
+    'for (int currentIndex = 0; currentIndex < position; currentIndex++) {',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'return currentNode.getData();',
+  ]
+
+  jsExampleGetDataAtPosition = [
+    'if (position < 0 || position >= getSize()) {',
+    '   console.error("Position ist außerhalb der Liste");',
+    '   return null;',
+    '}',
+    'let currentNode = front;',
+    'for (let currentIndex = 0; currentIndex < position; currentIndex++) {',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'return currentNode.getData();',
+  ]
+
+  linesForGetDataAtPosition = [
+    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= this.#getSize(s.vars.front), [
+      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Position ist außerhalb der Liste'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = null; return s; } },
+    ],[
+      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+      ...execFor('i', () => 0, (s) => s.vars.i < s.vars.position, 1, [
+        {f(os) {const s = _.cloneDeep(os); s.vars.currentNode = s.vars.currentNode.getNext(); return s; },},
+      ]),
+      { f(os) {const s = _.cloneDeep(os); s.vars.output = s.vars.currentNode.getData();return s;},},
+    ]),
+  ]
+
+  // public int getPositionOfData(String data) {
+  javaExampleGetPositionOfData = [
+    'if (front === null) {',
+    '  System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Liste ist leer");',
+    '  return -1;',
+    '}',
+    'Node currentNode = front;',
+    'for (int position = 0; position < getSize(); position++) {',
+    '  if (currentNode.getData().equals(data)) {',
+    '    return position;',
+    '  }',
+    '  currentNode = currentNode.getNext();',
+    '}',
+    'System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Daten sind nicht in der Liste");',
+    'return -1;',
+  ]
+
+  jsExampeGetPositionOfData = [
+    'if (front === null) {',
+    '   console.error("Liste ist leer");',
+    '   return -1;',
+    '}',
+    'let currentNode = front;',
+    'for (let position = 0; position < getSize(); position++) {',
+    '   if (currentNode.getData() === data) {',
+    '       return position;',
+    '   }',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'console.error("Daten sind nicht in der Liste");',
+    'return -1;',
+  ]
+
+  linesForGetPositionOfData = [
+    ...execIfElse((s) => s.vars.front === null, [
+      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Liste ist leer'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = -1; return s; } },
+    ],[
+      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+      ...execFor('i', () => 0, (s) => s.vars.i < this.#getSize(s.vars.front), 1, [
+        ...execIfElse((s) => s.vars.currentNode.getData() === s.vars.data, [
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = s.vars.i; return s; } },
+        ]),
+        {f(os) {const s = _.cloneDeep(os);s.vars.currentNode = s.vars.currentNode.getNext(); return s; },  },
+      ]),
+      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Daten sind nicht in der Liste'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = -1; return s; } },
+    ]),
+  ];
+
+  // public boolean removeDataAtPosition(int position) {
+  javaExampleRemoveDataAtPosition = [
+    'if (position < 0 || position >= getSize()) {',
+    '   System.err.println("Exeption in thread \"main\" java.lang.ListIndexOutOfBounceExeption: Position ist außerhalb der Liste");',
+    '   return false;',
+    '}',
+    'if (position === 0) {',
+    '   front = front.getNext();',
+    '   return true;',
+    '}',
+    'Node currentNode = front;',
+    'for (int currentIndex = 1; currentIndex < position; currentIndex++) {',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'currentNode.setNext(currentNode.getNext().getNext());',
+    'return true;',
+  ]
+
+  jsExampleRemoveDataAtPostion = [
+    'if (position < 0 || position >= getSize()) {',
+    '   console.error("Position ist außerhalb der Liste");',
+    '   return false;',
+    '}',
+    'if (position === 0) {',
+    '   front = front.getNext();',
+    '   return true;',
+    '}',
+    'let currentNode = front;',
+    'for (let currentIndex = 1; currentIndex < position; currentIndex++) {',
+    '   currentNode = currentNode.getNext();',
+    '}',
+    'currentNode.setNext(currentNode.getNext().getNext());',
+    'return true;',
+  ]
+
+  linesForRemoveDataAtPosition = [
+    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= this.#getSize(s.vars.front), [
+      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Position ist außerhalb der Liste'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+    ],[
+      ...execIfElse((s) => s.vars.position === 0, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.front.getNext(); return s; } },
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+      ], [
+        { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+        ...execFor('i', () => 1, (s) => s.vars.i < s.vars.position, 1, [
+          {f(os) {const s = _.cloneDeep(os); s.vars.currentNode = s.vars.currentNode.getNext();return s; },},
+        ]),
+        {f(os) {const s = _.cloneDeep(os);s.vars.currentNode.setNext(s.vars.currentNode.getNext().getNext());return s; },},
+        { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+      ]),
+    ]),
+  ];
+
+  // public boolean invertList() {
+  javaExampleInverList = [
+    'if (front === null) {',
+    '   System.err.println("Exeption in thread \"main\" java.lang.NullPointerExeption: Liste ist leer");',
+    '   return false;',
+    '}',
+    'Node newFront = front;',
+    'int size = getSize() - 1;',
+    'for (int i = 0; i < size; i++) {',
+    '   newFront = newFront.getNext();',
+    '}',
+    'Node currentNode;',
+    'for (int j = 0; j < size; j++) {',
+    '   currentNode = front;',
+    '   for (int k = 0; k < size - 1 - j; k++) {',
+    '       currentNode = currentNode.getNext();',
+    '   }',
+    '   currentNode.getNext().setNext(currentNode);',
+    '}',
+    'front.setNext(null);',
+    'front = newFront;',
+    'return true;',
+  ]
+
+  jsExampleInvertList = [
+    'if (front === null) {',
+    '   console.error("Liste ist leer");',
+    '   return false;',
+    '}',
+    'let newFront = front;',
+    'let size = getSize() - 1;',
+    'for (let i = 0; i < size; i++) {',
+    '   newFront = newFront.getNext();',
+    '}',
+    'let currentNode;',
+    'for (let j = 0; j < size; j++) {',
+    '   currentNode = front;',
+    '   for (let k = 0; k < size - 1 - j; k++) {',
+    '       currentNode = currentNode.getNext();',
+    '   }',
+    '   currentNode.getNext().setNext(currentNode);',
+    '}',
+    'front.setNext(null);',
+    'front = newFront;',
+    'return true;',
+  ]
+
+  // Visualisierung bricht am Breakpoint, muss man sich sowieso nochmal genauer anschauen
+  linesForInvertList = [
+    ...execIfElse((s) => s.vars.front === null, [
+      //{ f(os) { const s = _.cloneDeep(os); this.eventReporter.info('Liste ist leer'); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+    ],[
+      { f(os) { const s = _.cloneDeep(os); s.vars.newFront = s.vars.front; return s; } },
+      { f(os) {const s = _.cloneDeep(os); s.vars.size = this.#getSize(s.vars.front) - 1; return s; }, },
+      ...execFor('i', () => 0, (s) => s.vars.i < s.vars.size, 1, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.newFront = s.vars.newFront.getNext(); return s; }, },
+      ]),
+      { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = undefined; return s; } },
+      ...execFor('j', () => 0, (s) => s.vars.j < s.vars.size, 1, [
+        { f(os) { const s = _.cloneDeep(os); s.vars.currentNode = s.vars.front; return s; } },
+        ...execFor('k', () => 0, (s) => s.vars.k < s.vars.size - 1 - s.vars.j, 1, [
+          {f(os) { const s = _.cloneDeep(os);s.vars.currentNode = s.vars.currentNode.getNext(); return s; }, }, // Breakpoint
+        ]),
+        { f(os) {const s = _.cloneDeep(os);s.vars.currentNode.getNext().setNext(s.vars.currentNode); return s; },},
+      ]),
+      { f(os) { const s = _.cloneDeep(os); s.vars.front.setNext(null); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.front = s.vars.newFront; return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+    ]),
+  ];
+
+  // public void deleteList() {
+  javaExampleDeleteList = [
+    'this.front = null;',
+  ]
+
+  jsExampleDeleteList = [
+    'this.front = null;'
+  ]
+
+  linesForDeleteList = [
+    { f(os) { const s = _.cloneDeep(os); s.vars.front = null; return s; } },
+  ];
+
   algos = [
     {
       name: 'Daten an Position hinzufügen',
       algo: {
         code: this.jsExampleAddDataAtPosition,
         lines: this.linesForAddDataAtPosition,
-        breakpoints: [1],
+        breakpoints: [],
       },
       inputs: [
         {
@@ -378,7 +393,7 @@ export default class SingleLinkedList extends Logic {
     {
       name: 'Daten von Position zurückgeben',
       algo: {
-        code: [],
+        code: this.jsExampleGetDataAtPosition,
         lines: this.linesForGetDataAtPosition,
         breakpoints: [],
       },
@@ -394,7 +409,7 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Position von Datan zurückgeben',
       algo: {
-        code: [],
+        code: this.linesForGetPositionOfData,
         lines: this.linesForGetPositionOfData,
         breakpoints: [],
       },
@@ -410,7 +425,7 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Daten an Position löschen',
       algo: {
-        code: [],
+        code: this.jsExampleRemoveDataAtPostion,
         lines: this.linesForRemoveDataAtPosition,
         breakpoints: [],
       },
@@ -426,7 +441,7 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Liste invertieren',
       algo: {
-        code: [],
+        code: this.jsExampleInvertList,
         lines: this.linesForInvertList,
         breakpoints: [],
       },
@@ -434,31 +449,13 @@ export default class SingleLinkedList extends Logic {
     },{
       name: 'Liste löschen',
       algo: {
-        code: [],
+        code: this.jsExampleDeleteList,
         lines: this.linesForDeleteList,
         breakpoints: [],
       },
       inputs: []
     }
   ]
-
-
-  /*
-  // Data und Position im Ausgabebereich ausgeben
-  outputData() {
-    // console.log(this.exec.state.vars.dataFound);
-    document.getElementById('outputLine').innerHTML = 'Ausgabe-Bereich: '
-      + `Daten ${this.exec.state.vars.dataFound}`
-      + ` an Position ${this.exec.state.vars.position}`;
-  }
-
-  // Data und Position im Ausgabebereich ausgeben
-  outputPosition() {
-    document.getElementById('outputLine').innerHTML = 'Ausgabe-Bereich: '
-      + `Daten ${this.exec.state.vars.data}`
-      + ` an Position ${this.exec.state.vars.positionFound}`;
-  }
-*/
 
   showOutput() {
     this.stateChangeCallback(

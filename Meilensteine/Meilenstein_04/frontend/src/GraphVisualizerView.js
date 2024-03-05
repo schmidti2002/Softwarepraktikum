@@ -16,6 +16,7 @@ export default class GraphVisualizerView extends VisualizerView {
  renderData(adjacencyList) {
     if(adjacencyList === null || adjacencyList[0] === null || adjacencyList[0][0] === null || adjacencyList === undefined || adjacencyList[0] === undefined || adjacencyList[0][0] === undefined ){
         this.eventReporter.error("adjacencyList ist leer");
+        this.container = ''
         return;
     }
 

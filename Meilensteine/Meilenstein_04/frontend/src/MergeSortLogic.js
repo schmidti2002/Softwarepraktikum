@@ -20,160 +20,88 @@ export default class MergeSort extends Logic {
     this.showOutput();
   }
 
-  linesForMergeSort = [
-    // { f(os) { const s = _.cloneDeep(os); s.vars.arrOld = _.cloneDeep(s.vars.arr); return s; } },
-    { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
-    {
-      f(os) {
-        const s = _.cloneDeep(os);
-        s.vars.aux = new Array(s.vars.n);
-        for (let i = 0; i < s.vars.n; i++) {
-          s.vars.aux[i] = s.vars.arr[i];
-        }
-        return s;
-      },
-    },
-    ...execFor(
-      'size',
-      () => 1,
-      (s) => s.vars.size < s.vars.n,
-      (s) => s.vars.size,
-      execFor(
-        'leftStart',
-        () => 0,
-        (s) => s.vars.leftStart < s.vars.n,
-        (s) => s.vars.size * 2,
-        [
-          {
-            f(os) {
-              const s = _.cloneDeep(os);
-              s.vars.middle = Math.min(s.vars.leftStart + s.vars.size, s.vars.n);
-              return s;
-            },
-          },
-          {
-            f(os) {
-              const s = _.cloneDeep(os);
-              s.vars.rightEnd = Math.min(s.vars.leftStart + 2 * s.vars.size, s.vars.n);
-              return s;
-            },
-          },
-          {
-            f(os) {
-              const s = _.cloneDeep(os);
-              s.vars.left = s.vars.leftStart;
-              return s;
-            },
-          },
-          {
-            f(os) {
-              const s = _.cloneDeep(os);
-              s.vars.right = s.vars.middle;
-              return s;
-            },
-          },
-          // 9
-          ...execFor(
-            'i',
-            (s) => s.vars.leftStart,
-            (s) => s.vars.i < s.vars.rightEnd,
-            1,
-            [
-              // if left < middle && (right >= rightEnd || arr[left] <= arr[right])
-              ...execIfElse(
-                (s) => s.vars.left < s.vars.middle
-                      && (s.vars.right >= s.vars.rightEnd
-                      || s.vars.aux[s.vars.left] <= s.vars.aux[s.vars.right]),
-                // then
-                [
-                  {
-                    f(os) {
-                      const s = _.cloneDeep(os);
-                      s.vars.arr[s.vars.i] = s.vars.aux[s.vars.left];
-                      return s;
-                    },
-                  },
-                  {
-                    f(os) {
-                      const s = _.cloneDeep(os);
-                      s.vars.left++;
-                      return s;
-                    },
-                  },
-                ],
-                // else
-                [
-                  {
-                    f(os) {
-                      const s = _.cloneDeep(os);
-                      s.vars.arr[s.vars.i] = s.vars.aux[s.vars.right];
-                      return s;
-                    },
-                  },
-                  {
-                    f(os) {
-                      const s = _.cloneDeep(os);
-                      s.vars.right++;
-                      return s;
-                    },
-                  },
-                ],
-              ),
-            ],
-          ),
-          ...execFor(
-            'i',
-            (s) => s.vars.leftStart,
-            (s) => s.vars.i < s.vars.rightEnd,
-            1,
-            [
-              {
-                f(os) {
-                  const s = _.cloneDeep(os);
-                  s.vars.aux[s.vars.i] = s.vars.arr[s.vars.i];
-                  return s;
-                },
-              },
-            ],
-          ),
-        ],
-      ),
-    ),
-  ];
+  // public static void mergeSort(int[] arr) {
+  javaExampleSort = [
+    'int n = arr.length;',
+    'int[] aux = Arrays.copyOf(arr, n);',
+    'for (int size = 1; size < n; size *= 2) {',
+    '   for (int leftStart = 0; leftStart < n; leftStart += 2 * size) {',
+    '       int middle = Math.min(leftStart + size, n);',
+    '       int rightEnd = Math.min(leftStart + 2 * size, n);',
+    '       int left = leftStart;',
+    '       int right = middle;',
+    '       for (int i = leftStart; i < rightEnd; i++) {',
+    '           if (left < middle && (right >= rightEnd || aux[left] <= aux[right])) {',
+    '               arr[i] = aux[left];',
+    '               left++;',
+    '           } else {',
+    '               arr[i] = aux[right];',
+    '               right++;',
+    '           }',
+    '       }',
+    '       for (int i = leftStart; i < rightEnd; i++) {',
+    '           aux[i] = arr[i];',
+    '       }',
+    '   }',
+    '}',
+  ]
 
-  jsCodeExampleLines = [
+  jsExampleSort = [
     'const n = arr.length;',
     'const aux = cloneDeep(arr);',
     'for (let size = 1; size < n; size *= 2) {',
-    '/**/for (let leftStart = 0; leftStart < n; leftStart += 2 * size) {',
-    '/*____*/console;',
-    '/*____*/const middle = Math.min(leftStart + size, n);',
-    '/*____*/const rightEnd = Math.min(leftStart + 2 * size, n);',
-    '/*____*/let left = leftStart;',
-    '/*____*/let right = middle;',
-    '/*____*/console;',
-    '/*____*/for (let i = leftStart; i < rightEnd; i++) {',
-    '/*________*/if (left < middle && (right >= rightEnd || aux[left] <= aux[right])) {',
-    '/*____________*/arr[i] = aux[left];',
-    '/*____________*/left++;',
-    '/*________*/} else {',
-    '/*____________*/arr[i] = aux[right];',
-    '/*____________*/right++;',
-    '/*________*/}',
-    '/*____*/}',
-    '/*____*/for (let i = leftStart; i < rightEnd; i++) {',
-    '/*________*/aux[i] = arr[i];',
-    '/*____*/}',
-    '/**/}',
+    '   for (let leftStart = 0; leftStart < n; leftStart += 2 * size) {',
+    '       const middle = Math.min(leftStart + size, n);',
+    '       const rightEnd = Math.min(leftStart + 2 * size, n);',
+    '       let left = leftStart;',
+    '       let right = middle;',
+    '       for (let i = leftStart; i < rightEnd; i++) {',
+    '           if (left < middle && (right >= rightEnd || aux[left] <= aux[right])) {',
+    '               arr[i] = aux[left];',
+    '               left++;',
+    '           } else {',
+    '               arr[i] = aux[right];',
+    '               right++;',
+    '           }',
+    '       }',
+    '       for (let i = leftStart; i < rightEnd; i++) {',
+    '           aux[i] = arr[i];',
+    '       }',
+    '   }',
     '}',
+  ];
+
+  linesForSort = [
+    { f(os) { const s = _.cloneDeep(os); s.vars.n = s.vars.arr.length; return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.aux = _.cloneDeep(s.vars.arr); return s; },},
+    ...execFor('size', () => 1, (s) => s.vars.size < s.vars.n, (s) => s.vars.size, [
+      ...execFor('leftStart', () => 0, (s) => s.vars.leftStart < s.vars.n, (s) => s.vars.size * 2, [
+            { f(os) { const s = _.cloneDeep(os); s.vars.middle = Math.min(s.vars.leftStart + s.vars.size, s.vars.n); return s; },},
+            { f(os) { const s = _.cloneDeep(os); s.vars.rightEnd = Math.min(s.vars.leftStart + 2 * s.vars.size, s.vars.n); return s; },},
+            { f(os) { const s = _.cloneDeep(os); s.vars.left = s.vars.leftStart; return s; }, },
+            { f(os) { const s = _.cloneDeep(os); s.vars.right = s.vars.middle; return s; },  },// 9
+            ...execFor('i', (s) => s.vars.leftStart, (s) => s.vars.i < s.vars.rightEnd, 1, [ // if left < middle && (right >= rightEnd || arr[left] <= arr[right])
+                ...execIfElse( (s) => s.vars.left < s.vars.middle && (s.vars.right >= s.vars.rightEnd || s.vars.aux[s.vars.left] <= s.vars.aux[s.vars.right]), [ // then
+                    { f(os) { const s = _.cloneDeep(os); s.vars.arr[s.vars.i] = s.vars.aux[s.vars.left]; return s; }, },
+                    { f(os) { const s = _.cloneDeep(os); s.vars.left++; return s; }, },
+                  ],[ // else
+                      {f(os) {const s = _.cloneDeep(os); s.vars.arr[s.vars.i] = s.vars.aux[s.vars.right]; return s; },},
+                    { f(os) { const s = _.cloneDeep(os); s.vars.right++; return s;}, },
+                ]),
+            ]),
+            ...execFor('i', (s) => s.vars.leftStart, (s) => s.vars.i < s.vars.rightEnd, 1, [
+                { f(os) {const s = _.cloneDeep(os); s.vars.aux[s.vars.i] = s.vars.arr[s.vars.i]; return s; }, },
+            ]),
+        ]),
+    ]),
   ];
 
   algos = [
     {
       name: 'Sortieren',
       algo: {
-        code: this.jsCodeExampleLines,
-        lines: this.linesForMergeSort,
+        code: this.jsExampleSort,
+        lines: this.linesForSort,
         breakpoints: [12, 14],
       },
       inputs: [
