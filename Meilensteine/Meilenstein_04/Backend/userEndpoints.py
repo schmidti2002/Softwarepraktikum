@@ -240,7 +240,7 @@ class userpassword_reset(Resource):
             usernames.append(username)
             # Setzen Sie die aktualisierte Liste der Benutzernamen im Cache
             cache.set('usernames', usernames)
-            return ("password request create", 200)
+            return ("password reset request created", 200)
         else:
             return ("Send data conflicts with existing entry", 409)
 
@@ -270,9 +270,9 @@ class userpassword_reset_username(Resource):
             usernames.remove(username)
             # Setzen Sie die aktualisierte Liste der Benutzernamen im Cache
             cache.set('usernames', usernames)
-            return ("reset request delete", 200)
+            return ("password reset request deleted", 200)
         else:
-            return ("reset request not found", 404)
+            return ("password reset request not found", 404)
 
 
 api.add_resource(user, '/user')
