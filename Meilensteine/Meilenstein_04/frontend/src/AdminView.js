@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import InputView from './InputView';
 import View from './View';
 import {
-  emptyOr, inEnum, inputLength, notEmpty, password,
+  emptyOr, inEnum, inputLength, notEmpty, password, validateEmail,
 } from './inputValidators';
 
 export default class AdminView extends View {
@@ -101,7 +101,7 @@ ${user.username} ${user.admin ? '👨🏻‍🔧' : ''}<span id="user-${user.id}
           prefill: () => user.email,
           type: 'string',
           validators: [{
-            func: notEmpty, // TODO
+            func: validateEmail,
           },
           ],
         },
