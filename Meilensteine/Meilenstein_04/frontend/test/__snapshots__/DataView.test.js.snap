@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataView Snapshot Tests snapshot with array data 1`] = `
+"
+    <div id="objContainer" class="col row"><div class="border"><div class="row dataview-type-object"></div></div></div>
+    <div id="simpleDataContainer" class="col"><div><div class="dataview-type-object"><div class="d-flex">0:<div class="dataview-type-string">one</div></div><div class="d-flex">1:<div class="dataview-type-string">two</div></div><div class="d-flex">2:<div class="dataview-type-string">three</div></div></div></div></div>
+"
+`;
+
+exports[`DataView Snapshot Tests snapshot with nested data object 1`] = `
+"
+    <div id="objContainer" class="col row"><div class="border"><div class="row dataview-type-object"><div class="d-flex col border">parent:<div class="dataview-type-object"><div class="d-flex">child:<div class="dataview-type-string">value</div></div></div></div></div></div></div>
+    <div id="simpleDataContainer" class="col"><div><div class="dataview-type-object"></div></div></div>
+"
+`;
+
+exports[`DataView Snapshot Tests snapshot with simple data object 1`] = `
+"
+    <div id="objContainer" class="col row"><div class="border"><div class="row dataview-type-object"></div></div></div>
+    <div id="simpleDataContainer" class="col"><div><div class="dataview-type-object"><div class="d-flex">key:<div class="dataview-type-string">value</div></div></div></div></div>
+"
+`;
+
+exports[`DataView showEmpty method displays "Placeholder for nothing to show" 1`] = `
+"
+    <div id="objContainer" class="col row">Placeholder for nothing to show</div>
+    <div id="simpleDataContainer" class="col">Placeholder for nothing to show</div>
+"
+`;
+

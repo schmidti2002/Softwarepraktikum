@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algosaurus</title>
+    <link rel="icon" href="./pics/dino.ico" type="image/x-icon">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            height: 100vh;
+        }
+
+
+        .dark-mode {
+            background-color: #2c2c2c; /* Dunkler Hintergrund für den Body */
+            color: #ffffff; /* Heller Text */
+        }
+
+        .dark-mode ul,
+        .dark-mode li,
+        .dark-mode nav {
+            background-color: #202020;
+        }
+
+        .dark-mode a {
+            background-color: #202020;
+            color: #ffffff;
+            font-size: medium;
+            font-size: large;
+            font-weight: 600;
+        }
+
+        .dark-mode span {
+            color: #ffffff;
+        }
+
+        .dark-mode input,
+        .dark-mode button,
+        .dark-mode textarea,
+        .dark-mode select {
+            background-color: #2c2c2c; /* Dunkler Hintergrund für Formularelemente */
+            color: #ffffff; /* Heller Text für Formularelemente */
+            /* border-color: #3c3c3c; Dunkle Grenze für Formularelemente */
+        }
+
+        .light-mode nav {
+            background-color: #dddddd;
+        }
+
+        .light-mode a {
+            background-color: #dddddd;
+            color: #000000;
+            font-size: large;
+            font-weight: 600;
+        }
+
+        .light-mode span {
+            color: #000000;
+        }
+
+        .buttonBorder button {
+            border-width: 3px;
+        }
+    </style>
+
+    <!-- Bootstrap CSS über CDN einbinden -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Skript für den Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+
+<body class="light-mode buttonBorder">
+    <div id="content-root"></div>
+    <div id="overlay-container"></div>
+</body>
+<footer>
+    <script src="dist/bundle.js"></script>
+</footer>
+</html>

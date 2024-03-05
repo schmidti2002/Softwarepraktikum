@@ -36,6 +36,17 @@ jobs:
         run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' coverage.xml
         working-directory: ./Meilensteine/Meilenstein_04/
 
+      - name: install openapi generator dependencies
+        run: sudo apt update && sudo apt install -y default-jre
+      - name: install FE dependencies
+        run: yarn && yarn api-prepare
+        working-directory: ./Meilensteine/Meilenstein_04/frontend
+      - name: run FE tests & linter
+        run: yarn sonar || echo Done
+        working-directory: ./Meilensteine/Meilenstein_04/frontend
+      - name: patch ESLint result
+        run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' eslint.json
+        working-directory: ./Meilensteine/Meilenstein_04/frontend/coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         #with:
