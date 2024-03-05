@@ -10,7 +10,6 @@ import ListVisualizerView from './ListVisualizerView';
 import GraphVisualizerView from './GraphVisualizerView';
 import View from './View';
 import MergeSort from './MergeSortLogic';
-import cytoscape from 'cytoscape';
 
 // Diese Klasse verwaltet die Algorithmen und Datenstrukturen
 // Die Klasse wird in MainView instanziert
