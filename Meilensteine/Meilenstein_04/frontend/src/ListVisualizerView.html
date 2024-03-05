@@ -1,0 +1,56 @@
+<style>
+    #listview-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        height: 256px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    #graph {
+        display: none;
+        justify-content: flex-start;
+        align-items: flex-start;
+        height: 510px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        overflow: hidden;
+        position: relative;
+        width: 100%; /* Adjust the width as needed */
+        max-width: 1000px; /* Add a maximum width if desired */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .node {
+        width: 40px;
+        height: 40px;
+        background-color: #004f84;
+        color: #fff;
+        text-align: center;
+        line-height: 40px; /* Set line-height to the height of the node for vertical alignment */
+        border-radius: 50%;
+        position: absolute;
+    }
+
+    .arrow {
+        position: absolute;
+        width: 40px;
+        height: 2px;
+        background-color: #666666;
+    }
+
+    .arrow_tip {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 8px 0 8px 12px; /* Ändern Sie die Werte nach Bedarf */
+        border-color: transparent transparent transparent #666666; /* Ändern Sie die Farbe nach Bedarf */
+        top: -6px; /* Einstellen Sie die Position vertikal nach Bedarf */
+        left: 100%; /* Positionieren Sie es am rechten Ende des Pfeils */
+}
+</style>
+<div id="listview-container"></div>

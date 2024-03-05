@@ -27,7 +27,7 @@ export default class CodeView extends View {
     if (!lines || !lines.length) {
       this.showEmpty();
       return;
-    }
+    }    
     const table = document.createElement('table');
     lines.forEach((line, lineNr) => {
       const tr = document.createElement('tr');

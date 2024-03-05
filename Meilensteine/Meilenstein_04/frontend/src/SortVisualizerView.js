@@ -20,7 +20,7 @@ export default class SortVisualizerView extends VisualizerView {
 
       // Skaliere die Höhe der Bars:
       bar.style.height = `${data[i] * 10 + 10}px`;
-      bar.innerHTML = `<span>${data[i]}</span>`;
+      bar.innerHTML = `<span style="color: black;">${data[i]}</span>`;
       this.container.appendChild(bar);
     }
   }
