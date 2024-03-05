@@ -190,7 +190,7 @@ paths:
                   type: string
       responses:
         "200":
-          description: password request created
+          description: password reset request created
   /user/reset-password/{username}:
     delete:
       tags:
