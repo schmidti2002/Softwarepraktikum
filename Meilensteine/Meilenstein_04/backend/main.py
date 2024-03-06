@@ -31,7 +31,7 @@ api.add_resource(codestateEndpoints.code_state_id, "/code-state/<string:stateId>
 
 api.add_resource(userEndpoints.user, '/user')
 api.add_resource(userEndpoints.user_edit, '/user_edit/<edit_userid>')
-api.add_resource(userEndpoints.useres, '/useres')
+api.add_resource(userEndpoints.users, '/users')
 api.add_resource(userEndpoints.userapitoken,'/user/apitoken')
 api.add_resource(userEndpoints.userpassword_reset, '/user/reset-password')
 api.add_resource(userEndpoints.userpassword_reset_username, '/user/reset-password/<string:username>')
