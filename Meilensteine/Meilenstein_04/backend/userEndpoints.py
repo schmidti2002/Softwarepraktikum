@@ -212,7 +212,7 @@ class user_edit(Resource):
         response_dic = {"id":result[0][0],"username": result[0][1], "admin": result[0][3], "email": result[0][2]}
         return jsonify(response_dic)
     
-class useres(Resource):
+class users(Resource):
     def get(self):
 
         # Daten aus dem Request holen und überprüfen
@@ -277,7 +277,7 @@ class userpassword_reset_username(Resource):
 
 api.add_resource(user, '/user')
 api.add_resource(user_edit, '/user_edit/<edit_userid>')
-api.add_resource(useres, '/useres')
+api.add_resource(users, '/users')
 api.add_resource(userapitoken,'/user/apitoken')
 api.add_resource(userpassword_reset, '/user/reset-password')
 api.add_resource(userpassword_reset_username, '/user/reset-password/<username>')
