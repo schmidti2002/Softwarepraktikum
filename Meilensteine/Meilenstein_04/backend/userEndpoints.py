@@ -119,8 +119,8 @@ class user(Resource):
             name = data_resquest["username"]
             passwd= data_resquest["passwd"]
             email = data_resquest["email"]
-            admin = bool(data_resquest["admin"])
-            if id is None or name is None or passwd is None or email is None or admin is None:
+            admin = False
+            if id is None or name is None or passwd is None or email is None:
                 return abort(409, message="Send data conflicts with existing entry")
         except:
             return abort(409, message="Send data conflicts with existing entry")
@@ -147,7 +147,7 @@ class user(Resource):
             name = data_resquest["username"]
             passwd= data_resquest["passwd"]
             email = data_resquest["email"]
-            admin = bool(data_resquest["admin"])
+            admin = bool(data_resquest["admin"].title())
             if id is None or name is None or passwd is None or email is None or admin is None:
                 return abort(409, message="Send data conflicts with existing entry")
         except :
