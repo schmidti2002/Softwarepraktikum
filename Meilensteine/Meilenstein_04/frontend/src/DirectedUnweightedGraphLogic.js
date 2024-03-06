@@ -119,15 +119,13 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'for (int i = 1; i < adjList.get(indexNodeOne).size(); i++) {',
     '   if (adjList.get(indexNodeOne).get(i).getData().equals(nodeTwo)) {',
-    '       indexNodeTwo = -2;',
+    '       
+    '   System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Kante ist schon im Graph");',
+    '   return false;',
     '   }',
     '}',
     'if (indexNodeOne == -1 || indexNodeTwo == -1) {',
     '   System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Kante ist nicht im Graph");',
-    '   return false;',
-    '}',
-    'if (indexNodeTwo == -2) {',
-    '   System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Kante ist schon im Graph");',
     '   return false;',
     '}',
     'adjList.get(indexNodeOne).add(adjList.get(indexNodeTwo).get(0));',
@@ -149,15 +147,12 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'for (let i = 1; i < adjList[indexNodeOne].length; i++) {',
     '   if (adjList[indexNodeOne][i].getData() === nodeTwo) {',
-    '       indexNodeTwo = -2;',
+    '       console.error("Kante ist schon im Graph");',
+    '       return false;',
     '   }',
     '}',
     'if (indexNodeOne === -1 || indexNodeTwo === -1) {',
     '   console.error("Kante ist nicht im Graph");',
-    '   return false;',
-    '}',
-    'if (indexNodeTwo === -2) {',
-    '   console.error("Kante ist schon im Graph");',
     '   return false;',
     '}',
     'adjList[indexNodeOne].push(adjList[indexNodeTwo][0]);',
@@ -180,20 +175,18 @@ export default class DirectedUnweightedGraph extends Logic {
       ]),
       ...execFor('i', () => 1, (s) => s.vars.i < s.vars.adjList[s.vars.indexNodeOne].length, 1, [
         ...execIfElse((s) => s.vars.adjList[s.vars.indexNodeOne][s.vars.i].getData() === s.vars.nodeTwo, [
-          { f(os) { const s = _.cloneDeep(os); s.vars.indexNodeTwo = -2; return s; } },
+          { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist schon im Graph'); return s; } },
+          { f(os) { const s = _.cloneDeep(os); s.vars.output = false; s.currentLine = 'return'; return s; } },
         ]),
       ]),
       ...execIfElse((s) => s.vars.indexNodeOne === -1 || s.vars.indexNodeTwo === -1, [
         { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist nicht im Graph'); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
       ]),
-      ...execIfElse((s) => s.vars.indexNodeTwo === -2, [
-        { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist schon im Graph'); return s; } },
-        { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
-      ]),
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.indexNodeOne].push(s.vars.adjList[s.vars.indexNodeTwo][0]); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },        
     ]),
+    {l: 'return'}
   ]
 
   // public List<Node> getEdgesOfNode(String data) {
