@@ -3,6 +3,7 @@ from typing import Any
 from flask import Flask, request
 from flask_restful import Api, Resource, abort
 from flask_cors import CORS
+import json
 import random
 import string
 
@@ -25,12 +26,13 @@ class history(Resource):
             return abort(401, message="API key is missing or invalid")
         
         try:
-            offset = request.args.get("offset")
+            data_resquest= json.loads(request.get_json())
+            offset = data_resquest["offset"]
             if offset == None:
                 offset = 0
             else:
                 offset = int(offset)
-            limit = request.args.get("limit")
+            limit = data_resquest["limit"]
             if limit == None:
                 limit = 10
             else:
@@ -68,10 +70,11 @@ class history(Resource):
             return abort(401, message="API key is missing or invalid")
         
         try:
-            id = request.form.get("id")
-            time = request.form.get("time")
-            data = request.form.get("data")
-            algo = request.form.get("algo")
+            data_resquest= json.loads(request.get_json())
+            id = data_resquest["id"]
+            time = data_resquest["time"]
+            data = data_resquest["data"]
+            algo = data_resquest["algo"]
             if id == None or time == None or data == None or algo == None:
                 return abort(409, message="Send data conflicts with existing entry")
         except :

@@ -2,9 +2,6 @@
 from typing import Any
 from flask import Flask, request
 from flask_restful import Api, Resource, abort
-from flask_cors import CORS
-import random
-import string
 
 # wichtige 
 from hashlib import sha256
