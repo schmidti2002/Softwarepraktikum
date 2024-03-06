@@ -14,7 +14,7 @@ COPY backend/requirements.txt /config/requirements.txt
 RUN pip3 install -r /config/requirements.txt
 
 COPY --from=0 /frontend/dist/ /www/static/
-COPY --from=0 /frontend/pics/ /www/static/pics/
+COPY --from=0 /frontend/src/pics/ /www/static/pics/
 COPY backend/*.py /www/
 
 CMD ["unitd", "--no-daemon", "--control", "0.0.0.0:1234"]
