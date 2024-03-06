@@ -147,9 +147,8 @@ class user(Resource):
             name = data_resquest["username"]
             passwd= data_resquest["passwd"]
             email = data_resquest["email"]
-            admin = bool(data_resquest["admin"].title())
-            if id is None or name is None or passwd is None or email is None or admin is None:
-                return abort(409, message="Send data conflicts with existing entry")
+            if id is None:
+                return abort(404, message="User not found")
         except :
             return abort(409, message="Send data conflicts with existing entry")
         
@@ -166,11 +165,15 @@ class user(Resource):
         
         #User Können sich selbst bearbeiten aber keine anderen User, außer Administartoren
         if result[0] != user_uuid:
-            if not Endpoints_util.verify_admin(user_uuid, database):
-                return abort(403, message="User not allowed to execute this operation")
+            return abort(403, message="User not allowed to execute this operation")
 
         try:
-            cursor.execute("""UPDATE public."User" SET name = %s, passwd = %s, email = %s, rights = %s WHERE id = %s """, (name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin, id))
+            if name is not None:
+                cursor.execute("""UPDATE public."User" SET name = %s WHERE id = %s """, (name, id))
+            if passwd is not None:
+                cursor.execute("""UPDATE public."User" SET passwd = %s WHERE id = %s """, (sha256(passwd.encode('utf-8')).hexdigest(), id))
+            if email is not None:
+                cursor.execute("""UPDATE public."User" SET email = %s WHERE id = %s """, (email, id))
             database.commit()
         except psycopg2.Error:
             database.rollback()
