@@ -36,7 +36,7 @@ export default class RegistrationView extends View {
         },
         {
           name: 'Passwort',
-          field: 'password',
+          field: 'passwd',
           type: 'password',
           validators: [{
             func: inputLength,

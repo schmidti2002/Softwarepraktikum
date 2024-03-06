@@ -120,10 +120,8 @@ class user(Resource):
             passwd= data_resquest["passwd"]
             email = data_resquest["email"]
             admin = False
-            if id is None or name is None or passwd is None or email is None:
-                return abort(409, message="Send data conflicts with existing entry")
         except:
-            return abort(409, message="Send data conflicts with existing entry")
+            return abort(400, message="Bad request")
         
         # SQL-Abfrage
         try:
@@ -143,14 +141,14 @@ class user(Resource):
         # Daten aus dem Request holen
         try:
             data_resquest= request.get_json()
-            id = data_resquest["id"]
-            name = data_resquest["username"]
-            passwd= data_resquest["passwd"]
-            email = data_resquest["email"]
+            id = data_resquest.get("id", None)
+            name = data_resquest.get("username", None)
+            passwd= data_resquest.get("passwd", None)
+            email = data_resquest.get("email", None)
             if id is None:
                 return abort(404, message="User not found")
         except :
-            return abort(400, message="Bad Request")
+            return abort(400, message="Bad request")
         
         
         # SQL-Abfrage
