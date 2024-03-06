@@ -55,13 +55,7 @@ export default class DataView extends View {
     divObj.classList.add('row');
     const divOutput = document.createElement('div');
     if (data.output !== undefined) {
-      const innerDiv = document.createElement('div');
-      innerDiv.classList.add('d-flex');
-      innerDiv.classList.add('col');
-      innerDiv.classList.add('border');
-      innerDiv.textContent = 'output: ';
-      this.#renderDataObject(innerDiv, data.output);
-      divOutput.appendChild(innerDiv);
+      this.#renderDataObject(divOutput, data.output);
     }
     switch (typeof data) {
       case 'object':
@@ -89,11 +83,8 @@ export default class DataView extends View {
       default:
         divSimple.textContent = String(data);
     }
-    divObj.classList.add(`dataview-type-${typeof data}`);
     parentNodeObj.appendChild(divObj);
-    divSimple.classList.add(`dataview-type-${typeof data}`);
     parentNodeSimple.appendChild(divSimple);
-    divOutput.classList.add(`dataview-type-${typeof data}`);
     parentNodeOutput.appendChild(divOutput);
   }
 
