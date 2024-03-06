@@ -4,6 +4,7 @@ import InputView from './InputView';
 import { notEmpty } from './inputValidators';
 import View from './View';
 import RegistrationView from './RegistrationView.js';
+import PasswordResetView from './PasswordResetView.js';
 
 export default class LoginView extends View {
   #singletonManager;
@@ -52,14 +53,16 @@ export default class LoginView extends View {
       this.eventReporter.info('Nutzername und Passwort werden benötigt.');
       return;
     }
-    const userApi = new UserApi(new Configuration(
-      this.inputView.getValues(),
-    ));
 
-    // TODO change with API version 1.0.0 t./apitoken POST
-    userApi.userLoginGet()
+    const userApi = new UserApi(new Configuration({
+      ...this.inputView.getValues(),
+      headers: { 'content-type': 'application/json' },
+      basePath: '/api',
+    }));
+
+    userApi.userApitokenPost()
       .then(() => {
-        window.location.reload();
+        window.location.reload(); 
       })
       .catch((err) => {
         if (err instanceof ResponseError && err.response && err.response.status === 401) {
@@ -75,7 +78,8 @@ export default class LoginView extends View {
     await registrationView.initPromise;
   }
 
-  onClickPassword() {
-    throw new Error('not implemented');
+  async onClickPassword() {
+    const passwordView = new PasswordResetView(this.parentNode, this.#singletonManager);
+    await passwordView.initPromise;
   }
 }

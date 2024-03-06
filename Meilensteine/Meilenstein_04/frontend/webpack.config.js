@@ -11,7 +11,8 @@ module.exports = {
         context: ['/api'],
         target: 'https://swp.dczlabs.xyz:3130',
         logLevel: 'debug', /*optional*/
-        changeOrigin: true
+        changeOrigin: true,
+        secure: false
       }
     ]
   },

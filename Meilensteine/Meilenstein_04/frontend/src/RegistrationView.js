@@ -25,7 +25,7 @@ export default class RegistrationView extends View {
         {
           name: 'Email',
           field: 'email',
-          type: 'email',
+          type: 'string',
           validators: [{ func: validateEmail }],
         },
         {
