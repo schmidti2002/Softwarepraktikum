@@ -34,6 +34,9 @@
                     "~\\.html?$",
                     "~\\.js$",
                     "~\\.css$",
+                    "~\\.png$",
+                    "~\\.jpe?g$",
+                    "~\\.ico$",
                     "/"
                 ]
             },
@@ -45,7 +48,10 @@
                 "types": [
                     "application/javascript",
                     "text/html",
-                    "text/css"
+                    "text/css",
+                    "image/x-icon",
+                    "image/png",
+                    "image/jpeg"
                 ]
             }
         }
