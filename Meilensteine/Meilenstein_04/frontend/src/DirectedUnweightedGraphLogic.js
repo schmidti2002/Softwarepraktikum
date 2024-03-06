@@ -181,9 +181,10 @@ export default class DirectedUnweightedGraph extends Logic {
       ...execIfElse((s) => s.vars.indexNodeOne === -1 || s.vars.indexNodeTwo === -1, [
         { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten ist nicht im Graph'); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
-      ]),
+      ],[
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.indexNodeOne].push(s.vars.adjList[s.vars.indexNodeTwo][0]); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },        
+      ]),
     ]),
     {l: 'return'}
   ]
