@@ -114,7 +114,7 @@ class user(Resource):
     def post(self):
         # Daten aus dem Request holen
         try:
-            data_resquest= request.get_json()
+            data_resquest= json.loads(request.data)
             id = data_resquest["id"]
             name = data_resquest["username"]
             passwd= data_resquest["passwd"]
@@ -140,7 +140,7 @@ class user(Resource):
         
         # Daten aus dem Request holen
         try:
-            data_resquest= request.get_json()
+            data_resquest= json.loads(request.data)
             id = data_resquest.get("id", None)
             name = data_resquest.get("username", None)
             passwd= data_resquest.get("passwd", None)
