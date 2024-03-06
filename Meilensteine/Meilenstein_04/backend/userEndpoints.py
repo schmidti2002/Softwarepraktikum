@@ -58,8 +58,19 @@ class userapitoken(Resource):
         timestamp = datetime.now().strftime(DESIRED_FORMAT)
 
         # SQL-Abfrage
-        cursor.execute("""UPDATE public."ApiKey" SET key = %s, created = %s WHERE "user" = (SELECT id FROM public."User" WHERE name = %s);""", (apikey, timestamp, username))
-        database.commit()
+        cursor.execute("""SELECT * FROM public."ApiKey" WHERE "user" = (SELECT id FROM public."User" WHERE name = %s);""",(username,))
+        result = cursor.fetchone()
+        try:
+            if len(result) == 0:
+                cursor.execute("""SELECT id FROM public."User" WHERE name = %s""",(username,))
+                user = cursor.fetchone()[0]
+                cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s,%s)""",(apikey, timestamp, user))
+            else:
+                cursor.execute("""UPDATE public."ApiKey" SET key = %s, created = %s WHERE "user" = (SELECT id FROM public."User" WHERE name = %s);""", (apikey, timestamp, username))
+            database.commit()
+        except:
+            database.rollback()
+            abort(401, message="login not successfull")
         # Token zurückgeben
         response = make_response('login successfull')
         response.set_cookie('apiKey', apikey, secure=True, httponly=True)  # Cookie setzen, um den Session-Token zu speichern
@@ -69,6 +80,8 @@ class userapitoken(Resource):
         apikey = request.cookies.get('apiKey')
         if apikey == None:
             return abort(401, message="apitoken not valid")
+        
+        Endpoints_util.getUserUUID(request,database)
         return jsonify("apitoken valid")
 
 
@@ -79,9 +92,13 @@ class userapitoken(Resource):
             return abort(401, message="API key is missing or invalid")
 
         # SQL-Abfrage
-        cursor.execute("""UPDATE public."ApiKey" SET created = %s WHERE key = %s;""", ('2000-01-01 00:00:00+00', apikey))
-        database.commit()
-        
+        try:
+            cursor.execute("""DELETE FROM public."ApiKey" WHERE key = %s; """,(apikey,))
+            database.commit()
+        except:
+            database.rollback()
+            return abort(401, message="API key is missing or invalid")
+
         response = make_response("apitoken delted")
         response.set_cookie('apiKey', '', expires=0, secure=True, httponly=True)
         return response
@@ -114,10 +131,6 @@ class user(Resource):
         # SQL-Abfrage
         try:
             cursor.execute("""INSERT INTO public."User" (id, name, passwd, email, rights) VALUES (%s,%s, %s, %s, %s)""", (id, name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin))
-            database.commit()
-            apikey = secrets.token_urlsafe(64)
-            #apikey = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(64))
-            cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s,%s)""", (id, apikey, "2000-01-01 00:00:00+00"))
             database.commit()
         except psycopg2.Error:
             database.rollback()
@@ -254,6 +267,7 @@ class userpassword_reset(Resource):
         # Cache holen
         usernames = cache.get('usernames') or []
         return jsonify(usernames)
+
 class userpassword_reset_username(Resource):    
     def delete(self, username):
         # User UUID holen
