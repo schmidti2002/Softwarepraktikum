@@ -93,7 +93,7 @@ export default class SingleLinkedList extends Logic {
     'return true;',
   ],
   javascript: [
-    'if (position < 0 || position >= getSize()) {',
+    'if (position < 0 || position > getSize()) {',
     '   console.error("Position ist außerhalb der Liste");',
     '   return false;',
     '}',
@@ -112,7 +112,7 @@ export default class SingleLinkedList extends Logic {
   ]}
 
   linesForAddDataAtPosition = [
-    ...execIfElse((s) => s.vars.position < 0 || s.vars.position >= SingleLinkedList.getSize(s.vars.front), [
+    ...execIfElse((s) => s.vars.position < 0 || s.vars.position > SingleLinkedList.getSize(s.vars.front), [
       { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Position ist außerhalb der Liste'); return s; } },
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[

@@ -54,7 +54,7 @@ export default class GraphVisualizerView extends VisualizerView {
         {
           selector: 'node',
           style: {
-            'background-color': '#ffa54f',
+            'background-color': '#00ba77',
             'label': 'data(id)',
           }
         },
@@ -62,8 +62,8 @@ export default class GraphVisualizerView extends VisualizerView {
           selector: 'edge',
           style: {
             'width': 3,
-            'line-color': '#2b3340',
-            'target-arrow-color': '#2b3340',
+            'line-color': '#808080',
+            'target-arrow-color': '#808080',
             'target-arrow-shape': 'triangle',
             'curve-style': 'straight',
             'text-background-opacity': 1, // Opazität des Hintergrundfelds für Label (0 bis 1)

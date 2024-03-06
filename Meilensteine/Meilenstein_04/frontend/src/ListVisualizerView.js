@@ -46,7 +46,7 @@ export default class ListVisualizerView extends VisualizerView {
         {
           selector: 'node',
           style: {
-            'background-color': '#ffa54f',
+            'background-color': '#00ba77',
             'label': 'data(id)'
           }
         },
@@ -54,8 +54,8 @@ export default class ListVisualizerView extends VisualizerView {
           selector: 'edge',
           style: {
             'width': 3,
-            'line-color': '#ccc',
-            'target-arrow-color': '#ccc',
+            'line-color': '#808080',
+            'target-arrow-color': '##808080',
             'target-arrow-shape': 'triangle',
             'curve-style': 'straight'
           }
