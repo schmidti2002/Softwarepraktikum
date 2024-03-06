@@ -59,15 +59,10 @@ class userapitoken(Resource):
         timestamp = datetime.now().strftime(DESIRED_FORMAT)
 
         # SQL-Abfrage
-        cursor.execute("""SELECT * FROM public."ApiKey" WHERE "user" = (SELECT id FROM public."User" WHERE name = %s);""",(username,))
-        result = cursor.fetchone()
         try:
-            if len(result) == 0:
-                cursor.execute("""SELECT id FROM public."User" WHERE name = %s""",(username,))
-                user = cursor.fetchone()[0]
-                cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s,%s)""",(apikey, timestamp, user))
-            else:
-                cursor.execute("""UPDATE public."ApiKey" SET key = %s, created = %s WHERE "user" = (SELECT id FROM public."User" WHERE name = %s);""", (apikey, timestamp, username))
+            cursor.execute("""SELECT id FROM public."User" WHERE name = %s""",(username,))
+            user = cursor.fetchone()[0]
+            cursor.execute("""INSERT INTO public."ApiKey" ("user", key, created) VALUES (%s,%s,%s)""",(user, apikey, timestamp))
             database.commit()
         except:
             database.rollback()
