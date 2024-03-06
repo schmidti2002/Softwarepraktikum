@@ -41,8 +41,7 @@ export default class MainView extends View {
   // merkt sich, wo man in der Webanwendung ist, um bei Neuladen wieder dorthin zurückzukehren
   // eslint-disable-next-line class-methods-use-this
   setLastLoad(value) {
-    // zum Debuggen geändert
-    localStorage.setItem('lastLoad', 'loadStartpage');
+    localStorage.setItem('lastLoad', value);
   }
 
   // Startseite fetchen
