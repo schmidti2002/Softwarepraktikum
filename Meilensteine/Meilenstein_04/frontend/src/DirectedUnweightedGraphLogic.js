@@ -119,9 +119,8 @@ export default class DirectedUnweightedGraph extends Logic {
     '}',
     'for (int i = 1; i < adjList.get(indexNodeOne).size(); i++) {',
     '   if (adjList.get(indexNodeOne).get(i).getData().equals(nodeTwo)) {',
-    '       
-    '   System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Kante ist schon im Graph");',
-    '   return false;',
+    '       System.err.println("Exeption in thread \"main\" java.lang.IOExeption: Kante ist schon im Graph");',
+    '       return false;',
     '   }',
     '}',
     'if (indexNodeOne == -1 || indexNodeTwo == -1) {',
