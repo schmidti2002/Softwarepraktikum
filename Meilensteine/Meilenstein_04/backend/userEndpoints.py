@@ -345,7 +345,7 @@ class userpassword_reset_username(Resource):
 
 
 api.add_resource(user, '/user')
-api.add_resource(user_edit, '/user_edit/<edit_userid>')
+api.add_resource(user_edit, '/user-edit/<edit_userid>')
 api.add_resource(users, '/users')
 api.add_resource(userapitoken,'/user/apitoken')
 api.add_resource(userpassword_reset, '/user/reset-password')

@@ -186,7 +186,7 @@ ${user.username} ${user.admin ? '👨🏻‍🔧' : ''}<span id="user-${user.id}
     if (!changes) {
       return;
     }
-    this.#userApi.userUserIdPut({
+    this.#userApi.userEditUserIdPut({
       userId,
       userUpdatePartial: {
         id: userId,
@@ -225,7 +225,7 @@ ${user.username} ${user.admin ? '👨🏻‍🔧' : ''}<span id="user-${user.id}
     const deleteString = this.#deleteInput.getValues().delete;
     const username = deleteString.replace(/ permanent löschen$/, '');
     const user = _.find(Object.values(this.#users), (user) => user.data.username === username);
-    this.#userApi.userUserIdDelete({ userId: user.data.id }).then(() => {
+    this.#userApi.userEditUserIdDelete({ userId: user.data.id }).then(() => {
       this.#eventReporter.success(`Nutzer ${this.#users[userId].username} gelöscht`);
     });
   }

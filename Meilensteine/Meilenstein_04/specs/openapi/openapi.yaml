@@ -58,7 +58,7 @@ paths:
           $ref: "#/components/responses/ForbiddenError"
         "404":
           description: user not found
-  /user/{userId}:
+  /user-edit/{userId}:
     parameters:
       - name: userId
         in: path
