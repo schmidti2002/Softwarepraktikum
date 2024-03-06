@@ -223,6 +223,62 @@ class user_edit(Resource):
         # SQL Anfrage Auswertung
         response_dic = {"id":result[0][0],"username": result[0][1], "admin": result[0][3], "email": result[0][2]}
         return jsonify(response_dic)
+
+
+    def put(self, edit_userid):
+
+        # Daten aus dem Request holen und überprüfen
+        user_uuid = Endpoints_util.getUserUUID(request, database)
+        # Auf Adminrechte überprüfen
+        Endpoints_util.verify_admin(user_uuid, database)
+        
+        # Daten aus dem Request holen
+        try:
+            data_resquest= json.loads(request.data)
+            id = data_resquest.get("id", None)
+            name = data_resquest.get("username", None)
+            passwd= data_resquest.get("passwd", None)
+            email = data_resquest.get("email", None)
+            admin = data_resquest.get("admin", None)
+            if admin is not None:
+                admin = bool(admin.title())
+            if id is None:
+                return abort(404, message="User not found")
+            if id != edit_userid:
+                return abort(400, message="Bad request")
+        except :
+            return abort(400, message="Bad request")
+        
+        
+        # SQL-Abfrage
+        result = None
+        try:
+            cursor.execute("""SELECT id FROM public."User" WHERE id = %s""", (id,))
+            result = cursor.fetchone()
+            if len(result) == 0:
+                return abort(404, message="User not found")
+        except:
+            return abort(404, message="User not found")
+        
+        #User Können sich selbst bearbeiten aber keine anderen User, außer Administartoren
+        if result[0] != user_uuid:
+            return abort(403, message="User not allowed to execute this operation")
+
+        try:
+            if name is not None:
+                cursor.execute("""UPDATE public."User" SET name = %s WHERE id = %s """, (name, id))
+            if passwd is not None:
+                cursor.execute("""UPDATE public."User" SET passwd = %s WHERE id = %s """, (sha256(passwd.encode('utf-8')).hexdigest(), id))
+            if email is not None:
+                cursor.execute("""UPDATE public."User" SET email = %s WHERE id = %s """, (email, id))
+            if admin is not None:
+                cursor.execute("""UPDATE public."User" SET rights = %s WHERE id = %s """, (admin, id))
+            database.commit()
+        except psycopg2.Error:
+            database.rollback()
+            return abort(409, message="Send data conflicts with existing entry")
+        
+        return jsonify("User got updated")
     
 class users(Resource):
     def get(self):
