@@ -141,16 +141,16 @@ class user(Resource):
         user_uuid = Endpoints_util.getUserUUID(request, database)
         
         # Daten aus dem Request holen
-        try:
-            data_resquest= json.loads(request.get_json())
-            id = data_resquest["id"]
-            name = data_resquest["username"]
-            passwd= data_resquest["passwd"]
-            email = data_resquest["email"]
-            if id is None:
-                return abort(404, message="User not found")
-        except :
-            return abort(409, message="Send data conflicts with existing entry")
+        #try:
+        data_resquest= json.loads(request.get_json())
+        id = data_resquest["id"]
+        name = data_resquest["username"]
+        passwd= data_resquest["passwd"]
+        email = data_resquest["email"]
+        if id is None:
+            return abort(404, message="User not found")
+        #except :
+        #    return abort(409, message="Send data conflicts with existing entry")
         
         
         # SQL-Abfrage
