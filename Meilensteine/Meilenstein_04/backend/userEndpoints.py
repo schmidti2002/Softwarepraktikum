@@ -222,6 +222,38 @@ class user_edit(Resource):
         # SQL Anfrage Auswertung
         response_dic = {"id":result[0][0],"username": result[0][1], "admin": result[0][3], "email": result[0][2]}
         return jsonify(response_dic)
+
+    def put(self, edit_useri):
+        # Daten aus dem Request holen und überprüfen
+        user_uuid = Endpoints_util.getUserUUID(request, database)
+
+        # Auf Adminrechte überprüfen
+        Endpoints_util.verify_admin(user_uuid, database)      
+        
+        # SQL-Abfrage
+        result = None
+        try:
+            cursor.execute("""SELECT id FROM public."User" WHERE id = %s""", (edit_userid,))
+            result = cursor.fetchone()
+            if len(result) == 0:
+                return abort(404, message="User not found")
+        except:
+            return abort(404, message="User not found")
+        
+        #User Können sich selbst bearbeiten aber keine anderen User, außer Administartoren
+        if result[0] != user_uuid:
+            if not Endpoints_util.verify_admin(user_uuid, database):
+                return abort(403, message="User not allowed to execute this operation")
+
+        try:
+            cursor.execute("""UPDATE public."User" SET name = %s, passwd = %s, email = %s, rights = %s WHERE id = %s """, (name, sha256(passwd.encode('utf-8')).hexdigest(), email, admin, id))
+            database.commit()
+        except psycopg2.Error:
+            database.rollback()
+            return abort(409, message="Send data conflicts with existing entry")
+        
+        return jsonify("User got updated")
+        
     
 class users(Resource):
     def get(self):
