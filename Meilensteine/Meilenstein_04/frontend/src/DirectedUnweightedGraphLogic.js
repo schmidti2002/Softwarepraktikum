@@ -92,12 +92,13 @@ export default class DirectedUnweightedGraph extends Logic {
         ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
             ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.data, [
               { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Knoten ist schon im Graphen'); return s; } },
-              { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
+              { f(os) { const s = _.cloneDeep(os); s.vars.output = false; s.currentLine = 'return'; return s; } },
             ]),]),
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList.push([]); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.adjList.length-1].push(new Node(s.vars.data)); return s; } },
         { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
     ]),
+    {l: 'return'}
   ]
 
   // public boolean insertEdge(String nodeOne, String nodeTwo) {
@@ -176,6 +177,11 @@ export default class DirectedUnweightedGraph extends Logic {
           ...execIfElse((s) => s.vars.adjList[s.vars.i][0].getData() === s.vars.nodeTwo, [
               { f(os) { const s = _.cloneDeep(os); s.vars.indexNodeTwo = s.vars.i; return s; } },
           ]),
+      ]),
+      ...execFor('i', () => 1, (s) => s.vars.i < s.vars.adjList[s.vars.indexNodeOne].length, 1, [
+        ...execIfElse((s) => s.vars.adjList[s.vars.indexNodeOne][s.vars.i].getData() === s.vars.nodeTwo, [
+          { f(os) { const s = _.cloneDeep(os); s.vars.indexNodeTwo = -2; return s; } },
+        ]),
       ]),
       ...execIfElse((s) => s.vars.indexNodeOne === -1 || s.vars.indexNodeTwo === -1, [
         { f(os, eventReporter) { const s = _.cloneDeep(os); eventReporter.info('Kante ist nicht im Graph'); return s; } },
@@ -432,14 +438,14 @@ export default class DirectedUnweightedGraph extends Logic {
         ...execFor('k', () => 1, (s) => s.vars.k < s.vars.adjList[s.vars.i].length, 1, [
           ...execFor('p', () => 0, (s) => s.vars.p < s.vars.newAdjList.length, 1, [
             ...execIfElse((s) => s.vars.adjList[s.vars.p][0].getData() === s.vars.adjList[s.vars.i][s.vars.k].getData(), [
-              { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList[s.vars.p].push(new Node(s.vars.adjList[s.vars.i][0].getData())); return s; } },
-            ]),
+                { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList[s.vars.p].push(new Node(s.vars.adjList[s.vars.i][0].getData())); return s; } },
+              ]),
+          ]),
         ]),
       ]),
-    ]),
-    { f(os) { const s = _.cloneDeep(os); s.vars.adjList = undefined; return s; } },
-    { f(os) { const s = _.cloneDeep(os); s.vars.adjList = s.vars.newAdjList; return s; } },
-    { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.adjList = undefined; return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.adjList = s.vars.newAdjList; return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
     ]),
   ]
 
@@ -474,11 +480,11 @@ export default class DirectedUnweightedGraph extends Logic {
       { f(os) { const s = _.cloneDeep(os); s.vars.output = false; return s; } },
     ],[
     ...execFor('i', () => 0, (s) => s.vars.i < s.vars.adjList.length, 1, [
-      { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList[s.vars.i].splice(0, s.vars.adjList[s.vars.i].length); return s; } },
+      { f(os) { const s = _.cloneDeep(os); s.vars.adjList[s.vars.i].splice(0, s.vars.adjList[s.vars.i].length); return s; } },
     ]),
-    { f(os) { const s = _.cloneDeep(os); s.vars.newAdjList.splice(0, s.vars.adjList.length); return s; } },
+    { f(os) { const s = _.cloneDeep(os); s.vars.adjList.splice(0, s.vars.adjList.length); return s; } },
     { f(os) { const s = _.cloneDeep(os); s.vars.output = true; return s; } },
-  ])
+  ]),
   ]
 
     algos = [{
