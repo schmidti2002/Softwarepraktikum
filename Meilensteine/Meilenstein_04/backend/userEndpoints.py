@@ -180,7 +180,7 @@ class user(Resource):
         return jsonify("User got updated")
     
 class user_edit(Resource):
-    def delete(self, edit_userid):
+    def delete(self, edituserid):
 
         # Daten aus dem Request holen und überprüfen
         user_uuid = Endpoints_util.getUserUUID(request, database)
@@ -190,12 +190,12 @@ class user_edit(Resource):
         
         # Daten des zu löschenden Users überprüfen
         try:
-            cursor.execute("""SELECT id FROM public."User" WHERE id = %s""", (edit_userid,))
+            cursor.execute("""SELECT id FROM public."User" WHERE id = %s""", (edituserid,))
             result = cursor.fetchall()
             if len(result) == 0:
                 return abort(404, message="User not found")
             else:
-                cursor.execute("""DELETE FROM public."User" WHERE id = %s""", (edit_userid,))
+                cursor.execute("""DELETE FROM public."User" WHERE id = %s""", (edituserid,))
                 database.commit()
         except psycopg2.Error:
             database.rollback()
@@ -203,7 +203,7 @@ class user_edit(Resource):
 
         return jsonify("user got deleted")
     
-    def get(self, edit_userid):
+    def get(self, edituserid):
 
         # Daten aus dem Request holen und überprüfen
         user_uuid = Endpoints_util.getUserUUID(request, database)
@@ -212,7 +212,7 @@ class user_edit(Resource):
         
         # Daten des Users überprüfen
         try:
-            cursor.execute("""SELECT id, name, email, rights FROM public."User" WHERE id = %s""", (edit_userid,))
+            cursor.execute("""SELECT id, name, email, rights FROM public."User" WHERE id = %s""", (edituserid,))
             result = cursor.fetchall()
             if len(result) == 0:
                 return abort(404, message="User not found")
@@ -225,7 +225,7 @@ class user_edit(Resource):
         return jsonify(response_dic)
 
 
-    def put(self, edit_userid):
+    def put(self, edituserid):
 
         # Daten aus dem Request holen und überprüfen
         user_uuid = Endpoints_util.getUserUUID(request, database)
@@ -244,7 +244,7 @@ class user_edit(Resource):
                 admin = bool(admin.title())
             if id is None:
                 return abort(404, message="User not found")
-            if id != edit_userid:
+            if id != edituserid:
                 return abort(400, message="Bad request")
         except :
             return abort(400, message="Bad request")
@@ -345,7 +345,7 @@ class userpassword_reset_username(Resource):
 
 
 api.add_resource(user, '/user')
-api.add_resource(user_edit, '/user-edit/<edit_userid>')
+api.add_resource(user_edit, '/user-edit/<edituserid>')
 api.add_resource(users, '/users')
 api.add_resource(userapitoken,'/user/apitoken')
 api.add_resource(userpassword_reset, '/user/reset-password')
