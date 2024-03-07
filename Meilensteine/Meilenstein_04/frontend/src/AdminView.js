@@ -226,7 +226,7 @@ ${user.username} ${user.admin ? '👨🏻‍🔧' : ''}<span id="user-${user.id}
     const username = deleteString.replace(/ permanent löschen$/, '');
     const user = _.find(Object.values(this.#users), (user) => user.data.username === username);
     this.#userApi.userEditUserIdDelete({ userId: user.data.id }).then(() => {
-      this.#eventReporter.success(`Nutzer ${this.#users[userId].username} gelöscht`);
+      this.#eventReporter.success(`Nutzer ${this.#users[user.data.id].username} gelöscht`);
     });
   }
 }

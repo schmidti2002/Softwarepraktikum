@@ -240,8 +240,6 @@ class user_edit(Resource):
             passwd= data_resquest.get("passwd", None)
             email = data_resquest.get("email", None)
             admin = data_resquest.get("admin", None)
-            if admin is not None:
-                admin = bool(admin.title())
             if id is None:
                 return abort(404, message="User not found")
             if id != edituserid:
@@ -259,10 +257,6 @@ class user_edit(Resource):
                 return abort(404, message="User not found")
         except:
             return abort(404, message="User not found")
-        
-        #User Können sich selbst bearbeiten aber keine anderen User, außer Administartoren
-        if result[0] != user_uuid:
-            return abort(403, message="User not allowed to execute this operation")
 
         try:
             if name is not None:
