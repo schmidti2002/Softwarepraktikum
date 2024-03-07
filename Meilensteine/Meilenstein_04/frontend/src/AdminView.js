@@ -193,7 +193,7 @@ ${user.username} ${user.admin ? '👨🏻‍🔧' : ''}<span id="user-${user.id}
         ...changes,
       },
     }).then(() => {
-      this.#eventReporter.success(`Nutzer ${this.#users[userId].username} aktualisiert`);
+      this.#eventReporter.success(`Nutzer ${this.#users[userId].data.username} aktualisiert`);
     });
   }
 
