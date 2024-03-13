@@ -1,4 +1,5 @@
-name: Build
+name: SonarCloud Scan
+
 on:
   push:
     branches:
@@ -6,16 +7,49 @@ on:
       - release/*
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-cov
+          pip install -r requirements.txt
+        working-directory: ./Meilensteine/Meilenstein_04/
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=./ --cov-report=xml
+        working-directory: ./Meilensteine/Meilenstein_04/
+      - name: patch PyTest result
+        run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' coverage.xml
+        working-directory: ./Meilensteine/Meilenstein_04/
+
+      - name: install openapi generator dependencies
+        run: sudo apt update && sudo apt install -y default-jre
+      - name: install FE dependencies
+        run: yarn && yarn api-prepare
+        working-directory: ./Meilensteine/Meilenstein_04/frontend
+      - name: run FE tests & linter
+        run: yarn sonar || echo Done
+        working-directory: ./Meilensteine/Meilenstein_04/frontend
+      - name: patch ESLint result
+        run:  sed -i 's+/home/runner/work/Softwarepraktikum/Softwarepraktikum+/github/workspace+g' eslint.json
+        working-directory: ./Meilensteine/Meilenstein_04/frontend/coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      

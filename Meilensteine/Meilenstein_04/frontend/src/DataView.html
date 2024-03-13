@@ -1,0 +1,32 @@
+<style>
+    .dataview-type-object {
+        border: black 1px solid;
+        padding: 4px;
+        margin-left: 4px;
+    }
+
+    .dataview-type-number {
+        color: green;
+    }
+    
+    .dataview-type-string {
+        color: orange;
+    }
+    
+    .dataview-type-undefined {
+        color: red;
+    }
+
+    /*todo other types*/
+</style>
+<div id="dataview-container" class="col">
+    <h4>Interne Daten</h4>
+    <div class="rounded-3 p-2 border border-primary">
+        <div id="simpleDataContainer"></div>
+        <div id="objContainer" class="mt-2"></div>
+    </div>
+    <h4>Output</h4>
+        <div class="rounded-3 p-2 border border-success">
+        <div id="outputDataContainer"></div>
+    </div>
+</div>

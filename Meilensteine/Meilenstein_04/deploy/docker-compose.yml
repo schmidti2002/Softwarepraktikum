@@ -1,0 +1,70 @@
+version: "3.1"
+services:
+  db:
+    image: "postgres:16.1"
+    mem_limit: 256mb
+    environment:
+      POSTGRES_DB: swp
+      POSTGRES_USER: swpusr
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - "3131:5432"
+    restart: unless-stopped
+    secrets:
+      - db_password
+    networks:
+      dbnet:
+        aliases:
+          - db.local
+  server:
+    build:
+      context: ../
+    mem_limit: 64mb
+    environment:
+      DB_HOST: "db.local"
+      DB_PORT: "5432"
+      DB_USER: "swpusr"
+      DB_PASSWORD_FILE: "/run/secrets/db_password"
+      DB_NAME: "swp"
+    ports:
+      - "3130:3130"
+    restart: unless-stopped
+    secrets:
+      - db_password
+    networks:
+      certnet:
+        aliases:
+          - server.local
+      dbnet:
+  certbot:
+    build:
+      context: ./certbot/
+    mem_limit: 64mb 
+    environment:
+      ADMIN_EMAIL: /run/secrets/admin_email
+    restart: unless-stopped
+    secrets:
+      - admin_email
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - server
+    networks:
+      - certnet
+
+volumes:
+  db:
+    driver: local
+ 
+secrets:
+  db_password:
+    file: ~/praktikum/db_password.txt
+  admin_email:
+    file: ~/praktikum/admin_email.txt
+
+networks:
+  dbnet:
+  certnet:

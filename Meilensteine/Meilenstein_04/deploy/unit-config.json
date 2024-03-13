@@ -1,0 +1,68 @@
+{
+    "settings": {
+        "http": {
+            "log_route": true
+        }
+    },
+    "listeners": {
+        "*:3130": {
+            "pass": "routes"
+        }
+    },
+    "routes": [
+        {
+            "match": {
+                "uri": "/api/*"
+            },
+            "action": {
+                "pass": "applications/flask"
+            }
+        },
+        {
+            "match": { 
+                "uri": "/dist/bundle.js"
+            },
+            "action": {
+                "share": [
+                    "/www/static/bundle.js"
+                ]
+            }
+        },
+        {
+            "match": {
+                "uri": [
+                    "~\\.html?$",
+                    "~\\.js$",
+                    "~\\.css$",
+                    "~\\.png$",
+                    "~\\.jpe?g$",
+                    "~\\.ico$",
+                    "/"
+                ]
+            },
+            "action": {
+                "share": [
+                    "/www/static$uri"
+                ],
+                "index": "index.html",
+                "types": [
+                    "application/javascript",
+                    "text/html",
+                    "text/css",
+                    "image/x-icon",
+                    "image/png",
+                    "image/jpeg"
+                ]
+            }
+        }
+    ],
+    "applications": {
+        "flask": {
+            "type": "python 3.11",
+            "path": "/www/",
+            "module": "main",
+            "callable": "app",
+            "prefix": "/api"
+        }
+    }
+}
