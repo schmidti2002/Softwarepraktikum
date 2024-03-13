@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { UserApi } from './api/apis/UserApi.ts';
 import InputView from './InputView';
 import {
-  notEmpty, validateEmail, password, inputLength,
+  notEmpty, validateEmail, password, inputLength, regex,
 } from './inputValidators';
 import View from './View';
 
@@ -32,7 +32,7 @@ export default class RegistrationView extends View {
           name: 'Benutzername',
           field: 'username',
           type: 'string',
-          validators: [{ func: notEmpty }],
+          validators: [{func: notEmpty }, { func: regex, param: /^[a-zA-Z0-9_]+$/ }],
         },
         {
           name: 'Passwort',
